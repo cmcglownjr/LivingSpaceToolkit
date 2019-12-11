@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # main.py
-
+# noinspection SpellCheckingInspection
 """
 This is the main program file for the Livingspace Toolkit. This program generates the GUI for the representatives to
 help their sales reps on meeting the needs of their customers.
@@ -16,12 +16,16 @@ from PySide2.QtWidgets import QGroupBox, QLabel, QMessageBox, QCheckBox, QTabWid
 from PySide2.QtCore import QFile, QObject
 import UI_rc
 from Units import EngineeringUnits as Eu
+import StudioCalcs
+import CatherdralCalcs
+import CommonCalcs as Cc
 import math
 import re
 
 list_ = re.compile(r'\'|ft|feet|\"|in')
 
 
+# noinspection SpellCheckingInspection
 class Form(QObject):
 
     def __init__(self, ui_file, parent=None):
@@ -61,8 +65,6 @@ class Form(QObject):
         self.st_endcut3_radio = self.window.findChild(QRadioButton, 'st_endcut3_radio')
         self.st_ratio_radio = self.window.findChild(QRadioButton, 'st_ratio_radio')
         self.st_angle_radio = self.window.findChild(QRadioButton, 'st_angle_radio')
-        # self.st_3ply_radio = self.window.findChild(QRadioButton, 'st_3ply_radio')
-        # self.st_4ply_radio = self.window.findChild(QRadioButton, 'st_4ply_radio')
         self.st_peak_edit = self.window.findChild(QLineEdit, 'st_peak_editbox')
         self.st_max_edit = self.window.findChild(QLineEdit, 'st_max_editbox')
         self.st_bwallheight_edit = self.window.findChild(QLineEdit, 'st_bwallheight_editbox')
@@ -103,8 +105,6 @@ class Form(QObject):
         self.ca_c_ratio_radio = self.window.findChild(QRadioButton, 'ca_c_ratio_radio')
         self.ca_a_angle_radio = self.window.findChild(QRadioButton, 'ca_a_angle_radio')
         self.ca_c_angle_radio = self.window.findChild(QRadioButton, 'ca_c_angle_radio')
-        # self.ca_3ply_radio = self.window.findChild(QRadioButton, 'ca_3ply_radio')
-        # self.ca_4ply_radio = self.window.findChild(QRadioButton, 'ca_4ply_radio')
         self.ca_peak_edit = self.window.findChild(QLineEdit, 'ca_peak_editbox')
         self.ca_max_edit = self.window.findChild(QLineEdit, 'ca_max_editbox')
         self.ca_awallheight_edit = self.window.findChild(QLineEdit, 'ca_awallheight_editbox')
@@ -126,8 +126,6 @@ class Form(QObject):
         self.st_calc_btn.clicked.connect(self.st_calcbutton)
         self.st_al_radio.clicked.connect(self.st_thick_combo_populate)
         self.st_eco_radio.clicked.connect(self.st_thick_combo_populate)
-        # self.st_3ply_radio.clicked.connect(self.st_width_comb_populate)
-        # self.st_4ply_radio.clicked.connect(self.st_width_comb_populate)
         self.st_ratio_radio.clicked.connect(self.st_pitch_label_change)
         self.st_angle_radio.clicked.connect(self.st_pitch_label_change)
         self.st_thick_combo.currentIndexChanged.connect(self.st_thickcombo)
@@ -150,8 +148,6 @@ class Form(QObject):
         self.ca_c_ratio_radio.clicked.connect(self.ca_pitch_label_change)
         self.ca_c_angle_radio.clicked.connect(self.ca_pitch_label_change)
         self.ca_thick_combo.currentIndexChanged.connect(self.ca_thickcombo)
-        # self.ca_3ply_radio.clicked.connect(self.ca_width_comb_populate)
-        # self.ca_4ply_radio.clicked.connect(self.ca_width_comb_populate)
         self.ca_endcut1_radio.clicked.connect(self.ca_endcuts)
         self.ca_endcut2_radio.clicked.connect(self.ca_endcuts)
         self.ca_endcut3_radio.clicked.connect(self.ca_endcuts)
@@ -390,406 +386,87 @@ class Form(QObject):
             self.ca_thick_combo.addItem('3"', userData='3"')
             self.ca_thick_combo.addItem('6"', userData='6"')
 
-    def common_function(self, wall_length, side_wall_length, pitch, soffit, overhang):
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            panel_thickness = Eu(self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()), u_type='length')
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            panel_thickness = Eu(self.ca_thick_combo.itemData(self.ca_thick_combo.currentIndex()), u_type='length')
-        max_panel_length = False
-        max_hang_rail_length = False
-        max_fascia_length = [False, False]
-        minmax_overhang = [False, False]
-        if overhang.base > 16:
-            side_overhang = 16
-        else:
-            side_overhang = overhang.base
-        angled_thickness = panel_thickness.base * (math.sin(math.pi / 2) / math.sin(math.pi / 2 - pitch))
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            if self.st_endcut2_radio.isChecked():
-                drip = soffit.base + angled_thickness
-                drip = Eu(str(drip) + '"', u_type='length')
-            else:
-                drip = soffit.base + panel_thickness.base * math.cos(pitch)
-                drip = Eu(str(drip) + '"', u_type='length')
-            if self.st_endcut3_radio.isChecked():
-                p_bottom = (side_wall_length + overhang.base) / math.cos(pitch)
-                p_top = (side_wall_length + overhang.base + panel_thickness.base * math.sin(pitch)) / math.cos(pitch)
-                p_length = max(p_bottom, p_top)
-            else:
-                p_length = (side_wall_length + overhang.base) / math.cos(pitch)
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            if self.ca_endcut2_radio.isChecked():
-                drip = soffit.base + angled_thickness
-                drip = Eu(str(drip) + '"', u_type='length')
-            else:
-                drip = soffit.base + panel_thickness.base * math.cos(pitch)
-                drip = Eu(str(drip) + '"', u_type='length')
-            if self.ca_endcut3_radio.isChecked():
-                p_bottom = (side_wall_length + overhang.base) / math.cos(pitch)
-                p_top = (side_wall_length + overhang.base + panel_thickness.base * math.sin(pitch)) / math.cos(pitch)
-                p_length = max(p_bottom, p_top)
-            else:
-                p_length = (side_wall_length + overhang.base) / math.cos(pitch)
-        panel_length = math.ceil(p_length / 12) * 12  # Panel length (in inches) rounded up to nearest foot
-        if panel_length > 288:
-            max_panel_length = True
-            panel_length /= 2
-        panel_length = Eu(str(panel_length) + '"', u_type='length')
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            roof_width = wall_length + side_overhang * 2
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            roof_width = wall_length + side_overhang
-        roof_panels = math.ceil(roof_width / 32)
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            if (roof_panels * 32 - wall_length) / 2 < side_overhang:
-                # Overhang too short
-                side_overhang2 = Eu(str((roof_panels * 32 - wall_length) / 2) + '"', u_type='length')
-                minmax_overhang[0] = True
-            elif (roof_panels * 32 - wall_length) / 2 > 16:
-                # Overhang too long
-                side_overhang2 = Eu(str((roof_panels * 32 - wall_length) / 2) + '"', u_type='length')
-                minmax_overhang[1] = True
-            else:
-                side_overhang2 = Eu(str(side_overhang) + '"', u_type='length')
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            if (roof_panels * 32 - wall_length) < side_overhang:
-                # Overhang too short
-                side_overhang2 = Eu(str(roof_panels * 32 - wall_length) + '"', u_type='length')
-                minmax_overhang[0] = True
-            elif (roof_panels * 32 - wall_length) > 16:
-                # Overhang too long
-                side_overhang2 = Eu(str(roof_panels * 32 - wall_length) + '"', u_type='length')
-                minmax_overhang[1] = True
-            else:
-                side_overhang2 = Eu(str(side_overhang) + '"', u_type='length')
-        if max_panel_length is True:
-            roof_area = panel_length.base * 2 * roof_panels * 32
-        else:
-            roof_area = panel_length.base * roof_panels * 32
-        # Hang Rail
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            hang_rail = roof_panels * 32
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            hang_rail = panel_length.base
-        if hang_rail > 216:
-            max_hang_rail_length = True
-            hang_rail /= 2
-        # Fascia
-        if self.tabWidget.currentIndex() == 0:  # Studio Tab
-            if self.st_fascia.isChecked():
-                fascia_wall = roof_panels * 32 + 12
-                fascia_sides = panel_length.base + 6
-                if fascia_wall > 216:
-                    max_fascia_length[0] = True
-                    fascia_wall /= 2
-                if fascia_sides > 216:
-                    max_fascia_length[1] = True
-                    fascia_sides /= 2
-            else:
-                fascia_wall = None
-                fascia_sides = None
-        elif self.tabWidget.currentIndex() == 1:  # Cathedral Tab
-            if self.ca_fascia.isChecked():
-                fascia_wall = roof_panels * 32 + 6
-                fascia_sides = panel_length.base + 6
-                if fascia_wall > 216:
-                    max_fascia_length[0] = True
-                    fascia_wall /= 2
-                if fascia_sides > 216:
-                    max_fascia_length[1] = True
-                    fascia_sides /= 2
-            else:
-                fascia_wall = None
-                fascia_sides = None
-        # Armstrong Ceiling Panels
-        rake_length = side_wall_length/math.cos(pitch)
-        armstrong_area = rake_length*wall_length/144  # get it in sq ft
-        armstrong = math.ceil((armstrong_area/29)+(armstrong_area/29)*0.1)
-
-        results = {'overhang': overhang.simplified("in"), 'side overhang': side_overhang2.simplified("in"),
-                   'max hang rail': max_hang_rail_length, 'max panel length': max_panel_length,
-                   'max fascia': max_fascia_length, 'drip edge': drip.simplified('in'),
-                   'panel length': panel_length.simplified("in"), 'overhang error': minmax_overhang,
-                   'roof area': roof_area, 'hang rail': hang_rail, 'side fascia': fascia_sides,
-                   'wall fascia': fascia_wall, 'roof panels': roof_panels, 'angled thickness': angled_thickness,
-                   'armstrong': armstrong}
-        return results
-
-    def pitch_input(self, pitch_input):
-        if pitch_input.base_unit == 'in.':
-            pitch = math.atan(pitch_input.base / 12)
-        elif pitch_input.base_unit == 'deg':
-            pitch = pitch_input.base
-        return pitch
-
-    def pitch_estimate(self, number):
-        return round(number * 2) / 2
-
-    def assume_units(self, string_in, assume_unit):
-        if list_.search(str(string_in)) is None:
-            string_out = string_in + assume_unit
-        else:
-            string_out = string_in
-        return string_out
-
     def st_scenario_calc(self):
-        overhang = Eu(self.assume_units(self.st_overhang_edit.text(), '"'), u_type='length')
-        awall = Eu(self.assume_units(self.st_awall_edit.text(), '"'), u_type='length')
-        bwall = Eu(self.assume_units(self.st_bwall_edit.text(), '"'), u_type='length')
-        cwall = Eu(self.assume_units(self.st_cwall_edit.text(), '"'), u_type='length')
-        side_wall = max(awall.base, cwall.base)
-        # Getting scenario inputs
+        overhang = Eu(Cc.assume_units(self.st_overhang_edit.text(), '"'), u_type='length')
+        awall = Eu(Cc.assume_units(self.st_awall_edit.text(), '"'), u_type='length')
+        bwall = Eu(Cc.assume_units(self.st_bwall_edit.text(), '"'), u_type='length')
+        cwall = Eu(Cc.assume_units(self.st_cwall_edit.text(), '"'), u_type='length')
+        panel_thickness = Eu(self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()), u_type='length')
+        if self.st_endcut1_radio.isChecked():
+            endcut = 'uncut'
+        elif self.st_endcut2_radio.isChecked():
+            endcut = 'plum_T_B'
+        elif self.st_endcut3_radio.isChecked():
+            endcut = 'plum_T'
+        studio = StudioCalcs.StudioCalcs(overhang.base, awall.base, bwall.base, cwall.base, panel_thickness.base,
+                                         endcut)
         if self.st_scenario1_radio.isChecked():
             if self.st_ratio_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
             elif self.st_angle_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
-            bwallheight = Eu(self.assume_units(self.st_bwallheight_edit.text(), '"'), u_type='length')
-            pitch = self.pitch_input(pitch_input)
-            soffit = bwallheight.base - overhang.base * math.tan(pitch)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
+            pitch = Cc.pitch_input(pitch_input)
+            b_wall_height = Eu(Cc.assume_units(self.st_bwallheight_edit.text(), '"'), u_type='length')
+            common = studio.wall_height_pitch(pitch, b_wall_height.base)
         elif self.st_scenario2_radio.isChecked():
-            bwallheight = Eu(self.assume_units(self.st_bwallheight_edit.text(), '"'), u_type='length')
-            peak_height = Eu(self.assume_units(self.st_peak_edit.text(), '"'), u_type='length')
-            pitch = math.atan((peak_height.base - bwallheight.base) / max(awall.base, cwall.base))
-            soffit = bwallheight.base - overhang.base * math.tan(pitch)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
+            b_wall_height = Eu(Cc.assume_units(self.st_bwallheight_edit.text(), '"'), u_type='length')
+            peak = Eu(Cc.assume_units(self.st_peak_edit.text(), '"'), u_type='length')
+            common = studio.wall_height_peak_height(b_wall_height.base, peak.base)
         elif self.st_scenario3_radio.isChecked():
-            panel_thickness = Eu(self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()), u_type='length')
             if self.st_ratio_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
             elif self.st_angle_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
-            max_height = Eu(self.assume_units(self.st_max_edit.text(), '"'), u_type='length')
-            pitch = self.pitch_input(pitch_input)
-            angled_thickness = panel_thickness.base * (math.sin(math.pi / 2) / math.sin(math.pi / 2 - pitch))
-            bwallh = max_height.base - max(awall.base, cwall.base) * math.tan(pitch) - angled_thickness
-            bwallheight = Eu(str(bwallh) + '"', u_type='length')
-            soffit = bwallheight.base - overhang.base * math.tan(pitch)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
+            pitch = Cc.pitch_input(pitch_input)
+            max_h = Eu(Cc.assume_units(self.st_max_edit.text(), '"'), u_type='length')
+            common = studio.max_height_pitch(pitch, max_h.base)
         elif self.st_scenario4_radio.isChecked():
-            peak_height = Eu(self.assume_units(self.st_peak_edit.text(), '"'), u_type='length')
-            soffit_height = Eu(self.assume_units(self.st_soffit_edit.text(), '"'), u_type='length')
-            pitch = math.atan((peak_height.base - soffit_height.base) / (max(awall.base, cwall.base) + overhang.base))
-            bwallh = soffit_height.base + overhang.base * math.tan(pitch)
-            bwallheight = Eu(str(bwallh) + '"', u_type='length')
+            peak = Eu(Cc.assume_units(self.st_peak_edit.text(), '"'), u_type='length')
+            soffit = Eu(Cc.assume_units(self.st_soffit_edit.text(), '"'), u_type='length')
+            common = studio.soffit_height_peak_height(peak.base, soffit.base)
         elif self.st_scenario5_radio.isChecked():
-            panel_thickness = Eu(self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()), u_type='length')
             if self.st_ratio_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
             elif self.st_angle_radio.isChecked():
-                pitch_input = Eu(self.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
-            pitch = self.pitch_input(pitch_input)
-            soffit_height = Eu(self.assume_units(self.st_soffit_edit.text(), '"'), u_type='length')
-            bwallh = soffit_height.base + overhang.base * math.tan(pitch)
-            bwallheight = Eu(str(bwallh) + '"', u_type='length')
-        # Common Calculations
-        common = self.common_function(wall_length=bwall.base, side_wall_length=side_wall, pitch=pitch,
-                                      soffit=soffit_height, overhang=overhang)
-        if self.st_scenario1_radio.isChecked():
-            peak = bwallheight.base + side_wall * math.tan(pitch)
-            peak_height = Eu(str(peak) + '"', u_type='length')
-            max_h = peak_height.base + common['angled thickness']
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.st_scenario2_radio.isChecked():
-            max_h = peak_height.base + common['angled thickness']
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.st_scenario3_radio.isChecked():
-            peak = max_height.base - common['angled thickness']
-            peak_height = Eu(str(peak) + '"', u_type='length')
-        elif self.st_scenario4_radio.isChecked():
-            max_h = peak_height.base + common['angled thickness']
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.st_scenario5_radio.isChecked():
-            peak = bwallheight.base + side_wall * math.tan(pitch)
-            peak_height = Eu(str(peak) + '"', u_type='length')
-            max_h = peak_height.base + common['angled thickness']
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        results = {'pitch': pitch, 'peak': peak_height.simplified("in"),
-                   'panel length': common['panel length'], 'max panel length': common['max panel length'],
-                   'soffit height': soffit_height.simplified("in"), 'drip edge': common['drip edge'],
-                   'overhang error': common['overhang error'], 'roof area': math.ceil(common['roof area'] / 144),
-                   'hang rail': common['hang rail'], 'fascia b wall': common['wall fascia'],
-                   'fascia sides': common['side fascia'], 'max hang rail length': common['max hang rail'],
-                   'max fascia length': common['max fascia'], 'roof panels': common['roof panels'],
-                   'max height': max_height.simplified("in"), 'overhang': common['overhang'],
-                   'side overhang': common['side overhang'], 'armstrong': common['armstrong'],
-                   'bwallheight': bwallheight.simplified("in"), 'sidewall': side_wall}
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
+            pitch = Cc.pitch_input(pitch_input)
+            soffit = Eu(Cc.assume_units(self.st_soffit_edit.text(), '"'), u_type='length')
+            common = studio.soffit_height_pitch(pitch, soffit.base)
+        peak = Eu(Cc.assume_units(str(common.peak), '"'), u_type='length')
+        panel_length = Eu(Cc.assume_units(str(common.panel_length()[0]), '"'), u_type='length')
+        max_panel_length = common.panel_length()[1]
+        soffit_height = Eu(Cc.assume_units(str(common.soffit), '"'), u_type='length')
+        drip_edge = Eu(Cc.assume_units(str(common.drip_edge()), '"'), u_type='length')
+        roof_area = math.ceil(common.roof_panels()[0]) / 144
+        hang_rail = Eu(Cc.assume_units(str(common.hang_rail()[0]), '"'), u_type='length')
+        max_hang_rail_length = common.hang_rail()[1]
+        fascia_b_wall = Eu(Cc.assume_units(str(common.fascia()[0]), '"'), u_type='length')
+        fascia_sides = Eu(Cc.assume_units(str(common.fascia()[1]), '"'), u_type='length')
+        max_fascia_length = common.fascia()[2]
+        roof_panels = common.roof_panels()[1]
+        max_height = Eu(Cc.assume_units(str(common.max_h), '"'), u_type='length')
+        overhang_ = Eu(Cc.assume_units(str(common.overhang), '"'), u_type='length')
+        side_overhang = Eu(Cc.assume_units(str(common.roof_panels()[2]), '"'), u_type='length')
+        armstrong = common.armstrong_panels()
+        overhang_error = common.roof_panels()[3]
+        b_wall_height_ = Eu(Cc.assume_units(str(common.wall_height), '"'), u_type='length')
+        results = {'pitch': common.pitch, 'peak': peak.simplified('in'), 'panel length': panel_length.simplified('in'),
+                   'max panel length': max_panel_length, 'soffit height': soffit_height.simplified('in'), 'drip edge':
+                   drip_edge.simplified('in'), 'roof area': roof_area, 'hang rail': hang_rail.simplified('in'),
+                   'max hang rail length': max_hang_rail_length, 'fascia b wall': fascia_b_wall.simplified('in'),
+                   'fascia sides': fascia_sides.simplified('in'), 'max fascia length': max_fascia_length, 'roof panels':
+                   roof_panels, 'max height': max_height.simplified('in'), 'overhang': overhang_.simplified('in'),
+                   'side overhang': side_overhang.simplified('in'), 'armstrong': armstrong, 'bwallheight':
+                       b_wall_height_.simplified('in'), 'sidewall': b_wall_height_.simplified('in'), 'overhang error':
+                   overhang_error}
         return results
 
     def ca_scenario_calc(self):
-        overhang = Eu(self.assume_units(self.ca_overhang_edit.text(), '"'), u_type='length')
-        awall = Eu(self.assume_units(self.ca_awall_edit.text(), '"'), u_type='length')
-        bwall = Eu(self.assume_units(self.ca_bwall_edit.text(), '"'), u_type='length')
-        cwall = Eu(self.assume_units(self.ca_cwall_edit.text(), '"'), u_type='length')
-        wall_length = max(awall.base, cwall.base)
-        post_width = 3.25  # inches
-        # Getting scenario inputs
-        if self.ca_scenario1_radio.isChecked():
-            if self.ca_a_ratio_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_a_angle_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), 'deg'), u_type='angle')
-            if self.ca_c_ratio_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_c_angle_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), 'deg'), u_type='angle')
-            awallheight = Eu(self.assume_units(self.ca_awallheight_edit.text(), '"'), u_type='length')
-            cwallheight = Eu(self.assume_units(self.ca_cwallheight_edit.text(), '"'), u_type='length')
-            a_pitch = self.pitch_input(a_pitch_input)
-            c_pitch = self.pitch_input(c_pitch_input)
-            a_soffit = awallheight.base - overhang.base * math.tan(a_pitch)
-            c_soffit = cwallheight.base - overhang.base * math.tan(c_pitch)
-            soffit = max(a_soffit, c_soffit)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
-            # Calculate peak height to bottom of panel
-            peak_h = (bwall.base * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch) + \
-                     max(awallheight.base, cwallheight.base)
-            a_side_wall = (peak_h - max(awallheight.base, cwallheight.base)) / math.tan(a_pitch)
-            c_side_wall = (peak_h - max(awallheight.base, cwallheight.base)) / math.tan(c_pitch)
-        elif self.ca_scenario2_radio.isChecked():
-            awallheight = Eu(self.assume_units(self.ca_awallheight_edit.text(), '"'), u_type='length')
-            cwallheight = Eu(self.assume_units(self.ca_cwallheight_edit.text(), '"'), u_type='length')
-            peak_height = Eu(self.assume_units(self.ca_peak_edit.text(), '"'), u_type='length') # Fenevision Peak Height
-            a_side_wall = bwall.base / 2
-            c_side_wall = bwall.base / 2
-            a_pitch = math.atan2((peak_height.base - awallheight.base), (a_side_wall - post_width / 2))
-            c_pitch = math.atan((float(peak_height.base) - float(cwallheight.base)) / (c_side_wall - post_width / 2))
-            # Convert the pitch to whole numbers then recalculate
-            a_soffit = awallheight.base - overhang.base * math.tan(a_pitch)
-            c_soffit = cwallheight.base - overhang.base * math.tan(c_pitch)
-            soffit = max(a_soffit, c_soffit)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
-        elif self.ca_scenario3_radio.isChecked():
-            panel_thickness = Eu(self.ca_thick_combo.itemData(self.ca_thick_combo.currentIndex()), u_type='length')
-            if self.ca_a_ratio_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_a_angle_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), 'deg'), u_type='angle')
-            if self.ca_c_ratio_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_c_angle_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), 'deg'), u_type='angle')
-            max_height = Eu(self.assume_units(self.ca_max_edit.text(), '"'), u_type='length')
-            a_pitch = self.pitch_input(a_pitch_input)
-            c_pitch = self.pitch_input(c_pitch_input)
-            a_angled_thickness = panel_thickness.base * (math.sin(math.pi / 2) / math.sin(math.pi / 2 - a_pitch))
-            c_angled_thickness = panel_thickness.base * (math.sin(math.pi / 2) / math.sin(math.pi / 2 - c_pitch))
-            # Calculate peak height to bottom of panel
-            peak_dh = (bwall.base * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            peak_h = max_height.base - max(a_angled_thickness, c_angled_thickness) + \
-                     (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            a_side_wall = peak_dh / math.tan(a_pitch)
-            c_side_wall = peak_dh / math.tan(c_pitch)
-            awallh = peak_h - peak_dh
-            cwallh = peak_h - peak_dh
-            awallheight = Eu(str(awallh) + '"', u_type='length')
-            cwallheight = Eu(str(cwallh) + '"', u_type='length')
-            a_soffit = awallheight.base - overhang.base * math.tan(a_pitch)
-            c_soffit = cwallheight.base - overhang.base * math.tan(c_pitch)
-            soffit = max(a_soffit, c_soffit)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
-        elif self.ca_scenario4_radio.isChecked():
-            peak_height = Eu(self.assume_units(self.ca_peak_edit.text(), '"'), u_type='length')
-            a_soffit = Eu(self.assume_units(self.ca_a_soffit_edit.text(), '"'), u_type='length')
-            c_soffit = Eu(self.assume_units(self.ca_c_soffit_edit.text(), '"'), u_type='length')
-            soffit = max(a_soffit.base, c_soffit.base)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
-            a_side_wall = bwall.base / 2
-            c_side_wall = bwall.base / 2
-            a_pitch = math.atan((peak_height.base - soffit_height.base) / (a_side_wall + overhang.base))
-            c_pitch = math.atan((peak_height.base - soffit_height.base) / (c_side_wall + overhang.base))
-            awallh = soffit_height.base + overhang.base * math.tan(a_pitch)
-            cwallh = soffit_height.base + overhang.base * math.tan(c_pitch)
-            awallheight = Eu(str(awallh) + '"', u_type='length')
-            cwallheight = Eu(str(cwallh) + '"', u_type='length')
-        elif self.ca_scenario5_radio.isChecked():
-            if self.ca_a_ratio_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_a_angle_radio.isChecked():
-                a_pitch_input = Eu(self.assume_units(self.ca_a_pitch_edit.text(), 'deg'), u_type='angle')
-            if self.ca_c_ratio_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), '"'), u_type='length')
-            elif self.ca_c_angle_radio.isChecked():
-                c_pitch_input = Eu(self.assume_units(self.ca_c_pitch_edit.text(), 'deg'), u_type='angle')
-            a_pitch = self.pitch_input(a_pitch_input)
-            c_pitch = self.pitch_input(c_pitch_input)
-            a_soffit = Eu(self.assume_units(self.ca_a_soffit_edit.text(), '"'), u_type='length')
-            c_soffit = Eu(self.assume_units(self.ca_c_soffit_edit.text(), '"'), u_type='length')
-            soffit = max(a_soffit.base, c_soffit.base)
-            soffit_height = Eu(str(soffit) + '"', u_type='length')
-            awallh = soffit_height.base + overhang.base * math.tan(a_pitch)
-            cwallh = soffit_height.base + overhang.base * math.tan(c_pitch)
-            awallheight = Eu(str(awallh) + '"', u_type='length')
-            cwallheight = Eu(str(cwallh) + '"', u_type='length')
-            # Calculate peak height to bottom of panel
-            peak_h = (bwall.base * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch) + \
-                     max(awallheight.base, cwallheight.base)
-            a_side_wall = (peak_h - max(awallheight.base, cwallheight.base)) / math.tan(a_pitch)
-            c_side_wall = (peak_h - max(awallheight.base, cwallheight.base)) / math.tan(c_pitch)
-
-        # Common Calculations
-        a_common = self.common_function(wall_length=wall_length, side_wall_length=a_side_wall, pitch=a_pitch,
-                                        soffit=soffit_height, overhang=overhang)
-        c_common = self.common_function(wall_length=wall_length, side_wall_length=c_side_wall, pitch=c_pitch,
-                                        soffit=soffit_height, overhang=overhang)
-        if self.ca_scenario1_radio.isChecked():
-            # Fenevision Peak for Cathedral
-            f_peak = peak_h - (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(
-                math.pi - a_pitch - c_pitch)
-            peak_height = Eu(str(f_peak) + '"', u_type='length')
-            max_h = peak_height.base + max(a_common['angled thickness'], c_common['angled thickness']) + \
-                    (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.ca_scenario2_radio.isChecked():
-            a_max_h = peak_height.base + a_common['angled thickness'] + \
-                      (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            c_max_h = peak_height.base + c_common['angled thickness'] + \
-                      (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            max_h = max(a_max_h, c_max_h)
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.ca_scenario3_radio.isChecked():
-            peak_height = Eu(str(peak_h - (post_width * math.sin(a_pitch) * math.sin(c_pitch)) /
-                                 math.sin(math.pi - a_pitch - c_pitch)) + '"', u_type='length')
-        elif self.ca_scenario4_radio.isChecked():
-            a_max_h = peak_height.base + a_common['angled thickness'] + \
-                      (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            c_max_h = peak_height.base + c_common['angled thickness'] + \
-                      (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            max_h = max(a_max_h, c_max_h)
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        elif self.ca_scenario5_radio.isChecked():
-            f_peak = peak_h - (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(
-                math.pi - a_pitch - c_pitch)
-            peak_height = Eu(str(f_peak) + '"', u_type='length')
-            max_h = peak_height.base + max(a_common['angled thickness'], c_common['angled thickness']) + \
-                    (post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
-            max_height = Eu(str(max_h) + '"', u_type='length')
-        side_wall = Eu(self.assume_units(str(max(a_side_wall, c_side_wall)), '"'), u_type='length')
-        results = {'a pitch': a_pitch, 'peak': peak_height.simplified("in"), 'a panel length': a_common['panel length'],
-                   'c panel length': c_common['panel length'], 'a max panel length': a_common['max panel length'],
-                   'c max panel length': c_common['max panel length'], 'a soffit height':soffit_height.simplified("in"),
-                   'c soffit height': soffit_height.simplified("in"), 'a drip edge': a_common['drip edge'],
-                   'c drip edge': c_common['drip edge'], 'a overhang error': a_common['overhang error'],
-                   'c overhang error': c_common['overhang error'],
-                   'a roof area': math.ceil(a_common['roof area'] / 144),
-                   'c roof area': math.ceil(c_common['roof area'] / 144), 'a hang rail': a_common['hang rail'],
-                   'c hang rail': c_common['hang rail'], 'fascia a wall': a_common['wall fascia'],
-                   'fascia c wall': c_common['wall fascia'], 'fascia a side': a_common['side fascia'],
-                   'fascia c side': c_common['side fascia'], 'max hang rail length a': a_common['max hang rail'],
-                   'max hang rail length c': c_common['max hang rail'], 'max fascia length a': a_common['max fascia'],
-                   'max fascia length c': c_common['max fascia'], 'a roof panels': a_common['roof panels'],
-                   'c roof panels': c_common['roof panels'], 'max height': max_height.simplified("in"),
-                   'a overhang': a_common['overhang'], 'c overhang': c_common['overhang'], 'c pitch': c_pitch,
-                   'a side overhang': a_common['side overhang'], 'c side overhang': c_common['side overhang'],
-                   'a armstrong': a_common['armstrong'], 'c armstrong': c_common['armstrong'],
-                   'awallheight': awallheight.simplified("in"), 'cwallheight': cwallheight.simplified("in"),
-                   'sidewall': side_wall.simplified('in')}
-        return results
+        pass
 
     def st_results_message(self, results):
         roof_total = results['roof area']
-        self.st_results.append('The pitch is: {}/12.'.format(self.pitch_estimate(12 * math.tan(results['pitch']))))
+        self.st_results.append('The pitch is: {}/12.'.format(Cc.pitch_estimate(12 * math.tan(results['pitch']))))
         self.st_results.append('The peak height is {} in.'.format(results['peak']))
         self.st_results.append('The soffit height is {} in.'.format(results['soffit height']))
         self.st_results.append('The drip edge is at {} in.'.format(results['drip edge']))

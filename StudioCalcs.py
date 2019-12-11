@@ -5,12 +5,14 @@ import CommonCalcs as Cc
 import math
 
 
+# noinspection SpellCheckingInspection
 class StudioCalcs:
     """
-    This class performs the calculations for a studio style sunroom. It works in conjunction with CommonCalcs.py and
-    Units.py. Pitch of the roof is needed but calculated separately and needs to be in radians.
+    This class performs the calculations for a studio style sunroom. It works in conjunction with CommonCalcs.py.
+    Pitch of the roof is needed but calculated separately and needs to be in radians.
     """
-    def __init__(self, overhang, awall, bwall, cwall, panel_thickness, tabwidget, endcut):
+
+    def __init__(self, overhang, awall, bwall, cwall, panel_thickness, endcut):
         """
         Initiallizes common variables used in methods. Floats are in inches.
         :param overhang: float
@@ -18,67 +20,97 @@ class StudioCalcs:
         :param bwall: float
         :param cwall: float
         :param panel_thickness: float
-        :param tabwidget: int
         :param endcut: str
         """
         self.awall = awall
         self.bwall = bwall
         self.cwall = cwall
         self.panel_thickness = panel_thickness
-        self.tabwidget = tabwidget
+        self.tabwidget = 0
         self.endcut = endcut
         self.overhang = overhang
         self.side_wall = max(self.awall, self.cwall)
 
-    def wall_height_pitch_soffit(self, pitch, b_wall_height):
+    def wall_height_pitch(self, pitch, b_wall_height):
         """
-        This method returns the soffit height given the  pitch and B Wall Height. Pitch has to be in radians. B Wall
-        Height is in inches.
+        This method is designed for Scenario 1: Wall Height and Pitch. Wall Height must be in inches, pitch must be in
+        radians. It returns the results where the length is in inches and pitch in radians.
         :param pitch: float
         :param b_wall_height: float
-        :return: float
+        :return: class <CommonCalcs.CommonCalcs>
         """
         soffit = b_wall_height - self.overhang * math.tan(pitch)
-        return soffit
+        peak = b_wall_height + self.side_wall * math.tan(pitch)
+        max_h = peak + Cc.angled(pitch=pitch, thickness=self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
 
-    def wall_height_peak_height_pitch_soffit(self, b_wall_height, peak_height):
+    def wall_height_peak_height(self, b_wall_height, peak):
         """
-        Calculates pitch and soffit given wall height and peak height.
+        This method is designed for Scenario 2: Wall Height and Peak Height. Both heights must be in inches. It returns
+        the results where the length is in inches and pitch in radians.
         :param b_wall_height: float
-        :param peak_height: float
-        :return: float, float
+        :param peak: float
+        :return: class <CommonCalcs.CommonCalcs>
         """
-        pitch = math.atan((peak_height - b_wall_height) / max(self.awall, self.cwall))
+        pitch = math.atan((peak - b_wall_height) / max(self.awall, self.cwall))
         soffit = b_wall_height - self.overhang * math.tan(pitch)
-        return pitch, soffit
+        max_h = peak + Cc.angled(pitch=pitch, thickness=self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
 
-    def max_height_pitch(self, pitch, max_height):
+    def max_height_pitch(self, pitch, max_h):
         """
-        Calculates B wall height and soffit height based on pitch and max height. Needs panel thickness. Pitch is in
-        radians.
+        This method is designed for Scenario 3: Max Height and Pitch. The max height must be inches and pitch must be
+        radians. It returns the results where the length is in inches and pitch in radians.
         :param pitch: float
-        :param max_height: float
-        :return: float, float
+        :param max_h: float
+        :return: class <CommonCalcs.CommonCalcs>
         """
-        angled_thickness = Cc.angled_thickness(pitch=pitch, thickness=self.panel_thickness)
-        b_wall_height = max_height - max(self.awall, self.cwall) * math.tan(pitch) - angled_thickness
+        b_wall_height = max_h - max(self.awall, self.cwall) * math.tan(pitch) - \
+                        Cc.angled_thickness(pitch=pitch, thickness=self.panel_thickness)
         soffit = b_wall_height - self.overhang * math.tan(pitch)
-        return b_wall_height, soffit
+        peak = max_h - Cc.angled_thickness(pitch=pitch, thickness=self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
 
-    def soffit_height_peak_height(self, peak_height, soffit):
+    def soffit_height_peak_height(self, peak, soffit):
         """
-        Calculates pitch and B wall height using peak height and soffit height. Pitch is in radians.
-        :param peak_height: float
+        This method is designed for Scenario 4: Soffit Height and Peak Height. Both heights must be in inches. It
+        returns the results where the length is in inches and pitch in radians.
+        :param peak: float
         :param soffit: float
-        :return: float, float
+        :return: class <CommonCalcs.CommonCalcs>
         """
-        pitch = math.atan((peak_height - soffit) / (max(self.awall, self.cwall)+self.overhang))
+        pitch = math.atan((peak - soffit) / (max(self.awall, self.cwall) + self.overhang))
         b_wall_height = soffit + self.overhang * math.tan(pitch)
-        return pitch, b_wall_height
+        max_h = peak + Cc.angled(pitch=pitch, thickness=self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
 
     def soffit_height_pitch(self, pitch, soffit):
+        """
+        This method is designed for Scenario 5: Soffit Height and Pitch. Soffit height must be in inches and pitch must
+        be in radians. It returns the results where the length is in inches and pitch in radians.
+        :param pitch: float
+        :param soffit: float
+        :return: class <CommonCalcs.CommonCalcs>
+        """
         b_wall_height = soffit + self.overhang * math.tan(pitch)
-        return b_wall_height
+        peak = b_wall_height + self.side_wall * math.tan(pitch)
+        max_h = peak + Cc.angled(pitch=pitch, thickness=self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
 
     def drip_edge_peak_height(self):
         pass

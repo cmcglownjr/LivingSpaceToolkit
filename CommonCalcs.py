@@ -11,10 +11,11 @@ list_ = re.compile(r'\'|ft|feet|\"|in')
 class CommonCalcs:
     """
     This class performs many of the common calculations between scenarios for use in Studio.py and Cathedral.py. It uses
-     the math and re packages.
+    the math and re packages.
     """
 
-    def __init__(self, wall_length, side_wall_length, pitch, soffit, overhang, tabwidget, thickness, endcut):
+    def __init__(self, wall_length, side_wall_length, pitch, soffit, overhang, tabwidget, thickness, endcut, peak,
+                 max_h, wall_height):
         """
         Initiallizes common variables used in methods. The pitch has to be in radians. The floats are in inches.
         :param wall_length: float
@@ -39,6 +40,9 @@ class CommonCalcs:
             self.side_overhang = 16
         else:
             self.side_overhang = self.overhang
+        self.peak = peak
+        self.max_h = max_h
+        self.wall_height = wall_height
 
     def drip_edge(self):
         """
@@ -48,7 +52,7 @@ class CommonCalcs:
         if self.endcut == 'plum_T_B':
             drip = self.soffit + self.angled_thickness
         else:
-            drip = self.soffit + self.panel_thickness.base * math.cos(self.pitch)
+            drip = self.soffit + self.panel_thickness * math.cos(self.pitch)
         return drip
 
     def panel_length(self):
@@ -78,7 +82,7 @@ class CommonCalcs:
         minmax_overhang = [False, False]
         if self.tabWidget == 0:  # Studio Tab
             roof_width = self.wall_length + self.side_overhang * 2
-        elif self.tabWidget == 0:  # Cathedral Tab
+        elif self.tabWidget == 1:  # Cathedral Tab
             roof_width = self.wall_length + self.side_overhang
         roof_panels = math.ceil(roof_width / 32)
         if self.tabWidget == 0:  # Studio Tab
@@ -105,10 +109,10 @@ class CommonCalcs:
                 side_overhang = self.side_overhang
         panel_length, max_panel_length = self.panel_length()
         if max_panel_length is True:
-            roof_area = panel_length.base * 2 * roof_panels * 32
+            roof_area = panel_length * 2 * roof_panels * 32
         else:
-            roof_area = panel_length.base * roof_panels * 32
-        return [roof_area, roof_panels, side_overhang]
+            roof_area = panel_length * roof_panels * 32
+        return [roof_area, roof_panels, side_overhang, minmax_overhang]
 
     def hang_rail(self):
         """
@@ -122,7 +126,7 @@ class CommonCalcs:
         if self.tabWidget == 0:  # Studio Tab
             hang_rail = roof_panels * 32
         elif self.tabWidget == 1:  # Cathedral Tab
-            hang_rail = panel_length.base
+            hang_rail = panel_length
         if hang_rail > 216:
             max_hang_rail_length = True
             hang_rail /= 2
@@ -141,7 +145,7 @@ class CommonCalcs:
             fascia_wall = roof_panels * 32 + 12
         elif self.tabWidget == 1:  # Cathedral Tab
             fascia_wall = roof_panels * 32 + 6
-        fascia_sides = panel_length.base + 6
+        fascia_sides = panel_length + 6
         if fascia_wall > 216:
             max_fascia_length[0] = True
             fascia_wall /= 2
