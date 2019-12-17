@@ -29,6 +29,11 @@ list_ = re.compile(r'\'|ft|feet|\"|in')
 class Form(QObject):
 
     def __init__(self, ui_file, parent=None):
+        """
+        Sets all the initial variables that will be used throughout the class.
+        :param ui_file:
+        :param parent:
+        """
         super(Form, self).__init__(parent)
         ui_file = QFile(ui_file)
         ui_file.open(QFile.ReadOnly)
@@ -157,9 +162,12 @@ class Form(QObject):
         self.window.show()
 
     def studio_form_control(self):
+        """
+        This method disables the form until an appropriate scenario is selected.
+        :return:
+        """
         self.st_pitch_gbox.setEnabled(False)
         self.st_endcuts()
-        # self.st_fascia.setEnabled(False)
         self.st_overhang_edit.setEnabled(False)
         self.st_roof_gbox.setEnabled(False)
         self.st_thick_combo.setEnabled(False)
@@ -174,10 +182,13 @@ class Form(QObject):
         self.st_cwall_edit.setEnabled(False)
 
     def cathedral_form_control(self):
+        """
+        This method disables the form until an appropriate scenario is selected.
+        :return:
+        """
         self.ca_a_pitch_gbox.setEnabled(False)
         self.ca_c_pitch_gbox.setEnabled(False)
         self.ca_endcuts()
-        # self.ca_fascia.setEnabled(False)
         self.ca_overhang_edit.setEnabled(False)
         self.ca_roof_gbox.setEnabled(False)
         self.ca_thick_combo.setEnabled(False)
@@ -194,6 +205,10 @@ class Form(QObject):
         self.ca_cwall_edit.setEnabled(False)
 
     def st_scenario(self):
+        """
+        This method toggles the edit boxes depending on the scenario selected.
+        :return:
+        """
         self.studio_form_control()
         self.st_awall_edit.setEnabled(True)
         self.st_bwall_edit.setEnabled(True)
@@ -225,6 +240,10 @@ class Form(QObject):
             self.st_pitch_gbox.setEnabled(True)
 
     def ca_scenario(self):
+        """
+        This method toggles the edit boxes depending on the scenario selected.
+        :return:
+        """
         self.cathedral_form_control()
         self.ca_awall_edit.setEnabled(True)
         self.ca_bwall_edit.setEnabled(True)
@@ -264,6 +283,10 @@ class Form(QObject):
             self.ca_c_pitch_gbox.setEnabled(True)
 
     def st_endcuts(self):
+        """
+        This method toggles Fascia checkbox depending on the End Cuts selected.
+        :return:
+        """
         if self.st_eco_radio.isChecked() and (self.st_endcut1_radio.isChecked() or self.st_endcut3_radio.isChecked()):
             if self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()) == '6"':
                 self.st_fascia.setEnabled(True)
@@ -279,6 +302,10 @@ class Form(QObject):
             self.st_fascia.setChecked(False)
 
     def ca_endcuts(self):
+        """
+        This method toggles Fascia checkbox depending on the End Cuts selected.
+        :return:
+        """
         if self.ca_eco_radio.isChecked() and (self.ca_endcut1_radio.isChecked() or self.ca_endcut3_radio.isChecked()):
             if self.ca_thick_combo.itemData(self.ca_thick_combo.currentIndex()) == '6"':
                 self.ca_fascia.setEnabled(True)
@@ -294,6 +321,10 @@ class Form(QObject):
             self.ca_fascia.setChecked(False)
 
     def st_thickcombo(self):
+        """
+        This method toggles the Fascia checkbox depnding on the roofing type and thickness selected.
+        :return:
+        """
         if self.st_eco_radio.isChecked() and (self.st_endcut1_radio.isChecked() or self.st_endcut3_radio.isChecked()):
             if self.st_thick_combo.itemData(self.st_thick_combo.currentIndex()) == '6"':
                 self.st_fascia.setEnabled(True)
@@ -310,6 +341,10 @@ class Form(QObject):
         self.st_results.clear()
 
     def ca_thickcombo(self):
+        """
+        This method toggles the Fascia checkbox depnding on the roofing type and thickness selected.
+        :return:
+        """
         if self.ca_eco_radio.isChecked() and (self.ca_endcut1_radio.isChecked() or self.ca_endcut3_radio.isChecked()):
             if self.ca_thick_combo.itemData(self.ca_thick_combo.currentIndex()) == '6"':
                 self.ca_fascia.setEnabled(True)
@@ -326,6 +361,10 @@ class Form(QObject):
         self.ca_results.clear()
 
     def st_pitch_label_change(self):
+        """
+        This method changes the pitch label depending on the radio selected.
+        :return:
+        """
         self.st_pitch_label.clear()
         if self.st_ratio_radio.isChecked():
             self.st_pitch_label.setText('/12 in.')
@@ -333,6 +372,10 @@ class Form(QObject):
             self.st_pitch_label.setText('Angle in\nDegrees')
 
     def ca_pitch_label_change(self):
+        """
+        This method changes the pitch label depending on the radio selected.
+        :return:
+        """
         if self.ca_a_ratio_radio.isChecked():
             self.ca_a_pitch_label.clear()
             self.ca_a_pitch_label.setText('/12 in.')
@@ -347,6 +390,10 @@ class Form(QObject):
             self.ca_c_pitch_label.setText('Angle in\nDegrees')
 
     def st_thick_combo_populate(self):
+        """
+        This method is used to populate the Thickness combo box.
+        :return:
+        """
         self.st_thick_combo.clear()
         if self.st_eco_radio.isChecked():
             self.st_endcut1_radio.setChecked(True)
@@ -366,6 +413,10 @@ class Form(QObject):
             self.st_thick_combo.addItem('6"', userData='6"')
 
     def ca_thick_combo_populate(self):
+        """
+        This method is used to populate the Thickness combo box.
+        :return:
+        """
         self.ca_thick_combo.clear()
         if self.ca_eco_radio.isChecked():
             self.ca_endcut1_radio.setChecked(True)
@@ -385,6 +436,11 @@ class Form(QObject):
             self.ca_thick_combo.addItem('6"', userData='6"')
 
     def common_results(self, common):
+        """
+        This method is used to organize the results into a dictionary.
+        :param common: class
+        :return: dict
+        """
         peak = Eu(Cc.assume_units(str(Cc.sixteenth(common.peak)), '"'), u_type='length')
         panel_length = Eu(Cc.assume_units(str(common.panel_length()[0]), '"'), u_type='length')
         max_panel_length = common.panel_length()[1]
@@ -419,6 +475,11 @@ class Form(QObject):
 
     @property
     def st_scenario_calc(self):
+        """
+        This method is called when the "Calculate" button is pressed. It calls functions to perform the calculations and
+        saves it to a dictionary.
+        :return: dict
+        """
         overhang = Eu(Cc.assume_units(self.st_overhang_edit.text(), '"'), u_type='length')
         awall = Eu(Cc.assume_units(self.st_awall_edit.text(), '"'), u_type='length')
         bwall = Eu(Cc.assume_units(self.st_bwall_edit.text(), '"'), u_type='length')
@@ -480,6 +541,11 @@ class Form(QObject):
 
     @property
     def ca_scenario_calc(self):
+        """
+        This method is called when the "Calculate" button is pressed. It calls functions to perform the calculations and
+        saves it to a dictionary.
+        :return: dict
+        """
         overhang = Eu(Cc.assume_units(self.ca_overhang_edit.text(), '"'), u_type='length')
         awall = Eu(Cc.assume_units(self.ca_awall_edit.text(), '"'), u_type='length')
         bwall = Eu(Cc.assume_units(self.ca_bwall_edit.text(), '"'), u_type='length')
@@ -590,6 +656,11 @@ class Form(QObject):
         return results
 
     def st_results_message(self, results):
+        """
+        This method displays all the results to the st_text_browser object.
+        :param results: dict
+        :return:
+        """
         roof_total = results['roof area']
         self.st_results.append('The pitch is: {}/12.'.format(Cc.pitch_estimate(12 * math.tan(results['pitch']))))
         self.st_results.append('The peak height is {}.'.format(results['peak']))
@@ -634,6 +705,11 @@ class Form(QObject):
                                        'for the C wall.'.format(results['fascia sides'], results['fascia sides']))
 
     def ca_results_message(self, results):
+        """
+        This method displays all the results to the ca_text_browser object.
+        :param results: dict
+        :return:
+        """
         roof_total = (int(results['a roof area'] + results['c roof area']))
         self.ca_results.append('The A side pitch is: {}/12.'
                                .format(Cc.pitch_estimate(12 * math.tan(results['a pitch']))))
@@ -716,85 +792,219 @@ class Form(QObject):
                 self.ca_results.append('There is 1 pieces of Fascia for the C side B Wall at {} in.'
                                        .format(results['fascia c side']))
 
+    def input_errors(self, box_name):
+        """
+        This method outputs a error message box. The input is the name of the edit box tied to the message.
+        :param box_name: str
+        :return: class
+        """
+        return QMessageBox.about(self.window, 'Input Error!', 'Missing input in {} box!'.format(box_name))
+
+    def st_common_errors(self):
+        """
+        This method is displays error messages for the four common input boxes: Overhang, A Wall, B Wall, and C Wall.
+        :return:
+        """
+        if self.st_overhang_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in overhang box!!')
+        if self.st_awall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in A Wall box!!')
+        if self.st_bwall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in B Wall box!!')
+        if self.st_cwall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in C Wall box!!')
+
+    def ca_common_errors(self):
+        """
+        This method is displays error messages for the four common input boxes: Overhang, A Wall, B Wall, and C Wall.
+        :return:
+        """
+        if self.ca_overhang_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in overhang box!!')
+        if self.ca_awall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in A Wall box!!')
+        if self.ca_bwall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in B Wall box!!')
+        if self.ca_cwall_edit.text() == '':
+            QMessageBox.about(self.window, 'Input Error!', 'Missing input in C Wall box!!')
+
     def st_calcbutton(self):
+        """
+        This method checks for missing input upon pressing the "Calculate" button. It then calls st_scenario_calc to
+        calculate the quatities based on scenario selected.
+        :return: dict
+        """
         self.st_results.clear()
+        self.st_common_errors()
         self.st_results.setText('Now listing results.')
         if self.st_scenario1_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given B wall height and pitch...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_pitch_edit.text() == '':
+                self.input_errors('Pitch')
+            elif self.st_bwallheight_edit.text() == '':
+                self.input_errors('B Wall Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given B wall height and pitch...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario2_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given wall height and peak height...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            elif self.st_bwallheight_edit.text() == '':
+                self.input_errors('B Wall Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given wall height and peak height...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario3_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given max height and pitch...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_pitch_edit.text() == '':
+                self.input_errors('pitch')
+            elif self.st_max_edit.text() == '':
+                self.input_errors('Max Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given max height and pitch...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario4_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given soffit heights and peak height...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_soffit_edit.text() == '':
+                self.input_errors('Soffit Height')
+            elif self.st_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given soffit heights and peak height...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario5_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given soffit heights and pitch...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_pitch_edit.text() == '':
+                self.input_errors('pitch')
+            elif self.st_soffit_edit.text() == '':
+                self.input_errors('Soffit Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given soffit heights and pitch...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario6_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given drip edge and peak height...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_drip_edit.text() == '':
+                self.input_errors('Drip Edge Height')
+            elif self.st_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given drip edge and peak height...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         elif self.st_scenario7_radio.isChecked():
-            self.st_results.append('*===================*')
-            self.st_results.append('Given drip edge and pitch...')
-            results = self.st_scenario_calc
-            self.st_results_message(results)
+            if self.st_pitch_edit.text() == '':
+                self.input_errors('pitch')
+            elif self.st_drip_edit.text() == '':
+                self.input_errors('Drip Edge Height')
+            else:
+                self.st_results.append('*===================*')
+                self.st_results.append('Given drip edge and pitch...')
+                results = self.st_scenario_calc
+                self.st_results_message(results)
         else:
             QMessageBox.about(self.window, 'Select a Scenario!', 'No scenarios selected!')
 
     def ca_calcbutton(self):
+        """
+        This method checks for missing input upon pressing the "Calculate" button. It then calls ca_scenario_calc to
+        calculate the quatities based on scenario selected.
+        :return: dict
+        """
         self.ca_results.clear()
+        self.ca_common_errors()
         self.ca_results.setText('Now listing results.')
         if self.ca_scenario1_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given wall height and pitch...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_a_pitch_edit.text() == '':
+                self.input_errors('A Side Pitch')
+            elif self.ca_c_pitch_edit.text() == '':
+                self.input_errors('C Side Pitch')
+            elif self.ca_awallheight_edit.text() == '':
+                self.input_errors('A Wall Height')
+            elif self.ca_cwallheight_edit.text() == '':
+                self.input_errors('C Wall Height')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given wall height and pitch...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario2_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given wall height and peak height...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            elif self.ca_awallheight_edit.text() == '':
+                self.input_errors('A Wall Height')
+            elif self.ca_cwallheight_edit.text() == '':
+                self.input_errors('C Wall Height')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given wall height and peak height...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario3_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given max height and pitch...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_a_pitch_edit.text() == '':
+                self.input_errors('A Side Pitch')
+            elif self.ca_c_pitch_edit.text() == '':
+                self.input_errors('C Side Pitch')
+            elif self.ca_max_edit.text() == '':
+                self.input_errors('Max Height')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given max height and pitch...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario4_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given soffit heights and peak height...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            elif self.ca_a_soffit_edit.text() == '':
+                self.input_errors('Soffit Height A Wall')
+            elif self.ca_c_soffit_edit.text() == '':
+                self.input_errors('Soffit Height C Wall')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given soffit heights and peak height...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario5_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given soffit heights and pitch...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_a_pitch_edit.text() == '':
+                self.input_errors('A Side Pitch')
+            elif self.ca_c_pitch_edit.text() == '':
+                self.input_errors('C Side Pitch')
+            elif self.ca_a_soffit_edit.text() == '':
+                self.input_errors('Soffit Height A Wall')
+            elif self.ca_c_soffit_edit.text() == '':
+                self.input_errors('Soffit Height C Wall')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given soffit heights and pitch...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario6_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given drip edge and peak height...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_peak_edit.text() == '':
+                self.input_errors('Peak Height')
+            elif self.ca_drip_edit.text() == '':
+                self.input_errors('Drip Edge Height')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given drip edge and peak height...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         elif self.ca_scenario7_radio.isChecked():
-            self.ca_results.append('*===================*')
-            self.ca_results.append('Given drip edge and pitch...')
-            results = self.ca_scenario_calc
-            self.ca_results_message(results)
+            if self.ca_a_pitch_edit.text() == '':
+                self.input_errors('A Side Pitch')
+            elif self.ca_c_pitch_edit.text() == '':
+                self.input_errors('C Side Pitch')
+            elif self.ca_drip_edit.text() == '':
+                self.input_errors('Drip Edge Height')
+            else:
+                self.ca_results.append('*===================*')
+                self.ca_results.append('Given drip edge and pitch...')
+                results = self.ca_scenario_calc
+                self.ca_results_message(results)
         else:
             QMessageBox.about(self.window, 'Select a Scenario!', 'No scenarios selected!')
 
