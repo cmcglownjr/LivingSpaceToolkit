@@ -403,6 +403,7 @@ class Form(QObject):
         armstrong = common.armstrong_panels()
         overhang_error = common.roof_panels()[3]
         wall_height_ = Eu(Cc.assume_units(str(Cc.sixteenth(common.wall_height)), '"'), u_type='length')
+        split = common.roof_panels()[4]
         common_results = {'pitch': common.pitch, 'peak': peak.simplified('in'), 'panel length':
             panel_length.simplified('in'), 'max panel length': max_panel_length,
                           'soffit height': soffit_height.simplified('in'), 'drip edge': drip_edge.simplified('in'),
@@ -412,7 +413,8 @@ class Form(QObject):
                           'roof panels': roof_panels, 'max height': max_height.simplified('in'),
                           'overhang': overhang_.simplified('in'), 'side overhang': side_overhang.simplified('in'),
                           'armstrong': armstrong, 'wallheight': wall_height_.simplified('in'),
-                          'sidewall': wall_height_.simplified('in'), 'overhang error': overhang_error}
+                          'sidewall': wall_height_.simplified('in'), 'overhang error': overhang_error,
+                          'split panels': split}
         return common_results
 
     @property
@@ -467,7 +469,13 @@ class Form(QObject):
             drip_edge = Eu(Cc.assume_units(self.st_drip_edit.text(), '"'), u_type='length')
             common = studio.drip_edge_peak_height(drip_edge.base, peak.base)
         elif self.st_scenario7_radio.isChecked():
-            pass
+            if self.st_ratio_radio.isChecked():
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), '"'), u_type='length')
+            elif self.st_angle_radio.isChecked():
+                pitch_input = Eu(Cc.assume_units(self.st_pitch_edit.text(), 'deg'), u_type='angle')
+            pitch = Cc.pitch_input(pitch_input)
+            drip_edge = Eu(Cc.assume_units(self.st_drip_edit.text(), '"'), u_type='length')
+            common = studio.drip_edge_pitch(drip_edge.base, pitch)
         return self.common_results(common)
 
     @property
@@ -541,9 +549,22 @@ class Form(QObject):
             common = catherdral.soffit_height_pitch(a_pitch=a_pitch, c_pitch=c_pitch, a_soffit=a_soffit.base,
                                                     c_soffit=c_soffit.base)
         elif self.ca_scenario6_radio.isChecked():
-            pass
+            peak = Eu(Cc.assume_units(self.ca_peak_edit.text(), '"'), u_type='length')
+            drip_edge = Eu(Cc.assume_units(self.ca_drip_edit.text(), '"'), u_type='length')
+            common = catherdral.drip_edge_peak_height(drip_edge=drip_edge.base, peak=peak.base)
         elif self.ca_scenario7_radio.isChecked():
-            pass
+            drip_edge = Eu(Cc.assume_units(self.ca_drip_edit.text(), '"'), u_type='length')
+            if self.ca_a_ratio_radio.isChecked():
+                a_pitch_input = Eu(Cc.assume_units(self.ca_a_pitch_edit.text(), '"'), u_type='length')
+            elif self.ca_a_angle_radio.isChecked():
+                a_pitch_input = Eu(Cc.assume_units(self.ca_a_pitch_edit.text(), 'deg'), u_type='angle')
+            if self.ca_c_ratio_radio.isChecked():
+                c_pitch_input = Eu(Cc.assume_units(self.ca_c_pitch_edit.text(), '"'), u_type='length')
+            elif self.ca_a_angle_radio.isChecked():
+                c_pitch_input = Eu(Cc.assume_units(self.ca_c_pitch_edit.text(), 'deg'), u_type='angle')
+            a_pitch = Cc.pitch_input(a_pitch_input)
+            c_pitch = Cc.pitch_input(c_pitch_input)
+            common = catherdral.drip_edge_pitch(drip_edge=drip_edge.base, a_pitch=a_pitch, c_pitch=c_pitch)
         a_results = self.common_results(common[0])
         c_results = self.common_results(common[1])
         results = {'a pitch': a_results['pitch'], 'c pitch': c_results['pitch'], 'peak': a_results['peak'],
@@ -564,7 +585,8 @@ class Form(QObject):
                        c_results['side overhang'], 'a armstrong': a_results['armstrong'], 'c armstrong':
                        c_results['armstrong'], 'awallheight': a_results['wallheight'], 'cwallheight':
                        c_results['wallheight'], 'sidewall': a_results['sidewall'], 'a overhang error':
-                       a_results['overhang error'], 'c overhang error': c_results['overhang error']}
+                       a_results['overhang error'], 'c overhang error': c_results['overhang error'], 'a split panels':
+                   a_results['split panels'], 'c split panels': c_results['split panels']}
         return results
 
     def st_results_message(self, results):
@@ -580,7 +602,7 @@ class Form(QObject):
         self.st_results.append('The length of each panel should be {}.'.format(results['panel length']))
         if results['max panel length'] is True:
             self.st_results.append('These panels were divided in half because they were more than 24ft.')
-        self.st_results.append('The roof sq. ft. is {}ft^2.'.format(roof_total))
+        self.st_results.append('The roof sq. ft. is {} ft^2.'.format(roof_total))
         self.st_results.append('You will need {} boxes of Armstrong Ceiling Panels.'.format(results['armstrong']))
         self.st_results.append('The overhang on B Wall is {}.'.format(results['overhang']))
         self.st_results.append('The overhang on A and C Walls are {}.'.format(results['side overhang']))
@@ -592,35 +614,35 @@ class Form(QObject):
         # self.st_results.append('The overhang on the sides are too long and need to be cut!')
         if results['max hang rail length'] is True:
             self.st_results.append('There are 2 pairs of hang rails at {}. each.'.format(results['hang rail']))
-            self.st_results.append('They were divided in half because the original length was longer than 216".')
+            self.st_results.append('They were divided in half because the original length was longer than 216 in.')
         else:
             self.st_results.append('There is 1 pair of hang rails at {}. each.'.format(results['hang rail']))
         if self.st_fascia.isChecked():
             if results['max fascia length'][0] is True:
                 self.st_results.append('There are 2 pieces of Fascia at {}. each for the B wall'
                                        .format(results['fascia b wall']))
-                self.st_results.append('Their original length was more than 216" so they were cut in half.')
+                self.st_results.append('Their original length was more than 216 in. so they were cut in half.')
             else:
                 self.st_results.append('There is 1 piece of Fascia at {}. for the B wall.'
                                        .format(results['fascia wall']))
             if results['max fascia length'][1] is True:
                 self.st_results.append('There are 2 pieces of Fascia for the A and C walls. Both are at {}. for each'
                                        ' wall'.format(results['fascia sides']))
-                self.st_results.append('Their original length was more than 216".')
+                self.st_results.append('Their original length was more than 216 in.')
             else:
                 self.st_results.append('There is one piece of Fascia at {}. for the A Wall and one piece at {} in. '
                                        'for the C wall.'.format(results['fascia sides'], results['fascia sides']))
 
     def ca_results_message(self, results):
-        roof_total = (results['a roof area'] + results['c roof area'])
+        roof_total = (int(results['a roof area'] + results['c roof area']))
         self.ca_results.append('The A side pitch is: {}/12.'
                                .format(Cc.pitch_estimate(12 * math.tan(results['a pitch']))))
         self.ca_results.append('The C side pitch is: {}/12.'
                                .format(Cc.pitch_estimate(12 * math.tan(results['c pitch']))))
         self.ca_results.append('The peak height is {}.'.format(results['peak']))
         self.ca_results.append('The A Wall height is {}.'.format(results['awallheight']))
-        self.ca_results.append('The C Wall height is {}.'.format(results['cwallheight']))
         self.ca_results.append('The B Wall height is {}.'.format(results['sidewall']))
+        self.ca_results.append('The C Wall height is {}.'.format(results['cwallheight']))
         self.ca_results.append('The A side soffit height is {}.'.format(results['a soffit height']))
         self.ca_results.append('The C side soffit height is {}.'.format(results['c soffit height']))
         self.ca_results.append('The A side drip edge is at {}.'.format(results['a drip edge']))
@@ -634,9 +656,11 @@ class Form(QObject):
         self.ca_results.append('The length of each C side panel should be {}.'.format(results['c panel length']))
         if results['c max panel length'] is True:
             self.ca_results.append('The C side panels were divided in half because they were more than 24ft.')
-        self.ca_results.append('The total number of roof panels is {}.'.format(results['a roof panels'] +
-                                                                               results['c roof panels']))
-        self.ca_results.append('The Total roof sq. ft. is {}ft^2.'.format(roof_total))
+        self.ca_results.append('The total number of roof panels is {}.'.format(int(results['a roof panels'] +
+                                                                               results['c roof panels'])))
+        if results['a split panels'] is True or results['c split panels'] is True:
+            self.ca_results.append('One of the panels should be split in half on site!!!')
+        self.ca_results.append('The Total roof sq. ft. is {} ft^2.'.format(roof_total))
         self.ca_results.append('You will need {} boxes of Armstrong Ceiling Panels.'
                                .format(results['a armstrong'] + (results['c armstrong'])))
         self.ca_results.append('The overhang on A Wall is {}.'.format(results['a overhang']))
@@ -666,28 +690,28 @@ class Form(QObject):
             if results['max fascia length a'][0] is True:
                 self.ca_results.append('There are 2 pieces of Fascia at {} in. each for the A wall'
                                        .format(results['fascia a wall']))
-                self.ca_results.append('Their original length was more than 216" so they were cut in half.')
+                self.ca_results.append('Their original length was more than 216 in. so they were cut in half.')
             else:
                 self.ca_results.append('There is 1 pieces of Fascia at {} in. for the A wall'
                                        .format(results['fascia a wall']))
             if results['max fascia length c'][0] is True:
                 self.ca_results.append('There are 2 pieces of Fascia at {} in. each for the C wall'
                                        .format(results['fascia c wall']))
-                self.ca_results.append('Their original length was more than 216" so they were cut in half.')
+                self.ca_results.append('Their original length was more than 216 in. so they were cut in half.')
             else:
                 self.ca_results.append('There is 1 pieces of Fascia at {} in. for the C wall'
                                        .format(results['fascia c wall']))
             if results['max fascia length a'][1] is True:
                 self.ca_results.append('There are 2 pieces of Fascia for the A side B Wall. Both are at {} in. each'
                                        .format(results['fascia a side']))
-                self.ca_results.append('Their original length was more than 216".')
+                self.ca_results.append('Their original length was more than 216 in.')
             else:
                 self.ca_results.append('There is 1 pieces of Fascia for the A side B Wall at {} in.'
                                        .format(results['fascia a side']))
             if results['max fascia length c'][1] is True:
                 self.ca_results.append('There are 2 pieces of Fascia for the C side B Wall. Both are at {} in. each'
                                        .format(results['fascia c side']))
-                self.ca_results.append('Their original length was more than 216".')
+                self.ca_results.append('Their original length was more than 216 in.')
             else:
                 self.ca_results.append('There is 1 pieces of Fascia for the C side B Wall at {} in.'
                                        .format(results['fascia c side']))
@@ -725,6 +749,11 @@ class Form(QObject):
             self.st_results.append('Given drip edge and peak height...')
             results = self.st_scenario_calc
             self.st_results_message(results)
+        elif self.st_scenario7_radio.isChecked():
+            self.st_results.append('*===================*')
+            self.st_results.append('Given drip edge and pitch...')
+            results = self.st_scenario_calc
+            self.st_results_message(results)
         else:
             QMessageBox.about(self.window, 'Select a Scenario!', 'No scenarios selected!')
 
@@ -759,6 +788,11 @@ class Form(QObject):
         elif self.ca_scenario6_radio.isChecked():
             self.ca_results.append('*===================*')
             self.ca_results.append('Given drip edge and peak height...')
+            results = self.ca_scenario_calc
+            self.ca_results_message(results)
+        elif self.ca_scenario7_radio.isChecked():
+            self.ca_results.append('*===================*')
+            self.ca_results.append('Given drip edge and pitch...')
             results = self.ca_scenario_calc
             self.ca_results_message(results)
         else:

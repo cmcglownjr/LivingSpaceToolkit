@@ -111,13 +111,13 @@ class CathedralCalcs:
         common = [None, None]
         peak = (self.bwall * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
         # Fenevision sets the peak height for cathedrals at the base of the post that sits in the center.
-        f_peak = max_h - max(Cc.angled(a_pitch, self.panel_thickness), Cc.angled(c_pitch, self.panel_thickness)) -\
+        f_peak = max_h - max(Cc.angled(a_pitch, self.panel_thickness), Cc.angled(c_pitch, self.panel_thickness)) - \
                  (self.post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
         a_side_wall = peak / math.tan(a_pitch)
         c_side_wall = peak / math.tan(c_pitch)
         # a_wall_height = f_peak - peak
-        a_wall_height = max_h - max(Cc.angled(a_pitch, self.panel_thickness), Cc.angled(c_pitch, self.panel_thickness))\
-            - (self.bwall*math.sin(a_pitch)*math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
+        a_wall_height = max_h - max(Cc.angled(a_pitch, self.panel_thickness), Cc.angled(c_pitch, self.panel_thickness)) \
+                        - (self.bwall * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
         c_wall_height = a_wall_height
         a_soffit = a_wall_height - self.overhang * math.tan(a_pitch)
         c_soffit = c_wall_height - self.overhang * math.tan(c_pitch)
@@ -146,11 +146,11 @@ class CathedralCalcs:
         soffit = max(a_soffit, c_soffit)
         a_side_wall = self.bwall / 2
         c_side_wall = self.bwall / 2
-        a_pitch = math.atan((peak - soffit) / (a_side_wall + self.overhang - self.post_width/2))
-        c_pitch = math.atan((peak - soffit) / (c_side_wall + self.overhang - self.post_width/2))
+        a_pitch = math.atan((peak - soffit) / (a_side_wall + self.overhang - self.post_width / 2))
+        c_pitch = math.atan((peak - soffit) / (c_side_wall + self.overhang - self.post_width / 2))
         a_wall_height = soffit + self.overhang * math.tan(a_pitch)
         c_wall_height = soffit + self.overhang * math.tan(c_pitch)
-        h = (self.post_width * math.sin(a_pitch)*math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
+        h = (self.post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
         a_max_h = peak + Cc.angled(a_pitch, self.panel_thickness) + h
         c_max_h = peak + Cc.angled(c_pitch, self.panel_thickness) + h
         max_h = max(a_max_h, c_max_h)
@@ -198,8 +198,87 @@ class CathedralCalcs:
                                    wall_height=c_wall_height)
         return common
 
-    def drip_edge_peak_height(self):
-        pass
+    def drip_edge_peak_height(self, drip_edge, peak):
+        """
+        This method is designed for Scenario 6: Drip Edge and Peak Height. Drip edge and peak height must be in inches.
+        It cycles through a number of pitches and passes them into CommonCalcs.py to determine the estimated drip edge.
+        Once it gets an estimated drip edge close to the given one it uses that pitch for all calculations.
+        :param drip_edge: float
+        :param peak: float
+        :return: class <CommonCalcs.CommonCalcs>
+        """
+        common = [None, None]
+        tol = 0.0001
+        diff = 100
+        incr = 0.1
+        pitch = 0.0
+        while incr > tol:
+            old_diff = diff
+            old_pitch = pitch
+            pitch += incr
+            drip_est = Cc.estimate_drip_from_peak(peak=peak, estimate_pitch=pitch, wall_length=self.wall_length,
+                                                  side_wall_length=self.bwall / 2 - self.post_width / 2,
+                                                  overhang=self.overhang,
+                                                  thickness=self.panel_thickness, tab=self.tabwidget,
+                                                  endcut=self.endcut)
+            diff = abs(drip_edge - drip_est)
+            if pitch > 1.6:
+                break
+            if old_diff - diff < 0:
+                pitch = old_pitch - incr
+                incr /= 10
+        # Now take the estimated pitch and set it as a ratio then convert back to radians. Its more accurate for some
+        # reason
+        pitch_est = Cc.pitch_estimate(12 * math.tan(pitch))
+        pitch = math.atan2(pitch_est, 12.0)
+        a_wall_height = peak - (self.bwall / 2 - self.post_width / 2) * math.tan(pitch)
+        c_wall_height = a_wall_height
+        a_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(pitch)
+        c_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(pitch)
+        soffit = a_wall_height - self.overhang * math.tan(pitch)
 
-    def drip_edge_pitch(self):
-        pass
+        max_h = peak + Cc.angled(pitch, self.panel_thickness) + (self.post_width * math.sin(pitch) *
+                                                                 math.sin(pitch)) / math.sin(math.pi - pitch - pitch)
+        common[0] = Cc.CommonCalcs(wall_length=self.wall_length, side_wall_length=a_side_wall, pitch=pitch,
+                                   soffit=soffit, overhang=self.overhang, tabwidget=self.tabwidget,
+                                   thickness=self.panel_thickness, endcut=self.endcut, peak=peak, max_h=max_h,
+                                   wall_height=a_wall_height)
+        common[1] = Cc.CommonCalcs(wall_length=self.wall_length, side_wall_length=c_side_wall, pitch=pitch,
+                                   soffit=soffit, overhang=self.overhang, tabwidget=self.tabwidget,
+                                   thickness=self.panel_thickness, endcut=self.endcut, peak=peak, max_h=max_h,
+                                   wall_height=c_wall_height)
+        return common
+
+    def drip_edge_pitch(self, drip_edge, a_pitch, c_pitch):
+        """
+        This method is designed for Scenario 7: Drip Edge and Pitch. Drip Edge must be in inches while pitch must be in
+        radians. It returns the results where the length is in inches and pitch in radians.
+        :param drip_edge: float
+        :param a_pitch: float
+        :param c_pitch: float
+        :return: class <CommonCalcs.CommonCalcs>
+        """
+        common = [None, None]
+        a_soffit = drip_edge - Cc.angled(a_pitch, self.panel_thickness)
+        c_soffit = drip_edge - Cc.angled(c_pitch, self.panel_thickness)
+        soffit = max(a_soffit, c_soffit)
+        a_wall_height = soffit + self.overhang * math.tan(a_pitch)
+        c_wall_height = soffit + self.overhang * math.tan(c_pitch)
+        peak = (self.bwall * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch) + \
+               max(a_wall_height, c_wall_height)
+        a_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(a_pitch)
+        c_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(c_pitch)
+        # Fenevision sets the peak height for cathedrals at the base of the post that sits in the center.
+        f_peak = peak - (self.post_width * math.sin(a_pitch) * math.sin(c_pitch)) / \
+                 math.sin(math.pi - a_pitch - c_pitch)
+        max_h = f_peak + max(Cc.angled(a_pitch, self.panel_thickness), Cc.angled(c_pitch, self.panel_thickness)) + \
+                (self.post_width * math.sin(a_pitch) * math.sin(c_pitch)) / math.sin(math.pi - a_pitch - c_pitch)
+        common[0] = Cc.CommonCalcs(wall_length=self.wall_length, side_wall_length=a_side_wall, pitch=a_pitch,
+                                   soffit=soffit, overhang=self.overhang, tabwidget=self.tabwidget,
+                                   thickness=self.panel_thickness, endcut=self.endcut, peak=f_peak, max_h=max_h,
+                                   wall_height=a_wall_height)
+        common[1] = Cc.CommonCalcs(wall_length=self.wall_length, side_wall_length=c_side_wall, pitch=c_pitch,
+                                   soffit=soffit, overhang=self.overhang, tabwidget=self.tabwidget,
+                                   thickness=self.panel_thickness, endcut=self.endcut, peak=f_peak, max_h=max_h,
+                                   wall_height=c_wall_height)
+        return common

@@ -80,11 +80,16 @@ class CommonCalcs:
         :return: [float, int, float]
         """
         minmax_overhang = [False, False]
+        split = False
         if self.tabWidget == 0:  # Studio Tab
             roof_width = self.wall_length + self.side_overhang * 2
         elif self.tabWidget == 1:  # Cathedral Tab
             roof_width = self.wall_length + self.side_overhang
-        roof_panels = math.ceil(roof_width / 32)
+        if self.tabWidget == 1 and ((roof_width/32) <= round((roof_width/32)*2)/2):
+            roof_panels = round((roof_width/32)*2)/2
+            split = True
+        else:
+            roof_panels = math.ceil(roof_width / 32)
         if self.tabWidget == 0:  # Studio Tab
             if (roof_panels * 32 - self.wall_length) / 2 < self.side_overhang:
                 # Overhang too short
@@ -109,10 +114,10 @@ class CommonCalcs:
                 side_overhang = self.side_overhang
         panel_length, max_panel_length = self.panel_length()
         if max_panel_length is True:
-            roof_area = panel_length * 2 * roof_panels * 32
+            roof_area = math.ceil(panel_length * 2 * roof_panels * 32)
         else:
-            roof_area = panel_length * roof_panels * 32
-        return [roof_area, roof_panels, side_overhang, minmax_overhang]
+            roof_area = math.ceil(panel_length * roof_panels * 32)
+        return [roof_area, roof_panels, side_overhang, minmax_overhang, split]
 
     def hang_rail(self):
         """
@@ -220,7 +225,21 @@ def sixteenth(number):
 
 
 def estimate_drip_from_peak(peak, estimate_pitch, wall_length, side_wall_length, overhang, thickness, tab, endcut):
-    wall_height = peak - wall_length * math.tan(estimate_pitch)
+    """
+    This method is used to help estimate the pitch. Since I forgot how to do numerical methods this will have to do. All
+    lengths must be in inches, the estimated pitch in radians, and this assumes you are cycling through a list of
+    pitches.
+    :param peak: float
+    :param estimate_pitch: float
+    :param wall_length: float
+    :param side_wall_length: float
+    :param overhang: float
+    :param thickness: float
+    :param tab: int
+    :param endcut: str
+    :return: float <CommonCalcs.drip_edge>
+    """
+    wall_height = peak - side_wall_length * math.tan(estimate_pitch)
     soffit = wall_height - overhang * math.tan(estimate_pitch)
     max_h = peak + angled(estimate_pitch, thickness)
     estimate_drip = CommonCalcs(wall_length, side_wall_length, estimate_pitch, soffit, overhang, tab, thickness, endcut,

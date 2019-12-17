@@ -113,6 +113,14 @@ class StudioCalcs:
         return common
 
     def drip_edge_peak_height(self, drip_edge, peak):
+        """
+        This method is designed for Scenario 6: Drip Edge and Peak Height. Drip edge and peak height must be in inches.
+        It cycles through a number of pitches and passes them into CommonCalcs.py to determine the estimated drip edge.
+        Once it gets an estimated drip edge close to the given one it uses that pitch for all calculations.
+        :param drip_edge: float
+        :param peak: float
+        :return: class <CommonCalcs.CommonCalcs>
+        """
         tol = 0.001
         diff = 1000
         incr = 0.1
@@ -126,19 +134,32 @@ class StudioCalcs:
                                                   thickness=self.panel_thickness, tab=self.tabwidget,
                                                   endcut=self.endcut)
             diff = abs(drip_edge - drip_est)
-            if pitch > 12:
+            if pitch > 1.6:
                 break
-            if abs(diff - old_diff) > 0.01:
+            if abs(diff - old_diff) > 0.1:
                 pitch = old_pitch
                 incr /= 10
         b_wall_height = peak - self.side_wall * math.tan(pitch)
         soffit = b_wall_height - self.overhang * math.tan(pitch)
-        # common = self.soffit_height_peak_height(peak, soffit)
         max_h = peak + Cc.angled(pitch, self.panel_thickness)
         common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
                                 overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
                                 endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
         return common
 
-    def drip_edge_pitch(self):
-        pass
+    def drip_edge_pitch(self, drip_edge, pitch):
+        """
+        This method is designed for Scenario 7: Drip Edge and Pitch. Drip Edge must be in inches while pitch must be in
+        radians. It returns the results where the length is in inches and pitch in radians.
+        :param drip_edge: float
+        :param pitch: float
+        :return: class <CommonCalcs.CommonCalcs>
+        """
+        soffit = drip_edge - Cc.angled(pitch, self.panel_thickness)
+        b_wall_height = soffit + self.overhang * math.tan(pitch)
+        peak = b_wall_height + self.side_wall * math.tan(pitch)
+        max_h = peak + Cc.angled(pitch, self.panel_thickness)
+        common = Cc.CommonCalcs(wall_length=self.bwall, side_wall_length=self.side_wall, pitch=pitch, soffit=soffit,
+                                overhang=self.overhang, tabwidget=self.tabwidget, thickness=self.panel_thickness,
+                                endcut=self.endcut, peak=peak, max_h=max_h, wall_height=b_wall_height)
+        return common
