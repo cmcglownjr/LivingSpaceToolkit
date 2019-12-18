@@ -1,0 +1,4 @@
+docutils==0.14
+PySide2==5.13.0
+python-dotenv==0.10.3
+shiboken2==5.13.0
