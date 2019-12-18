@@ -446,7 +446,7 @@ class Form(QObject):
         max_panel_length = common.panel_length()[1]
         soffit_height = Eu(Cc.assume_units(str(Cc.sixteenth(common.soffit)), '"'), u_type='length')
         drip_edge = Eu(Cc.assume_units(str(Cc.sixteenth(common.drip_edge())), '"'), u_type='length')
-        roof_area = math.ceil(common.roof_panels()[0]) / 144
+        roof_area = math.ceil(common.roof_panels()[0] / 144)
         hang_rail = Eu(Cc.assume_units(str(common.hang_rail()[0]), '"'), u_type='length')
         max_hang_rail_length = common.hang_rail()[1]
         fascia_b_wall = Eu(Cc.assume_units(str(common.fascia()[0]), '"'), u_type='length')
@@ -691,7 +691,7 @@ class Form(QObject):
         if self.st_fascia.isChecked():
             if results['max fascia length'][0] is True:
                 self.st_results.append('There are 2 pieces of Fascia at {}. each for the B wall'
-                                       .format(results['fascia b wall']))
+                                       .format(results['fascia wall']))
                 self.st_results.append('Their original length was more than 216 in. so they were cut in half.')
             else:
                 self.st_results.append('There is 1 piece of Fascia at {}. for the B wall.'
