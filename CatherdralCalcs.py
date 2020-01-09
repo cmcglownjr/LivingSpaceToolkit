@@ -208,33 +208,31 @@ class CathedralCalcs:
         :return: class <CommonCalcs.CommonCalcs>
         """
         common = [None, None]
-        tol = 0.0001
+        tol = 0.01
         diff = 100
         incr = 0.1
-        pitch = 0.0
-        while incr > tol:
-            old_diff = diff
-            old_pitch = pitch
-            pitch += incr
+        ratio_pitch = 0.0
+        while diff > tol:
+            old_ratio_pitch = ratio_pitch
+            ratio_pitch += incr
+            pitch = math.atan2(ratio_pitch, 12)
             drip_est = Cc.estimate_drip_from_peak(peak=peak, estimate_pitch=pitch, wall_length=self.wall_length,
                                                   side_wall_length=self.bwall / 2 - self.post_width / 2,
                                                   overhang=self.overhang,
                                                   thickness=self.panel_thickness, tab=self.tabwidget,
                                                   endcut=self.endcut)
             diff = abs(drip_edge - drip_est)
-            if pitch > 1.6:
+            if ratio_pitch > 12:
                 break
-            if old_diff - diff < 0:
-                pitch = old_pitch - incr
-                incr /= 10
+            if drip_est < drip_edge:
+                ratio_pitch = old_ratio_pitch
+                incr /= 2
         # Now take the estimated pitch and set it as a ratio then convert back to radians. Its more accurate for some
         # reason
-        pitch_est = Cc.pitch_estimate(12 * math.tan(pitch))
-        pitch = math.atan2(pitch_est, 12.0)
         a_wall_height = peak - (self.bwall / 2 - self.post_width / 2) * math.tan(pitch)
         c_wall_height = a_wall_height
-        a_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(pitch)
-        c_side_wall = (peak - max(a_wall_height, c_wall_height)) / math.tan(pitch)
+        a_side_wall = self.bwall / 2
+        c_side_wall = a_side_wall
         soffit = a_wall_height - self.overhang * math.tan(pitch)
 
         max_h = peak + Cc.angled(pitch, self.panel_thickness) + (self.post_width * math.sin(pitch) *

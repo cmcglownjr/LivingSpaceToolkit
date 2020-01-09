@@ -121,24 +121,24 @@ class StudioCalcs:
         :param peak: float
         :return: class <CommonCalcs.CommonCalcs>
         """
-        tol = 0.001
-        diff = 1000
+        tol = 0.01
+        diff = 100
         incr = 0.1
-        pitch = 0.0
+        ratio_pitch = 0.0
         while diff > tol:
-            old_diff = diff
-            old_pitch = pitch
-            pitch += incr
+            old_ratio_pitch = ratio_pitch
+            ratio_pitch += incr
+            pitch = math.atan2(ratio_pitch, 12)
             drip_est = Cc.estimate_drip_from_peak(peak=peak, estimate_pitch=pitch, wall_length=self.bwall,
                                                   side_wall_length=self.side_wall, overhang=self.overhang,
                                                   thickness=self.panel_thickness, tab=self.tabwidget,
                                                   endcut=self.endcut)
             diff = abs(drip_edge - drip_est)
-            if pitch > 1.6:
+            if ratio_pitch > 12:
                 break
-            if abs(diff - old_diff) > 0.1:
-                pitch = old_pitch
-                incr /= 10
+            if drip_est < drip_edge:
+                ratio_pitch = old_ratio_pitch
+                incr /= 2
         b_wall_height = peak - self.side_wall * math.tan(pitch)
         soffit = b_wall_height - self.overhang * math.tan(pitch)
         max_h = peak + Cc.angled(pitch, self.panel_thickness)
