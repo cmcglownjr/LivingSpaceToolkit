@@ -91,8 +91,8 @@ class CommonCalcs:
             roof_width = self.wall_length + self.side_overhang * 2
         elif self.tabWidget == 1:  # Cathedral Tab
             roof_width = self.wall_length + self.side_overhang
-        if self.tabWidget == 1 and ((roof_width/32) <= round((roof_width/32)*2)/2):
-            roof_panels = round((roof_width/32)*2)/2
+        if self.tabWidget == 1 and ((roof_width/32) <= math.floor(roof_width/32) + .5):
+            roof_panels = math.floor(roof_width/32) + .5
             split = True
         else:
             roof_panels = math.ceil(roof_width / 32)
