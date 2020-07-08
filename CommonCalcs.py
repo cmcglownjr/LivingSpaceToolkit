@@ -72,7 +72,9 @@ class CommonCalcs:
         if p_length % 12 <= 1:  # This checks to see if the panel length is a maximum 1 inch past the nearest foot
             panel_tolerance = True
             # Returns panel length (in inches) rounded down to nearest foot and adds the 1 inch tolerance
-            panel_length = math.floor(p_length / 12) * 12 + 1
+            # CORRECTION: We will NOT add 1 inch. Just round down instead
+            # panel_length = math.floor(p_length / 12) * 12 + 1
+            panel_length = math.floor(p_length / 12) * 12
         else:
             panel_length = math.ceil(p_length / 12) * 12  # Returns panel length (in inches) rounded up to nearest foot
         if panel_length > 288:

@@ -673,9 +673,10 @@ class Form(QObject):
         self.st_results.append('The B Wall height is {}.'.format(results['wallheight']))
         self.st_results.append('This configuration will need {} roof panels.'.format(results['roof panels']))
         self.st_results.append('The length of each panel should be {}.'.format(results['panel length']))
-        if results['panel tolerance'] is True:
-            self.st_results.append("These panels are 1 in. beyond the nearest foot! They should be within the "
-                                   "manufacturer's tolerance.")
+        # CORRECTION 7/8/2020: Will remove this manufacturer's tolerance note
+        # if results['panel tolerance'] is True:
+        #     self.st_results.append("These panels are 1 in. beyond the nearest foot! They should be within the "
+        #                            "manufacturer's tolerance.")
         if results['max panel length'] is True:
             self.st_results.append('These panels were divided in half because they were more than 24ft.')
         self.st_results.append('The roof sq. ft. is {} ft^2.'.format(roof_total))
@@ -731,9 +732,11 @@ class Form(QObject):
         self.ca_results.append('The maximum height is {}.'.format(results['max height']))
         self.ca_results.append('This configuration will need {} A side roof panels.'.format(results['a roof panels']))
         self.ca_results.append('The length of each A side panel should be {}.'.format(results['a panel length']))
-        if results['a panel tolerance'] is True:
-            self.ca_results.append("The A side panels are 1 in. beyond the nearest foot! They should be within the "
-                                   "manufacturer's tolerance.")
+        # CORRECTION 7/8/2020: Will remove this manufacturer's tolerance note
+        # if results['a panel tolerance'] is True:
+
+            # self.ca_results.append("The A side panels are 1 in. beyond the nearest foot! They should be within the "
+            #                        "manufacturer's tolerance.")
         if results['a max panel length'] is True:
             self.ca_results.append('The A side panels were divided in half because they were more than 24ft.')
         self.ca_results.append('This configuration will need {} C side roof panels.'.format(results['c roof panels']))
