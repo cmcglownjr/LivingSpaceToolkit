@@ -68,8 +68,8 @@ def test_studio_calculate_sunroom(studio_setup):
     assert studio_setup[0].roof_panel_dict['Side Overhang'] == 12
     assert studio_setup[0].roof_panel_dict['Overhang Short Check'] is False
     assert studio_setup[0].roof_panel_dict['Overhang Long Check'] is False
-    assert studio_setup[0].hang_rail_dict['Hang Rail'] == 3264.0
-    assert studio_setup[0].hang_rail_dict['Hang Rail Check'] is True
+    assert studio_setup[0].hang_rail_dict['Hang Rail'] == 192.0
+    assert studio_setup[0].hang_rail_dict['Hang Rail Check'] is False
     assert studio_setup[0].fascia_dict['Wall Fascia'] == 204
     assert studio_setup[0].fascia_dict['Side Fascia'] == 210
     assert studio_setup[0].fascia_dict['Fascia Check'] == [False, False]

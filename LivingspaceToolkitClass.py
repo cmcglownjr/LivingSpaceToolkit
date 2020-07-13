@@ -226,7 +226,7 @@ class Studio(Sunroom):
 
     def _calculate_hang_rail(self, panel_dict):
         max_hang_rail_length = False
-        roof_panels = panel_dict['Panel Length']
+        roof_panels = panel_dict['Roof Panels']
         hang_rail = roof_panels * 32
         if hang_rail > 216:
             max_hang_rail_length = True
@@ -250,7 +250,7 @@ class Studio(Sunroom):
     def calculate_sunroom(self):
         self.panel_length_dict = self._calculate_panel_length(self.pitch, self.pitched_wall)
         self.roof_panel_dict = self._calculate_roof_panels(self.soffit_wall, self.panel_length_dict)
-        self.hang_rail_dict = self._calculate_hang_rail(self.panel_length_dict)
+        self.hang_rail_dict = self._calculate_hang_rail(self.roof_panel_dict)
         self.fascia_dict = self._calculate_fascia(self.roof_panel_dict, self.panel_length_dict)
         self.armstrong_panels = calculate_armstrong_panels(self.pitch, self.pitched_wall, self.soffit_wall)
 

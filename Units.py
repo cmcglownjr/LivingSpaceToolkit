@@ -4,13 +4,18 @@ import re
 import math
 from fractions import Fraction
 
+unit_type = ['angle', 'length']
+
 
 class EngineeringUnits:
     def __init__(self, measurement, u_type):
         self.measurement = measurement
-        self.u_type = u_type
+        if u_type not in unit_type:
+            raise LookupError("The unit type selected is not available.")
+        else:
+            self.u_type = u_type
         degrees = re.compile(r'(\d*\.?\d*)deg')
-        feet = re.compile(r'\'|ft|feet')
+        feet = re.compile(r'(\d*\s*)[\'|ft|feet]')
         inches = re.compile(r'\"|in')
         fract = re.compile(r'(\d+\/\d+)[\"|in|\'|ft|feet]')
         ft_or_in = re.compile(r'(\d*\.\d+|\d+)[\"|in|\'|ft|feet]')
@@ -91,4 +96,3 @@ class EngineeringUnits:
 
     def __str__(self):
         return str(round(self.base, 3))
-        # return self.simplified()
