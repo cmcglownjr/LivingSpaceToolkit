@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="Sunrooms">
+    <file>images/Livingspace_Sunrooms_logo.png</file>
+    <file>images/LivingSpace_Cathedral2.png</file>
+    <file>images/LivingSpace_FloorPlan2.png</file>
+    <file>images/LivingSpace_Studio2.png</file>
+  </qresource>
+</RCC>

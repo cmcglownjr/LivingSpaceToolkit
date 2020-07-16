@@ -18,9 +18,9 @@ import UI_rc
 from Units import EngineeringUnits as Eu
 import LivingspaceToolkitClass as LSTKC
 from math import tan
-import logging
 import re
-from datetime import datetime
+import logging
+from pathlib import Path
 
 list_ = re.compile(r'\'|ft|feet|\"|in')
 
@@ -442,7 +442,7 @@ class Form(QObject):
         This method is called when the "Calculate" button is pressed. It calls functions to perform the calculations and
         saves it to a dictionary.
         """
-        # pitch_input = None
+        pitch_input = None
         endcut = None
         overhang = Eu(LSTKC.assume_units(self.st_overhang_edit.text(), '"'), u_type='length')
         awall = Eu(LSTKC.assume_units(self.st_awall_edit.text(), '"'), u_type='length')
@@ -501,7 +501,6 @@ class Form(QObject):
             drip_edge = Eu(LSTKC.assume_units(self.st_drip_edit.text(), '"'), u_type='length')
             self.studio.drip_edge_pitch(drip_edge.base, pitch)
         self.studio.calculate_sunroom()
-        logger.info("Studio Sunroom pitch is {}.".format(self.studio.pitch))
 
     def ca_scenario_calc(self):
         """
@@ -612,10 +611,6 @@ class Form(QObject):
                                .format(self.studio.roof_panel_dict['Roof Panels']))
         self.st_results.append('The length of each panel should be {:.0f} in.'
                                .format(self.studio.panel_length_dict['Panel Length']))
-        # CORRECTION 7/8/2020: Will remove this manufacturer's tolerance note
-        # if results['panel tolerance'] is True:
-        #     self.st_results.append("These panels are 1 in. beyond the nearest foot! They should be within the "
-        #                            "manufacturer's tolerance.")
         if self.studio.panel_length_dict['Max Length Check'] is True:
             self.st_results.append('These panels were divided in half because they were more than 24ft.')
         self.st_results.append(
@@ -626,11 +621,7 @@ class Form(QObject):
         self.st_results.append('The overhang on A and C Walls are {:.0f} in.'
                                .format(self.studio.roof_panel_dict['Side Overhang']))
         if self.studio.roof_panel_dict['Overhang Short Check'] is True:
-            # self.st_results.clear()
             self.st_results.append('The overhang on the sides are TOO SHORT!')
-        # elif results['overhang error'][1] is True:
-        # self.st_results.clear()
-        # self.st_results.append('The overhang on the sides are too long and need to be cut!')
         if self.studio.hang_rail_dict['Hang Rail Check'] is True:
             self.st_results.append('There are 2 pairs of hang rails at {} in. each.'
                                    .format(self.studio.hang_rail_dict['Hang Rail']))
@@ -666,7 +657,6 @@ class Form(QObject):
                                .format(LSTKC.pitch_estimate(12 * tan(self.cathedral.c_pitch))))
         self.ca_results.append('The peak height is {} in.'.format(LSTKC.sixteenth(self.cathedral.f_peak)))
         self.ca_results.append('The A Wall height is {} in.'.format(LSTKC.sixteenth(self.cathedral.a_unpitched_wall_h)))
-        # self.ca_results.append('The B Wall height is {}.'.format(results['sidewall']))
         self.ca_results.append('The C Wall height is {} in.'.format(LSTKC.sixteenth(self.cathedral.c_unpitched_wall_h)))
         self.ca_results.append('The A side soffit height is {} in.'.format(LSTKC.sixteenth(self.cathedral.a_soffit)))
         self.ca_results.append('The C side soffit height is {} in.'.format(LSTKC.sixteenth(self.cathedral.c_soffit)))
@@ -677,26 +667,17 @@ class Form(QObject):
                                .format(self.cathedral.a_roof_panel_dict['Roof Panels']))
         self.ca_results.append('The length of each A side panel should be {:.0f} in.'
                                .format(self.cathedral.a_panel_length_dict['Panel Length']))
-        # CORRECTION 7/8/2020: Will remove this manufacturer's tolerance note
-        # if results['a panel tolerance'] is True:
-        # self.ca_results.append("The A side panels are 1 in. beyond the nearest foot! They should be within the "
-        #                        "manufacturer's tolerance.")
         if self.cathedral.a_panel_length_dict['Max Length Check'] is True:
             self.ca_results.append('The A side panels were divided in half because they were more than 24ft.')
         self.ca_results.append('This configuration will need {} C side roof panels.'
                                .format(self.cathedral.c_roof_panel_dict['Roof Panels']))
         self.ca_results.append('The length of each C side panel should be {:.0f} in.'
                                .format(self.cathedral.c_panel_length_dict['Panel Length']))
-        # if results['c panel tolerance'] is True:
-        #     self.ca_results.append("The C side panels are 1 in. beyond the nearest foot! They should be within the "
-        #                            "manufacturer's tolerance.")
         if self.cathedral.c_panel_length_dict['Max Length Check'] is True:
             self.ca_results.append('The C side panels were divided in half because they were more than 24ft.')
         self.ca_results.append('The total number of roof panels is {:.0f}.'
                                .format(self.cathedral.a_roof_panel_dict['Roof Panels'] +
                                        self.cathedral.c_roof_panel_dict['Roof Panels']))
-        # if results['a split panels'] is True or results['c split panels'] is True:
-        #     self.ca_results.append('One of the panels should be split in half on site!!!')
         self.ca_results.append('The total roof sq. ft. is {:.0f} ft^2.'
                                .format((self.cathedral.a_roof_panel_dict['Roof Area'] +
                                         self.cathedral.c_roof_panel_dict['Roof Area']) / 144))
@@ -707,11 +688,7 @@ class Form(QObject):
         self.ca_results.append('The overhang on B Wall is {:.0f} in.'
                                .format(self.cathedral.a_roof_panel_dict['Side Overhang']))
         if self.cathedral.a_roof_panel_dict['Overhang Short Check'] is True:
-            # self.ca_results.clear()
             self.ca_results.append('The overhang on the sides are TOO SHORT!')
-        # elif results['a overhang error'][1] is True:
-        # self.ca_results.clear()
-        # self.ca_results.append('The overhang on the sides are too long and need to be cut!')
         if self.cathedral.a_hang_rail_dict['Hang Rail Check'] is True:
             self.ca_results.append('There are 2 pairs of hang rails at {} in. each on the A wall.'
                                    .format(self.cathedral.a_hang_rail_dict['Hang Rail']))
@@ -801,6 +778,7 @@ class Form(QObject):
         self.st_results.clear()
         self.st_common_errors()
         self.st_results.setText('Now listing results.')
+        self.st_results.setText('This is a bug!')
         self.st_scenario_calc()
         if self.st_scenario1_radio.isChecked():
             if self.st_pitch_edit.text() == '':
@@ -962,11 +940,14 @@ class Form(QObject):
 
 
 if __name__ == '__main__':
+    current_dir = Path.cwd()
+    # log = Path.joinpath(current_dir, 'LOG')
+    # log.mkdir(parents=True, exist_ok=True)
     # Set up logger
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.ERROR)
     formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-    file_handler = logging.FileHandler('LS Toolkit_{}.log'.format(datetime.now().strftime("%Y-%m-%d")))
+    file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 

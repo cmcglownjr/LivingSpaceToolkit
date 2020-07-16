@@ -4,12 +4,11 @@ import re
 import math
 from fractions import Fraction
 import logging
-from datetime import datetime
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-file_handler = logging.FileHandler('LS Toolkit_{}.log'.format(datetime.now().strftime("%Y-%m-%d")))
+file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -40,12 +39,15 @@ class EngineeringUnits:
         degrees = re.compile(r'(\d*\.?\d*)deg')
         feet = re.compile(r'(\d*\s*)[\'|ft|fe+t]')
         inches = re.compile(r'\"|in')
-        fract = re.compile(r'(\d+\/\d+)[\"|in|\'|ft|fe+t]')
+        # fract = re.compile(r'(\d+\/\d+)[\"|in|\'|ft|fe+t]')
+        fract = re.compile(r'(\d*\s?)(\d+\/\d+)')
         ft_or_in = re.compile(r'(\d*\.\d+|\d+)\s?[\"|in|\'|ft|feet]')
-        in_fract = re.compile(r'(\d+)[\s*](\d+\/\d+)[\"|in]')
+        # in_fract = re.compile(r'(\d+)[\s*](\d+\/\d+)[\"|in]')
+        in_fract = re.compile(r'(\d*\s?)(\d+\/\d+)')
         # ft_and_in = re.compile(r'(\d+\.?\d*)\s?[\'|ft|feet](\s?\-?\s?)(\d+\.?\d*)[\"|in]')
         ft_and_in = re.compile(r'(\d+\.?\d*)(\D+)(\d+\.?\d*)')
-        ft_and_in_fract = re.compile(r'(\d+\.?\d*)\s?[\'|ft|feet](\s?\-?\s?)(\d*\s?)(\d+\/\d+)[\"|in]')
+        # ft_and_in_fract = re.compile(r'(\d+\.?\d*)\s?[\'|ft|feet](\s?\-?\s?)(\d*\s?)(\d+\/\d+)[\"|in]')
+        ft_and_in_fract = re.compile(r'(\d+\.?\d*)(\s?\d+\/\d+)*(\s?\D+\s?)(\d*\.?\d*)(\s?\d+\/\d+)*')
         """ Refer to pg. 152 of 'Automate the Boring Stuff with Python' to understand regular expression groups"""
         try:
             if self.u_type == 'angle':
@@ -57,31 +59,55 @@ class EngineeringUnits:
                     self.base = math.radians(float(self.measurement))
                     self.base_unit = 'deg'
         except AttributeError as err:
-            logger.exception(err)
+            pass
+            # logger.exception(err)
         except TypeError as err:
-            logger.exception(err)
+            pass
+            # logger.exception(err)
         try:
             if self.u_type == 'length':
                 if feet_search(self.measurement) and inch_search(self.measurement):
-                    if fract.search(self.measurement) is None:
-                        c = ft_and_in.search(self.measurement)
-                        self.base = eval(c.group(1)) * 12 + eval(c.group(3))
-                        self.base_unit = 'in.'
+                    c = ft_and_in_fract.search(self.measurement)
+                    aa = eval(c.group(1)) * 12
+                    if c.group(2) is None:
+                        bb = 0
                     else:
-                        c = ft_and_in_fract.search(self.measurement)
-                        if c.group(3) == '':
-                            self.base = eval(c.group(1)) * 12 + eval(c.group(4))
-                            self.base_unit = 'in.'
-                        else:
-                            self.base = eval(c.group(1)) * 12 + eval(c.group(3)) + eval(c.group(4))
-                            self.base_unit = 'in.'
+                        bb = eval(c.group(2)) * 12
+                    cc = eval(c.group(4))
+                    if c.group(5) is None:
+                        dd = 0
+                    else:
+                        dd = eval(c.group(5))
+                    self.base = aa + bb + cc + dd
+                    self.base_unit = 'in.'
+                    # if fract.search(self.measurement) is None:
+                    #     c = ft_and_in.search(self.measurement)
+                    #     self.base = eval(c.group(1)) * 12 + eval(c.group(3))
+                    #     self.base_unit = 'in.'
+                    # else:
+                    #     c = ft_and_in_fract.search(self.measurement)
+                    #     if c.group(3) == '':
+                    #         self.base = eval(c.group(1)) * 12 + eval(c.group(4))
+                    #         self.base_unit = 'in.'
+                    #     else:
+                    #         self.base = eval(c.group(1)) * 12 + eval(c.group(3)) + eval(c.group(4))
+                    #         self.base_unit = 'in.'
                 elif feet_search(self.measurement) or inch_search(self.measurement):
                     if feet_search(self.measurement):
-                        if fract.search(self.measurement) is None:
-                            c = ft_or_in.search(self.measurement)
+                        if '/' in self.measurement:
+                            c = fract.search(self.measurement)
+                            if c.group(1) == '':
+                                self.base = eval(c.group(2)) * 12
+                                self.base_unit = 'in.'
+                            else:
+                                self.base = (eval(c.group(1)) + eval(c.group(2))) * 12
+                                self.base_unit = 'in.'
+                        else:
+                            c = feet.search(self.measurement)
                             self.base = eval(c.group(1)) * 12
                             self.base_unit = 'in.'
-                        else:
+                    if inch_search(self.measurement):
+                        if "/" in self.measurement:
                             c = in_fract.search(self.measurement)
                             if c.group(1) == '':
                                 self.base = eval(c.group(2))
@@ -89,10 +115,10 @@ class EngineeringUnits:
                             else:
                                 self.base = eval(c.group(1)) + eval(c.group(2))
                                 self.base_unit = 'in.'
-                    if inch_search(self.measurement):
-                        c = ft_or_in.search(self.measurement)
-                        self.base = eval(c.group(1))
-                        self.base_unit = 'in.'
+                        else:
+                            c = ft_or_in.search(self.measurement)
+                            self.base = eval(c.group(1))
+                            self.base_unit = 'in.'
                 else:
                     if fract.search(self.measurement) is None:
                         c = ft_and_in.search(self.measurement)

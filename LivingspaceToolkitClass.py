@@ -23,12 +23,11 @@ from math import floor as m_floor
 from math import ceil as m_ceil
 from re import compile as re_compile
 import logging
-from datetime import datetime
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-file_handler = logging.FileHandler('LS Toolkit_{}.log'.format(datetime.now().strftime("%Y-%m-%d")))
+file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -43,7 +42,13 @@ def angled(pitch, thickness):
     :param thickness: float
     :return: float
     """
-    return thickness * (sin(pi / 2) / sin(pi / 2 - pitch))
+    angle = None
+    try:
+        angle = thickness * (sin(pi / 2) / sin(pi / 2 - pitch))
+    except ZeroDivisionError as err:
+        pass
+        # logger.exception(err)
+    return angle
 
 
 def assume_units(string_in, assume_unit):
@@ -92,7 +97,8 @@ def sixteenth(number):
     return round(number * 16) / 16
 
 
-def estimate_drip_from_peak(peak, estimate_pitch, pitched_wall_length, overhang, thickness, endcut, awall, bwall, cwall):
+def estimate_drip_from_peak(peak, estimate_pitch, pitched_wall_length, overhang, thickness, endcut, awall, bwall,
+                            cwall):
     """
     This method is used to help estimate the pitch. Since I forgot how to do numerical methods this will have to do. All
     lengths must be in inches, the estimated pitch in radians, and this assumes you are cycling through a list of
@@ -165,17 +171,17 @@ class Sunroom:
         Virtual method to be modefied in inherited classes
     wall_height_pitch(pitch, soffit_wall_height):
         Virtual method to be modefied in inherited classes
-    def wall_height_peak_height(soffit_wall_height, peak):
+    wall_height_peak_height(soffit_wall_height, peak):
         Virtual method to be modefied in inherited classes
-    def max_height_pitch(pitch, max_h):
+    max_height_pitch(pitch, max_h):
         Virtual method to be modefied in inherited classes
-    def soffit_height_peak_height(peak, soffit):
+    soffit_height_peak_height(peak, soffit):
         Virtual method to be modefied in inherited classes
-    def soffit_height_pitch(pitch, soffit):
+    soffit_height_pitch(pitch, soffit):
         Virtual method to be modefied in inherited classes
-    def drip_edge_peak_height(drip_edge, peak):
+    drip_edge_peak_height(drip_edge, peak):
         Virtual method to be modefied in inherited classes
-    def drip_edge_pitch(drip_edge, pitch)
+    drip_edge_pitch(drip_edge, pitch)
         Virtual method to be modefied in inherited classes
     """
 
@@ -279,6 +285,49 @@ class Sunroom:
 
 # noinspection SpellCheckingInspection
 class Studio(Sunroom):
+    """
+    Class for creating Studio style sunroom
+
+    ...
+    Attributes
+    ----------
+    overhang: float
+        Overhang on sunroom
+    awall: float
+        length of A-Side wall
+    bwall: float
+        length of B-Side wall
+    cwall: float
+        length of C-Side wall
+    thickness: float
+        Thickness of roof panels
+
+    Methods
+    -------
+    _calculate_roof_panels(soffit_wall, panel_length_dict)
+        Method used to calculate number of roof panels and roof area
+    _calculate_hang_rail(panel_dict)
+        Method used for calculating length of hang rails
+    _calculate_fascia(roof_panel_dict, panel_length_dict)
+        Method used for calculating length of fascia
+    calculate_sunroom()
+        Method used to calculate sunroom properties after scenario has been selected
+    wall_height_pitch(pitch, soffit_wall_height):
+        Scenario 1
+    wall_height_peak_height(soffit_wall_height, peak):
+        Scenario 2
+    max_height_pitch(pitch, max_h):
+        Scenario 3
+    soffit_height_peak_height(peak, soffit):
+        Scenario 4
+    soffit_height_pitch(pitch, soffit):
+        Scenario 5
+    drip_edge_peak_height(drip_edge, peak):
+        Scenario 6
+    drip_edge_pitch(drip_edge, pitch)
+        Scenario 7
+    """
+
     def __init__(self, overhang, awall, bwall, cwall, thickness, endcut):
         super().__init__(overhang, awall, bwall, cwall, thickness, endcut)
         self.pitched_wall = max(self.awall, self.cwall)
@@ -294,9 +343,14 @@ class Studio(Sunroom):
         self.hang_rail_dict = None
         self.fascia_dict = None
         self.armstrong_panels = None
-        logger.info("Studio Sunroom created.")
 
     def _calculate_roof_panels(self, soffit_wall, panel_length_dict):
+        """
+        Calculate roof area, number of panels, and side overhang
+        :param soffit_wall:
+        :param panel_length_dict:
+        :return:
+        """
         minmax_overhang = [False, False]
         roof_width = soffit_wall + self.side_overhang * 2
         roof_panels = m_ceil(roof_width / 32)
@@ -320,6 +374,11 @@ class Studio(Sunroom):
                 'Overhang Short Check': minmax_overhang[0], 'Overhang Long Check': minmax_overhang[1]}
 
     def _calculate_hang_rail(self, panel_dict):
+        """
+        Calculate hang rail length
+        :param panel_dict:
+        :return:
+        """
         max_hang_rail_length = False
         roof_panels = panel_dict['Roof Panels']
         hang_rail = roof_panels * 32
@@ -329,6 +388,12 @@ class Studio(Sunroom):
         return {'Hang Rail': hang_rail, 'Hang Rail Check': max_hang_rail_length}
 
     def _calculate_fascia(self, roof_panel_dict, panel_length_dict):
+        """
+        Calculate fascia length
+        :param roof_panel_dict:
+        :param panel_length_dict:
+        :return:
+        """
         max_fascia_length = [False, False]
         roof_panels = roof_panel_dict['Roof Panels']
         panel_length = panel_length_dict['Panel Length']
@@ -343,6 +408,7 @@ class Studio(Sunroom):
         return {'Wall Fascia': fascia_wall, 'Side Fascia': fascia_sides, 'Fascia Check': max_fascia_length}
 
     def calculate_sunroom(self):
+        """Calculate sunroom properties"""
         self.panel_length_dict = self._calculate_panel_length(self.pitch, self.pitched_wall)
         self.roof_panel_dict = self._calculate_roof_panels(self.soffit_wall, self.panel_length_dict)
         self.hang_rail_dict = self._calculate_hang_rail(self.roof_panel_dict)
@@ -352,6 +418,8 @@ class Studio(Sunroom):
     # Scenarios
     # Scenario 1
     def wall_height_pitch(self, pitch, soffit_wall_height):
+        """This method is designed for Scenario 1: Wall Height and Pitch. Wall Height must be in inches, pitch must be
+        in radians."""
         self.pitch = pitch
         self.unpitched_wall = soffit_wall_height
         self.pitched_wall = max(self.awall, self.bwall)
@@ -362,6 +430,7 @@ class Studio(Sunroom):
 
     # Scenario 2
     def wall_height_peak_height(self, soffit_wall_height, peak):
+        """This method is designed for Scenario 2: Wall Height and Peak Height. Both heights must be in inches."""
         self.unpitched_wall = soffit_wall_height
         self.peak = peak
         self.pitch = atan((self.peak - self.unpitched_wall) / max(self.awall, self.cwall))
@@ -371,6 +440,8 @@ class Studio(Sunroom):
 
     # Scenario 3
     def max_height_pitch(self, pitch, max_h):
+        """This method is designed for Scenario 3: Max Height and Pitch. The max height must be inches and pitch must be
+        radians."""
         self.pitch = pitch
         self.max_h = max_h
         self.unpitched_wall = self.max_h - max(self.awall, self.cwall) * tan(self.pitch) - \
@@ -381,6 +452,7 @@ class Studio(Sunroom):
 
     # Scenario 4
     def soffit_height_peak_height(self, peak, soffit):
+        """This method is designed for Scenario 4: Soffit Height and Peak Height. Both heights must be in inches."""
         self.soffit = soffit
         self.peak = peak
         self.pitch = atan((self.peak - self.soffit) / (max(self.awall, self.cwall) + self.overhang))
@@ -390,6 +462,8 @@ class Studio(Sunroom):
 
     # Scenario 5
     def soffit_height_pitch(self, pitch, soffit):
+        """This method is designed for Scenario 5: Soffit Height and Pitch. Soffit height must be in inches and pitch
+        must be in radians."""
         self.pitch = pitch
         self.soffit = soffit
         self.unpitched_wall = self.soffit + self.overhang * tan(self.pitch)
@@ -399,6 +473,8 @@ class Studio(Sunroom):
 
     # Scenario 6
     def drip_edge_peak_height(self, drip_edge, peak):
+        """This method is designed for Scenario 6: Drip Edge and Peak Height. Drip edge and peak height must be in
+        inches."""
         self.peak = peak
         self.drip_edge = drip_edge
         tol = 0.01
@@ -426,6 +502,8 @@ class Studio(Sunroom):
 
     # Scenario 7
     def drip_edge_pitch(self, drip_edge, pitch):
+        """This method is designed for Scenario 7: Drip Edge and Pitch. Drip Edge must be in inches while pitch must be
+        in radians."""
         self.pitch = pitch
         self.drip_edge = drip_edge
         self.soffit = self.drip_edge - angled(self.pitch, self.thickness)
@@ -437,9 +515,51 @@ class Studio(Sunroom):
 
 # noinspection SpellCheckingInspection
 class Cathedral(Sunroom):
+    """
+    Class for creating Cathedral style sunroom
+
+    ...
+    Attributes
+    ----------
+    overhang: float
+        Overhang on sunroom
+    awall: float
+        length of A-Side wall
+    bwall: float
+        length of B-Side wall
+    cwall: float
+        length of C-Side wall
+    thickness: float
+        Thickness of roof panels
+
+    Methods
+    -------
+    _calculate_roof_panels(soffit_wall, panel_length_dict)
+        Method used to calculate number of roof panels and roof area
+    _calculate_hang_rail(panel_dict)
+        Method used for calculating length of hang rails
+    _calculate_fascia(roof_panel_dict, panel_length_dict)
+        Method used for calculating length of fascia
+    calculate_sunroom()
+        Method used to calculate sunroom properties after scenario has been selected
+    wall_height_pitch(pitch, soffit_wall_height):
+        Scenario 1
+    wall_height_peak_height(soffit_wall_height, peak):
+        Scenario 2
+    max_height_pitch(pitch, max_h):
+        Scenario 3
+    soffit_height_peak_height(peak, soffit):
+        Scenario 4
+    soffit_height_pitch(pitch, soffit):
+        Scenario 5
+    drip_edge_peak_height(drip_edge, peak):
+        Scenario 6
+    drip_edge_pitch(drip_edge, pitch)
+        Scenario 7
+    """
+
     def __init__(self, overhang, awall, bwall, cwall, thickness, endcut):
         super().__init__(overhang, awall, bwall, cwall, thickness, endcut)
-        # self.soffit_wall = max(self.awall, self.cwall)
         self.a_unpitched_wall_l = None
         self.c_unpitched_wall_l = None
         self.pitched_wall = self.bwall
@@ -453,7 +573,6 @@ class Cathedral(Sunroom):
         self.peak = None
         self.f_peak = None
         self.max_h = None
-        # self.soffit = None
         self.a_soffit = None
         self.c_soffit = None
         self.a_drip_edge = None
@@ -468,9 +587,9 @@ class Cathedral(Sunroom):
         self.c_fascia_dict = None
         self.a_armstrong_panels = None
         self.c_armstrong_panels = None
-        logger.info("Cathedral Sunroom created.")
 
     def _calculate_roof_panels(self, soffit_wall, panel_length_dict):
+        """Calculate roof area, number of panels, and side overhang"""
         minmax_overhang = [False, False]
         split = False
         roof_width = soffit_wall + self.side_overhang
@@ -499,6 +618,7 @@ class Cathedral(Sunroom):
                 'Overhang Short Check': minmax_overhang[0], 'Overhang Long Check': minmax_overhang[1], 'Split': split}
 
     def _calculate_hang_rail(self, panel_dict):
+        """Calculate hang rail length"""
         max_hang_rail_length = False
         panel_length = panel_dict['Panel Length']
         hang_rail = panel_length
@@ -508,6 +628,7 @@ class Cathedral(Sunroom):
         return {'Hang Rail': hang_rail, 'Hang Rail Check': max_hang_rail_length}
 
     def _calculate_fascia(self, roof_panel_dict, panel_length_dict):
+        """Calculate fascia length"""
         max_fascia_length = [False, False]
         roof_panels = roof_panel_dict['Roof Panels']
         panel_length = panel_length_dict['Panel Length']
@@ -522,6 +643,7 @@ class Cathedral(Sunroom):
         return {'Wall Fascia': fascia_wall, 'Side Fascia': fascia_sides, 'Fascia Check': max_fascia_length}
 
     def calculate_sunroom(self):
+        """Calculate sunroom properties"""
         self.a_panel_length_dict = self._calculate_panel_length(self.a_pitch, self.a_pitched_wall)
         self.c_panel_length_dict = self._calculate_panel_length(self.c_pitch, self.c_pitched_wall)
         self.a_roof_panel_dict = self._calculate_roof_panels(self.awall, self.a_panel_length_dict)
@@ -536,6 +658,8 @@ class Cathedral(Sunroom):
     # Scenarios
     # Scenario 1
     def wall_height_pitch(self, pitch, soffit_wall_height):
+        """This method is designed for Scenario 1: Wall Height and Pitch. Wall Height must be in inches, pitch must be
+            in radians."""
         self.a_pitch = pitch[0]
         self.c_pitch = pitch[1]
         self.a_unpitched_wall_h = soffit_wall_height[0]
@@ -560,6 +684,7 @@ class Cathedral(Sunroom):
 
     # Scenario 2
     def wall_height_peak_height(self, soffit_wall_height, peak):
+        """This method is designed for Scenario 2: Wall Height and Peak Height. Both heights must be in inches."""
         self.f_peak = peak
         self.a_unpitched_wall_h = soffit_wall_height[0]
         self.c_unpitched_wall_h = soffit_wall_height[1]
@@ -581,6 +706,8 @@ class Cathedral(Sunroom):
 
     # Scenario 3
     def max_height_pitch(self, pitch, max_h):
+        """This method is designed for Scenario 3: Max Height and Pitch. The max height must be inches and pitch must be
+        radians."""
         self.a_pitch = pitch[0]
         self.c_pitch = pitch[1]
         self.max_h = max_h
@@ -603,6 +730,7 @@ class Cathedral(Sunroom):
 
     # Scenario 4
     def soffit_height_peak_height(self, peak, soffit):
+        """This method is designed for Scenario 4: Soffit Height and Peak Height. Both heights must be in inches."""
         self.a_soffit = max(soffit[0], soffit[0])
         self.c_soffit = max(soffit[0], soffit[0])
         self.f_peak = peak
@@ -621,6 +749,8 @@ class Cathedral(Sunroom):
 
     # Scenario 5
     def soffit_height_pitch(self, pitch, soffit):
+        """This method is designed for Scenario 5: Soffit Height and Pitch. Soffit height must be in inches and pitch
+         must be in radians."""
         self.a_soffit = max(soffit[0], soffit[1])
         self.c_soffit = max(soffit[0], soffit[1])
         self.a_pitch = pitch[0]
@@ -642,6 +772,8 @@ class Cathedral(Sunroom):
 
     # Scenario 6
     def drip_edge_peak_height(self, drip_edge, peak):
+        """This method is designed for Scenario 6: Drip Edge and Peak Height. Drip edge and peak height must be in
+        inches."""
         self.a_drip_edge = drip_edge
         self.c_drip_edge = drip_edge
         self.f_peak = peak
@@ -680,6 +812,8 @@ class Cathedral(Sunroom):
 
     # Scenario 7
     def drip_edge_pitch(self, drip_edge, pitch):
+        """This method is designed for Scenario 7: Drip Edge and Pitch. Drip Edge must be in inches while pitch must be
+        in radians."""
         self.a_pitch = pitch[0]
         self.c_pitch = pitch[1]
         self.a_soffit = drip_edge - angled(self.a_pitch, self.thickness)
