@@ -2,4 +2,8 @@
 __pycache__/
 .pytest_cache/
 bin/
+.pyupdater/
+pyu-data/
 *.log
+*.iss
+client_config.py

@@ -54,6 +54,25 @@ def test_sixteenth():
     assert sixteenth(0.37) == 6 / 16
 
 
+def test_estimate_drip_from_peak():
+    pitch = atan(5 / 12)
+    pitched_wall_length = 120
+    peak = 145
+    overhang = 12
+    thickness = 10.25
+    awall = 120
+    bwall = 144
+    cwall = 120
+    endcut1 = 'plum_T_B'
+    endcut2 = 'uncut'
+    test1 = LivingspaceToolkitClass.estimate_drip_from_peak(peak, pitch, pitched_wall_length, overhang, thickness,
+                                                           endcut1, awall, bwall, cwall)
+    test2 = LivingspaceToolkitClass.estimate_drip_from_peak(peak, pitch, pitched_wall_length, overhang, thickness,
+                                                            endcut2, awall, bwall, cwall)
+    assert sixteenth(test1) == 101.125
+    assert sixteenth(test2) == 99.4375
+
+
 def test_studio_calculate_sunroom(studio_setup):
     pitch = atan(5 / 12)
     studio_setup[0].pitch = pitch
