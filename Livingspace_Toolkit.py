@@ -37,7 +37,7 @@ class Form(QObject):
         :param parent:
         """
         logger.info('The current date and time is: {}'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S %p")))
-        version = '1.9.2'
+        version = '1.9.3'
         logger.info(f"Current version is {version}.")
         version_path = \
             r'\\192.168.1.13\Conwed\Interior Systems\Engineering\Custom_Software\Livingspace_Toolkit\version.yaml'
@@ -960,12 +960,11 @@ class Form(QObject):
 
 if __name__ == '__main__':
     current_dir = Path.cwd()
-    # log = Path.joinpath(current_dir, 'LOG')
-    # log.mkdir(parents=True, exist_ok=True)
     # Set up logger
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.ERROR)
-    formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s:[%(name)s:%(lineno)s - %(funcName)10s() ]:[%(levelname)s]: '
+                                  '%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)

@@ -25,8 +25,9 @@ from re import compile as re_compile
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
-formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s:[%(name)s:%(lineno)s - %(funcName)10s() ]:[%(levelname)s]: %(message)s',
+                              datefmt='%m/%d/%Y %I:%M:%S %p')
 file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
@@ -46,8 +47,7 @@ def angled(pitch, thickness):
     try:
         angle = thickness * (sin(pi / 2) / sin(pi / 2 - pitch))
     except ZeroDivisionError as err:
-        pass
-        # logger.exception(err)
+        logger.exception(err)
     return angle
 
 
@@ -592,8 +592,8 @@ class Cathedral(Sunroom):
         minmax_overhang = [False, False]
         split = False
         roof_width = soffit_wall + self.side_overhang
-        if (roof_width / 32) <= m_floor(roof_width / 32) + .5:
-            roof_panels = m_floor(roof_width / 32) + .5
+        if (roof_width/32) <= round((roof_width/32)*2)/2:
+            roof_panels = round((roof_width/32)*2)/2
             split = True
         else:
             roof_panels = m_ceil(roof_width / 32)

@@ -6,8 +6,9 @@ from fractions import Fraction
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
-formatter = logging.Formatter('%(asctime)s:[%(name)s]:[%(levelname)s]: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s:[%(name)s:%(lineno)s - %(funcName)10s() ]:[%(levelname)s]: %(message)s',
+                              datefmt='%m/%d/%Y %I:%M:%S %p')
 file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
