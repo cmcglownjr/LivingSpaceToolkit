@@ -592,10 +592,15 @@ class Cathedral(Sunroom):
         minmax_overhang = [False, False]
         split = False
         roof_width = soffit_wall + self.side_overhang
-        if (roof_width/32) <= round((roof_width/32)*2)/2:
-            roof_panels = round((roof_width/32)*2)/2
+        if (roof_width/32) == m_floor(roof_width/32):
+            # If the roof width/32 is exactly a whole number then keep it a whole number
+            roof_panels = m_floor(roof_width / 32)
+        elif (roof_width/32) <= m_floor(roof_width/32) + 0.5:
+            # If the roof width/32 is less than #.5 then cut it in half
+            roof_panels = m_floor(roof_width/32) + 0.5
             split = True
         else:
+            # if the roof width/32 is greater than #.5 then add a panel
             roof_panels = m_ceil(roof_width / 32)
         if (roof_panels * 32 - soffit_wall) < self.side_overhang:
             # Overhang too short
