@@ -981,4 +981,4 @@ if __name__ == '__main__':
     mainwindow = resource_path('LivingspaceToolkitMain.ui')
     app = QApplication(sys.argv)
     form = Form(resource_path('LivingspaceToolkitMain.ui'))
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
