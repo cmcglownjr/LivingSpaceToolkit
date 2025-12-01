@@ -89,9 +89,10 @@ system.
 
 ![Cathedral](images/screenshot3.jpg)
 
-### Contributing
+## Future Work
 
-This project is not on an online git repository but uses a local repository.
+This project needs to be reorganized properly. I was only learning how to program in Python when I did this project so
+some work needs to be put into cleanup and refactoring.
 
 ## Versioning
 
