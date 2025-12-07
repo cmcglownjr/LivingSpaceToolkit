@@ -38,7 +38,7 @@
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -75,7 +75,7 @@
        <string/>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Sunrooms/images/Livingspace_Sunrooms_logo.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;Resource/Livingspace_Sunrooms_logo.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -100,10 +100,10 @@
        </size>
       </property>
       <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
+       <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="tabShape">
-       <enum>QTabWidget::Rounded</enum>
+       <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -210,7 +210,7 @@ and Pitch</string>
              <number>6</number>
             </property>
             <property name="sizeConstraint">
-             <enum>QLayout::SetFixedSize</enum>
+             <enum>QLayout::SizeConstraint::SetFixedSize</enum>
             </property>
             <property name="leftMargin">
              <number>0</number>
@@ -427,7 +427,7 @@ and Pitch</string>
             <item>
              <spacer name="verticalSpacer_7">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -452,7 +452,7 @@ and Pitch</string>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_12">
                 <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
+                 <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
                 </property>
                 <property name="leftMargin">
                  <number>0</number>
@@ -460,7 +460,7 @@ and Pitch</string>
                 <item>
                  <spacer name="verticalSpacer_13">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -579,7 +579,7 @@ and Pitch</string>
                 <item>
                  <spacer name="verticalSpacer_14">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -606,7 +606,7 @@ and Pitch</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Sunrooms/images/LivingSpace_Studio2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;Resource/LivingSpace_Studio2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -622,7 +622,7 @@ and Pitch</string>
                 <item>
                  <spacer name="verticalSpacer_15">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -701,7 +701,7 @@ and Pitch</string>
                 <item>
                  <spacer name="verticalSpacer_16">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -728,7 +728,7 @@ and Pitch</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Sunrooms/images/LivingSpace_FloorPlan2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;Resource/LivingSpace_FloorPlan2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -744,7 +744,7 @@ and Pitch</string>
             <item>
              <spacer name="verticalSpacer_5">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -778,7 +778,6 @@ and Pitch</string>
               <property name="font">
                <font>
                 <pointsize>12</pointsize>
-                <weight>75</weight>
                 <italic>true</italic>
                 <bold>true</bold>
                 <underline>true</underline>
@@ -788,7 +787,7 @@ and Pitch</string>
                <string>Results:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -816,7 +815,7 @@ and Pitch</string>
             <item>
              <spacer name="verticalSpacer_6">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -925,7 +924,7 @@ and Pitch</string>
              <number>6</number>
             </property>
             <property name="sizeConstraint">
-             <enum>QLayout::SetFixedSize</enum>
+             <enum>QLayout::SizeConstraint::SetFixedSize</enum>
             </property>
             <item>
              <widget class="QGroupBox" name="ca_a_pitch_gbox">
@@ -1176,7 +1175,7 @@ and Pitch</string>
             <item>
              <spacer name="verticalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -1191,7 +1190,7 @@ and Pitch</string>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_13" stretch="0,0">
             <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
+             <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
             </property>
             <property name="leftMargin">
              <number>9</number>
@@ -1201,7 +1200,7 @@ and Pitch</string>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_14">
                 <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
+                 <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
                 </property>
                 <property name="leftMargin">
                  <number>0</number>
@@ -1212,7 +1211,7 @@ and Pitch</string>
                 <item>
                  <spacer name="verticalSpacer_9">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -1379,7 +1378,7 @@ C Wall</string>
                 <item>
                  <spacer name="verticalSpacer_10">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -1406,7 +1405,7 @@ C Wall</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Sunrooms/images/LivingSpace_Cathedral2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;Resource/LivingSpace_Cathedral2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -1419,7 +1418,7 @@ C Wall</string>
                 <item>
                  <spacer name="verticalSpacer_11">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -1510,7 +1509,7 @@ C Wall</string>
                 <item>
                  <spacer name="verticalSpacer_12">
                   <property name="orientation">
-                   <enum>Qt::Vertical</enum>
+                   <enum>Qt::Orientation::Vertical</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -1537,7 +1536,7 @@ C Wall</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/Sunrooms/images/LivingSpace_FloorPlan2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;Resource/LivingSpace_FloorPlan2.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                </widget>
               </item>
@@ -1550,7 +1549,7 @@ C Wall</string>
             <item>
              <spacer name="verticalSpacer_3">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -1584,7 +1583,6 @@ C Wall</string>
               <property name="font">
                <font>
                 <pointsize>12</pointsize>
-                <weight>75</weight>
                 <italic>true</italic>
                 <bold>true</bold>
                 <underline>true</underline>
@@ -1595,7 +1593,7 @@ C Wall</string>
                <string>Results:</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -1623,7 +1621,7 @@ C Wall</string>
             <item>
              <spacer name="verticalSpacer_4">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -1686,7 +1684,7 @@ C Wall</string>
   </action>
  </widget>
  <resources>
-  <include location="UI.qrc"/>
+  <include location="../f26fbfb1/resources.qrc"/>
  </resources>
  <connections/>
  <designerdata>

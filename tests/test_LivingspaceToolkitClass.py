@@ -3,9 +3,8 @@
 
 import pytest
 from math import atan, radians, tan
-import LivingspaceToolkitClass
-from LivingspaceToolkitClass import sixteenth, pitch_estimate
-import Units as EU
+from lib import LivingspaceToolkitClass, Units as EU
+from lib.LivingspaceToolkitClass import sixteenth, pitch_estimate
 
 
 @pytest.fixture
@@ -66,7 +65,7 @@ def test_estimate_drip_from_peak():
     endcut1 = 'plum_T_B'
     endcut2 = 'uncut'
     test1 = LivingspaceToolkitClass.estimate_drip_from_peak(peak, pitch, pitched_wall_length, overhang, thickness,
-                                                           endcut1, awall, bwall, cwall)
+                                                            endcut1, awall, bwall, cwall)
     test2 = LivingspaceToolkitClass.estimate_drip_from_peak(peak, pitch, pitched_wall_length, overhang, thickness,
                                                             endcut2, awall, bwall, cwall)
     assert sixteenth(test1) == 101.125

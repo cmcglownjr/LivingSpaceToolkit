@@ -15,9 +15,8 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QPushButton, QLineEdit, QRadioButton, QComboBox, QTextBrowser
 from PySide6.QtWidgets import QGroupBox, QLabel, QMessageBox, QCheckBox, QTabWidget
 from PySide6.QtCore import QFile, QObject
-import UI_rc
-from Units import EngineeringUnits as Eu
-import LivingspaceToolkitClass as LSTKC
+from lib.Units import EngineeringUnits as Eu
+from lib import LivingspaceToolkitClass as LSTKC
 from math import tan
 import logging
 import yaml
@@ -962,7 +961,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter('%(asctime)s:[%(name)s:%(lineno)s - %(funcName)10s() ]:[%(levelname)s]: '
                                   '%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-    file_handler = logging.FileHandler('LS Toolkit.log', mode='w')
+    file_handler = logging.FileHandler('../LS Toolkit.log', mode='w')
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
@@ -973,12 +972,12 @@ if __name__ == '__main__':
             # PyInstaller creates a temp folder and stores path in _MEIPASS
             base_path = sys._MEIPASS
         except Exception:
-            base_path = os_path.abspath(".")
+            base_path = os_path.abspath("..")
 
         return os_path.join(base_path, relative_path)
 
 
-    mainwindow = resource_path('LivingspaceToolkitMain.ui')
+    mainwindow = resource_path(current_dir.joinpath('LivingspaceToolkitMain.ui'))
     app = QApplication(sys.argv)
-    form = Form(resource_path('LivingspaceToolkitMain.ui'))
+    form = Form(resource_path(current_dir.joinpath('LivingspaceToolkitMain.ui')))
     sys.exit(app.exec())

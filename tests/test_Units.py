@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pytest
-import Units
+from lib import Units
 from math import radians
 
 

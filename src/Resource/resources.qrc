@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="Livingspace">
+    <file alias="Cathedral">LivingSpace_Cathedral2.png</file>
+    <file alias="FloorPlan">LivingSpace_FloorPlan2.png</file>
+    <file alias="Studio">LivingSpace_Studio2.png</file>
+    <file alias="Logo">Livingspace_Sunrooms_logo.png</file>
+  </qresource>
+</RCC>
