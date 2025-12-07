@@ -36,21 +36,28 @@ def test_pitch_input():
     assert LivingspaceToolkitClass.pitch_input(angle) == radians(24)
 
 
-def test_pitch_estimate():
-    assert pitch_estimate(5.0) == 5.0
-    assert pitch_estimate(5.1) == 5.0
-    assert pitch_estimate(5.4) == 5.5
-    assert pitch_estimate(5.5) == 5.5
-    assert pitch_estimate(5.6) == 5.5
-    assert pitch_estimate(5.9) == 6.0
-    assert pitch_estimate(6.0) == 6.0
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             (5.0, 5.0),
+                             (5.1, 5.0),
+                             (5.4, 5.5),
+                             (5.6, 5.5),
+                             (5.9, 6.0),
+                             (6.0, 6.0),
+                         ])
+def test_pitch_estimate(actual, expected):
+    assert pitch_estimate(actual) == expected
 
 
-def test_sixteenth():
-    assert sixteenth(9 / 32) == 4 / 16
-    assert sixteenth(10 / 32) == 5 / 16
-    assert sixteenth(11 / 32) == 6 / 16
-    assert sixteenth(0.37) == 6 / 16
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             (9/32, 4/16),
+                             (10/32, 5/16),
+                             (11/32, 6/16),
+                             (0.37, 6/16),
+                         ])
+def test_sixteenth(actual, expected):
+    assert sixteenth(actual) == expected
 
 
 def test_estimate_drip_from_peak():

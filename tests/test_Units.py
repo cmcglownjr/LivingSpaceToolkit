@@ -3,6 +3,7 @@
 
 from lib import Units
 from math import radians
+import pytest
 
 
 def test_angle():
@@ -11,72 +12,86 @@ def test_angle():
     assert angle.base_unit == 'deg'
 
 
-def test_feet():
-    feet1 = Units.EngineeringUnits("10'", u_type='length')
-    feet2 = Units.EngineeringUnits('10ft', u_type='length')
-    feet3 = Units.EngineeringUnits('10feet', u_type='length')
-    feet4 = Units.EngineeringUnits('10 ft', u_type='length')
-    feet5 = Units.EngineeringUnits('10 feet', u_type='length')
-    assert feet1.base == 120
-    assert feet2.base == 120
-    assert feet3.base == 120
-    assert feet4.base == 120
-    assert feet5.base == 120
-    assert feet1.base_unit == 'in.'
+# Arrange
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             ("10'", 120),
+                             ("10ft", 120),
+                             ("10feet", 120),
+                             ("10 ft", 120),
+                             ("10 feet", 120),
+                         ])
+def test_feet(actual, expected):
+    # Act
+    feet = Units.EngineeringUnits(actual, u_type='length')
+    # Assert
+    assert feet.base == expected
+    assert feet.base_unit == 'in.'
 
 
-def test_inches():
-    inch1 = Units.EngineeringUnits('15"', u_type='length')
-    inch2 = Units.EngineeringUnits('15in.', u_type='length')
-    inch3 = Units.EngineeringUnits('15 inches', u_type='length')
-    assert inch1.base == 15
-    assert inch2.base == 15
-    assert inch3.base == 15
+# Arrange
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             ('15"', 15),
+                             ('15in.', 15),
+                             ('15 inches', 15),
+                         ])
+def test_inches(actual, expected):
+    # Act
+    inch = Units.EngineeringUnits(actual, u_type='length')
+    # Assert
+    assert inch.base == expected
 
 
-def test_fract_in():
-    fract1 = Units.EngineeringUnits('1/2"', u_type='length')
-    fract2 = Units.EngineeringUnits('1/2in.', u_type='length')
-    fract3 = Units.EngineeringUnits('1/2inch', u_type='length')
-    fract4 = Units.EngineeringUnits('1/2 in.', u_type='length')
-    fract5 = Units.EngineeringUnits('1/2 inch', u_type='length')
-    fract6 = Units.EngineeringUnits('1 1/2 inch', u_type='length')
-    assert fract1.base == 0.5
-    assert fract2.base == 0.5
-    assert fract3.base == 0.5
-    assert fract4.base == 0.5
-    assert fract5.base == 0.5
-    assert fract6.base == 1.5
-    assert fract1.base_unit == 'in.'
+# Arrange
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             ('1/2"', 0.5),
+                             ('1/2in', 0.5),
+                             ('1/2inch', 0.5),
+                             ('1/2 in.', 0.5),
+                             ('1/2 inch', 0.5),
+                             ('1 1/2 inch', 1.5)
+                         ])
+def test_fract_in(actual, expected):
+    # Act
+    fract = Units.EngineeringUnits(actual, u_type='length')
+    # Assert
+    assert fract.base == expected
+    assert fract.base_unit == 'in.'
 
 
-def test_fract_ft():
-    fract1 = Units.EngineeringUnits("1/2'", u_type='length')
-    fract2 = Units.EngineeringUnits('1/2ft.', u_type='length')
-    fract3 = Units.EngineeringUnits('1/2feet', u_type='length')
-    fract4 = Units.EngineeringUnits('1/2 ft.', u_type='length')
-    fract5 = Units.EngineeringUnits('1/2 feet', u_type='length')
-    fract6 = Units.EngineeringUnits('1 1/2 feet', u_type='length')
-    assert fract1.base == 6
-    assert fract2.base == 6
-    assert fract3.base == 6
-    assert fract4.base == 6
-    assert fract5.base == 6
-    assert fract6.base == 18
-    assert fract1.base_unit == 'in.'
+# Arrange
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             ("1/2'", 6),
+                             ('1/2ft.', 6),
+                             ('1/2feet', 6),
+                             ('1/2 ft.', 6),
+                             ('1/2 feet', 6),
+                             ('1 1/2 feet', 18)
+                         ])
+def test_fract_ft(actual, expected):
+    # Act
+    fract = Units.EngineeringUnits(actual, u_type='length')
+    # Assert
+    assert fract.base == expected
+    assert fract.base_unit == 'in.'
 
 
-def test_combo():
-    fract1 = Units.EngineeringUnits("1' - 1\"", u_type='length')
-    fract2 = Units.EngineeringUnits('1ft - 1in.', u_type='length')
-    fract3 = Units.EngineeringUnits('1 1/2ft - 1 1/2in', u_type='length')
-    fract4 = Units.EngineeringUnits('1/2ft - 1 1/2in', u_type='length')
-    fract5 = Units.EngineeringUnits('1ft - 1/2in', u_type='length')
-    fract6 = Units.EngineeringUnits('1 ft 1 in', u_type='length')
-    assert fract1.base == 13
-    assert fract2.base == 13
-    assert fract3.base == 19.5
-    # assert fract4.base == 7.5
-    # assert fract5.base == 12.5
-    assert fract6.base == 13
-    assert fract1.base_unit == 'in.'
+# Arrange
+@pytest.mark.parametrize("actual, expected",
+                         [
+                             ("1' - 1\"", 13),
+                             ('1ft - 1in.', 13),
+                             ('1 1/2ft - 1 1/2in', 19.5),
+                             ('1/2ft - 1 1/2in', 7.5),
+                             ('1ft - 1/2in', 12.5),
+                             ('1 ft 1 in', 13)
+                         ])
+def test_combo(actual, expected):
+    # Act
+    combo = Units.EngineeringUnits(actual, u_type='length')
+    # Assert
+    assert combo.base == expected
+    assert combo.base_unit == 'in.'
