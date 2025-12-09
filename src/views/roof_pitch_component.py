@@ -1,11 +1,11 @@
 import logging
 
-from PySide6.QtWidgets import QWidget, QRadioButton, QHBoxLayout, QGridLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QGroupBox, QRadioButton, QHBoxLayout, QGridLayout, QLabel, QLineEdit
 from PySide6.QtCore import Qt
 
 logger = logging.getLogger(__name__)
 
-class RoofPitch(QWidget):
+class RoofPitch(QGroupBox):
     def __init__(self, label_text: str = ""):
         super().__init__()
 
