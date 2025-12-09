@@ -1,19 +1,15 @@
 import logging
 
-from PySide6.QtWidgets import QWidget, QRadioButton, QHBoxLayout, QGridLayout, QLabel
+from PySide6.QtWidgets import QRadioButton, QHBoxLayout, QGroupBox
 from PySide6.QtCore import Qt
 
 logger = logging.getLogger(__name__)
 
-class ScenariosView(QWidget):
+class ScenariosView(QGroupBox):
     def __init__(self):
         super().__init__()
 
-        label: QLabel = QLabel("Scenarios")
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        main_layout: QGridLayout = QGridLayout()
-        main_layout.addWidget(label, 0, 0)
+        self.setTitle("Scenarios")
 
         layout: QHBoxLayout = QHBoxLayout()
 
@@ -66,6 +62,14 @@ class ScenariosView(QWidget):
         self.radio7.setText("Drip Edge\nand Pitch")
         layout.addWidget(self.radio7)
 
-        main_layout.addLayout(layout, 1,0)
+        self.setLayout(layout)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.setLayout(main_layout)
+    def uncheck_all(self) -> None:
+        self.radio1.setChecked(False)
+        self.radio2.setChecked(False)
+        self.radio3.setChecked(False)
+        self.radio4.setChecked(False)
+        self.radio5.setChecked(False)
+        self.radio6.setChecked(False)
+        self.radio7.setChecked(False)

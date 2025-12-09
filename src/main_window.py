@@ -3,7 +3,7 @@ import logging
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 
 from views.scenarios_view import ScenariosView
-from views.roof_pitch_view import RoofPitch
+from views.roof_pitch_component import RoofPitch
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -18,8 +18,8 @@ class MainWindow(QMainWindow):
 
         layout: QVBoxLayout = QVBoxLayout()
 
-        layout.addWidget(self.roof_pitch)
+        layout.addWidget(self.scenarios)
         # central.setLayout(layout)
         self.setLayout(layout)
 
-        self.setCentralWidget(self.roof_pitch)
+        self.setCentralWidget(self.scenarios)
