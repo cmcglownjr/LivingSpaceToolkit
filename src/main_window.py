@@ -3,6 +3,7 @@ import logging
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 
 from views.scenarios_view import ScenariosView
+from views.roof_pitch_view import RoofPitch
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -11,13 +12,14 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("LivingSpace Toolkit")
 
         self.scenarios = ScenariosView()
+        self.roof_pitch = RoofPitch("Pitch")
 
         # central: QWidget = QWidget()
 
         layout: QVBoxLayout = QVBoxLayout()
 
-        layout.addWidget(self.scenarios)
+        layout.addWidget(self.roof_pitch)
         # central.setLayout(layout)
         self.setLayout(layout)
 
-        self.setCentralWidget(self.scenarios)
+        self.setCentralWidget(self.roof_pitch)
