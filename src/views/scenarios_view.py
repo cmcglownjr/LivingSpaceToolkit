@@ -66,6 +66,7 @@ class ScenariosView(QGroupBox):
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
     def uncheck_all(self) -> None:
+        logger.debug("Unchecking scenario radio buttons.")
         self.radio1.setChecked(False)
         self.radio2.setChecked(False)
         self.radio3.setChecked(False)
