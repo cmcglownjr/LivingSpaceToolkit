@@ -70,6 +70,7 @@ def is_dark_mode():
 
 def apply_theme(app: QApplication):
     """Loads light or dark QSS depending on OS settings."""
+    # TODO: Set first option to theme_dark.qss. Figure out how to properly switch between themes.
     theme_file = "Resource/theme_light.qss" if is_dark_mode() else "Resource/theme_light.qss"
 
     if os.path.exists(theme_file):
