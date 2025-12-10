@@ -1,6 +1,6 @@
 # Livingspace Toolkit
 
-#  ![LivingspaceLogo](src/Resource/Livingspace_Sunrooms_logo.png)
+#  ![LivingspaceLogo](livingspacetoolkit/Resource/Livingspace_Sunrooms_logo.png)
 
 ## Introduction
 

@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QVBoxLayout
 from PySide6.QtGui import QPixmap
 
-import Resource.resources_rc
+import livingspacetoolkit.Resource.resources_rc
 
 
 logger = logging.getLogger(__name__)
