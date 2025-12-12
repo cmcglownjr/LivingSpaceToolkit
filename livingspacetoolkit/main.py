@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    logger.debug(f"This is {__name__}.")
+    logger.info("Starting LivingSpace Toolkit…")
     app = QApplication([])
     apply_theme(app)
     window = MainWindow()

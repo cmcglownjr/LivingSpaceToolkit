@@ -36,3 +36,6 @@ class Results(QWidget):
         layout.addWidget(self.results_view)
         layout.addSpacerItem(spacer_bottom)
         self.setLayout(layout)
+
+    def update_text(self, text: str):
+        self.results_view.setText(text)
