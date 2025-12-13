@@ -1,14 +1,16 @@
 import logging
 
 from livingspacetoolkit.views.studio_view import Studio
-from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType
+from livingspacetoolkit.models.toolkit_state_model import ToolkitState
+from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
 
 logger = logging.getLogger(__name__)
 
 
 class StudioController:
-    def __init__(self, view: Studio):
+    def __init__(self, view: Studio, toolkit_state: ToolkitState):
         self.view = view
+        self.toolkit_state = toolkit_state
         self.pitch = view.sunroom_roof.pitch
 
         # Connect signals
