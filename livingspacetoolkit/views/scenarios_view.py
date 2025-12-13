@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QRadioButton, QHBoxLayout, QGroupBox, QButtonGroup
 from PySide6.QtCore import Qt
 
 from livingspacetoolkit.lib.livingspacetoolkit_enums import Scenario
+from livingspacetoolkit.utils.helpers import temporary_change
 
 logger = logging.getLogger(__name__)
 
@@ -85,11 +86,10 @@ class ScenariosView(QGroupBox):
         self.setLayout(layout)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+    @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self) -> None:
         logger.debug("Setting scenarios to default state.")
-        self.radio_group.setExclusive(False)
         for button in self.scenario_dict.keys():
             if button.isChecked():
                 button.setChecked(False)
                 logger.debug(f"Setting {self.scenario_dict[button].name} to unchecked.")
-        self.radio_group.setExclusive(True)

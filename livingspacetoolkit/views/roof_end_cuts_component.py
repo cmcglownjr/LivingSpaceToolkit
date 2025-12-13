@@ -2,6 +2,8 @@ import logging
 
 from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
 
+from livingspacetoolkit.utils.helpers import temporary_change
+
 logger = logging.getLogger(__name__)
 
 
@@ -40,11 +42,9 @@ class RoofEndCuts(QGroupBox):
 
         self.setLayout(layout)
 
-
+    @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self) -> None:
         logger.debug("Setting end cuts to default state.")
-        self.radio_group.setExclusive(False)
         self.radio_endcut1.setChecked(False)
         self.radio_endcut2.setChecked(False)
         self.radio_endcut3.setChecked(False)
-        self.radio_group.setExclusive(True)

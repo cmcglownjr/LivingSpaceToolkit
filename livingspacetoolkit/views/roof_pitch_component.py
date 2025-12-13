@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QGroupBox, QRadioButton, QHBoxLayout, QGridLayout,
 from PySide6.QtCore import Qt, QSize
 
 from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType
+from livingspacetoolkit.utils.helpers import temporary_change
 
 logger = logging.getLogger(__name__)
 
@@ -48,14 +49,13 @@ class RoofPitch(QGroupBox):
 
         self.setLayout(layout_main)
 
+    @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self, sunroom: SunroomType) -> None:
         logger.debug(f"Setting {sunroom.name} {self.title()} to default state.")
-        self.radio_group.setExclusive(False)
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(False)
         self.pitch_input.clear()
         self.pitch_input_label.setText("/12 in.")
-        self.radio_group.setExclusive(True)
 
     def update_pitch_text(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
         match pitch_type:
