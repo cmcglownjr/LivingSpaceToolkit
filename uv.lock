@@ -27,7 +27,6 @@ source = { editable = "." }
 dependencies = [
     { name = "pyside6" },
     { name = "pyyaml" },
-    { name = "ruff" },
 ]
 
 [package.dev-dependencies]
@@ -35,6 +34,7 @@ dev = [
     { name = "nuitka" },
     { name = "ordered-set" },
     { name = "pytest" },
+    { name = "ruff" },
     { name = "zstandard" },
 ]
 
@@ -42,7 +42,6 @@ dev = [
 requires-dist = [
     { name = "pyside6", specifier = ">=6.10.1" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "ruff", specifier = ">=0.14.8" },
 ]
 
 [package.metadata.requires-dev]
@@ -50,6 +49,7 @@ dev = [
     { name = "nuitka", specifier = ">=2.8.9" },
     { name = "ordered-set", specifier = ">=4.1.0" },
     { name = "pytest", specifier = ">=9.0.1" },
+    { name = "ruff", specifier = ">=0.14.8" },
     { name = "zstandard", specifier = ">=0.25.0" },
 ]
 
