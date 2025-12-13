@@ -25,3 +25,8 @@ class EndCutType(Enum):
     UNCUT_TOP_BOTTOM = 1
     PLUMB_CUT_TOP_BOTTOM = 2
     PLUMB_CUT_TOP = 3
+
+
+class SunroomType(Enum):
+    STUDIO = 1
+    CATHEDRAL = 2
