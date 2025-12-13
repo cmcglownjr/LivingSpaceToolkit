@@ -1,6 +1,6 @@
 import logging
 
-from PySide6.QtWidgets import QGroupBox, QRadioButton, QHBoxLayout, QGridLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QGroupBox, QRadioButton, QHBoxLayout, QGridLayout, QLabel, QLineEdit, QButtonGroup
 from PySide6.QtCore import Qt, QSize
 
 from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType
@@ -12,18 +12,21 @@ class RoofPitch(QGroupBox):
         super().__init__()
 
         self.setTitle(title)
+        self.radio_group: QButtonGroup = QButtonGroup()
 
         self.radio_ratio: QRadioButton = QRadioButton()
         self.radio_ratio.setObjectName("radio_ratio")
         self.radio_ratio.setChecked(False)
         self.radio_ratio.setEnabled(True)
         self.radio_ratio.setText("Ratio")
+        self.radio_group.addButton(self.radio_ratio)
 
         self.radio_angle: QRadioButton = QRadioButton()
         self.radio_angle.setObjectName("radio_angle")
         self.radio_angle.setChecked(False)
         self.radio_angle.setEnabled(True)
         self.radio_angle.setText("Angle")
+        self.radio_group.addButton(self.radio_angle)
 
         self.pitch_input: QLineEdit = QLineEdit()
         self.pitch_input.setMinimumSize(QSize(145, 35))
@@ -45,13 +48,14 @@ class RoofPitch(QGroupBox):
 
         self.setLayout(layout_main)
 
-    def default_state(self, component_name: str) -> None:
-        logger.info(f"Setting {component_name} to default state.")
+    def default_state(self, sunroom: SunroomType) -> None:
+        logger.debug(f"Setting {sunroom.name} {self.title()} to default state.")
+        self.radio_group.setExclusive(False)
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(False)
         self.pitch_input.clear()
         self.pitch_input_label.setText("/12 in.")
-        self.setEnabled(False)
+        self.radio_group.setExclusive(True)
 
     def update_pitch_text(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
         match pitch_type:

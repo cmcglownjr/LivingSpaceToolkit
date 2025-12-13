@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
         tabs.setMinimumSize(600, 400)
 
         # === Controllers ===
-        self.results_controller = ResultsController(self.results_view, tabs)
+        self.results_controller = ResultsController(self.results_view, tabs, self.scenarios_view)
         self.studio_controller = StudioController(self.studio_view)
 
         layout: QGridLayout = QGridLayout()

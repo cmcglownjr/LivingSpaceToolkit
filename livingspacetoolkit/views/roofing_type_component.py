@@ -1,6 +1,6 @@
 import logging
 
-from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout
+from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
 
 logger = logging.getLogger(__name__)
 
@@ -10,18 +10,21 @@ class RoofingType(QGroupBox):
         super().__init__()
 
         self.setTitle("Roofing Type")
+        self.radio_group: QButtonGroup = QButtonGroup()
 
         self.radio_eco: QRadioButton = QRadioButton()
         self.radio_eco.setObjectName("radio_eco")
         self.radio_eco.setChecked(False)
         self.radio_eco.setEnabled(True)
         self.radio_eco.setText("EcoGreen")
+        self.radio_group.addButton(self.radio_eco)
 
         self.radio_al: QRadioButton = QRadioButton()
         self.radio_al.setObjectName("radio_al")
         self.radio_al.setChecked(False)
         self.radio_al.setEnabled(True)
         self.radio_al.setText("Aluminum")
+        self.radio_group.addButton(self.radio_al)
 
         layout: QVBoxLayout = QVBoxLayout()
         layout.addWidget(self.radio_eco)
@@ -29,7 +32,9 @@ class RoofingType(QGroupBox):
 
         self.setLayout(layout)
 
-    def uncheck_all(self):
-        logger.debug("Unchecking roofing type radio buttons.")
+    def default_state(self):
+        logger.debug("Setting roofing type to default state.")
+        self.radio_group.setExclusive(False)
         self.radio_eco.setChecked(False)
         self.radio_al.setChecked(False)
+        self.radio_group.setExclusive(True)

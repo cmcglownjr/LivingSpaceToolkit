@@ -30,3 +30,4 @@ class ResultsController:
     def handle_button_click(self):
         self.view.update_text(f"Button Pressed on tab {self.main_tab.currentIndex()}.\n"
                               f"Scenario is:")
+        self.scenario.default_state()
