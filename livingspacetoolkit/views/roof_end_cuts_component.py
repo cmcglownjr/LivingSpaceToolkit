@@ -24,7 +24,7 @@ class RoofEndCuts(QGroupBox):
         self.radio_endcut2.setText("Plumb Cut Top && Bottom")
 
         self.radio_endcut3: QRadioButton = QRadioButton()
-        self.radio_endcut3.setObjectName("Plum Cut Top Only")
+        self.radio_endcut3.setObjectName("Plumb Cut Top Only")
         self.radio_endcut3.setChecked(False)
         self.radio_endcut3.setEnabled(True)
         self.radio_endcut3.setText("EcoGreen")
