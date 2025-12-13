@@ -1,33 +1,19 @@
 import logging
 
-from PySide6.QtWidgets import QTabWidget
-
-from livingspacetoolkit.views.scenarios_view import ScenariosView
 from livingspacetoolkit.views.results_view import Results
-from livingspacetoolkit.views.studio_view import Studio
-from livingspacetoolkit.views.cathedral_view import Cathedral
+from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 
 logger = logging.getLogger(__name__)
 
 
 class ResultsController:
-    def __init__(self,
-                 view: Results,
-                 main_tab: QTabWidget,
-                 scenario: ScenariosView = None,
-                 studio: Studio = None,
-                 cathedral: Cathedral = None):
+    def __init__(self,view: Results, toolkit_state: ToolkitState):
         self.view = view
-        self.main_tab = main_tab
-        self.scenario = scenario
-        self.studio = studio
-        self.cathedral = cathedral
+        self.toolkit_state = toolkit_state
 
         # Connect signals
         self.view.calculate_button.clicked.connect(self.handle_button_click)
 
 
     def handle_button_click(self):
-        self.view.update_text(f"Button Pressed on tab {self.main_tab.currentIndex()}.\n"
-                              f"Scenario is:")
-        self.scenario.default_state()
+        self.view.update_text("Button Pressed")
