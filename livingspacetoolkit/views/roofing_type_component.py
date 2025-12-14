@@ -37,6 +37,7 @@ class RoofingTypeView(QGroupBox):
 
     @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self):
+        # TODO: Add strikeout to default state
         logger.debug("Setting roofing type to default state.")
         self.radio_eco.setChecked(False)
         self.radio_al.setChecked(False)

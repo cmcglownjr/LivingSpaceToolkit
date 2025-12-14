@@ -51,6 +51,7 @@ class RoofPitch(QGroupBox):
 
     @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self, sunroom: SunroomType) -> None:
+        # TODO: Add strikeout to default state
         logger.debug(f"Setting {sunroom.name} {self.title()} to default state.")
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(False)

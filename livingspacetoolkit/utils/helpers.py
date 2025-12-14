@@ -1,6 +1,5 @@
 from functools import wraps
 
-from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget
 
 def temporary_change(

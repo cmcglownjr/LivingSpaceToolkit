@@ -45,6 +45,7 @@ class StudioRoofView(QWidget):
         self.setLayout(layout)
 
     def default_state(self) -> None:
+        # TODO: Add strikeout to default state
         logger.debug("Setting studio roof view to default state.")
         self.pitch.default_state(SunroomType.STUDIO)
         self.overhang_edit.clear()

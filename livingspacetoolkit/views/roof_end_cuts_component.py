@@ -45,6 +45,7 @@ class RoofEndCuts(QGroupBox):
 
     @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self) -> None:
+        # TODO: Add strikeout to default state
         logger.debug("Setting end cuts to default state.")
         self.radio_endcut1.setChecked(False)
         self.radio_endcut2.setChecked(False)
