@@ -55,7 +55,8 @@ class RoofPitch(QGroupBox):
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(False)
         self.pitch_input.clear()
-        self.pitch_input_label.setText("/12 in.")
+        self.update_pitch_text(PitchType.RATIO, sunroom)
+        self.setEnabled(False)
 
     def update_pitch_text(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
         match pitch_type:

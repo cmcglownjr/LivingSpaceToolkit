@@ -6,6 +6,7 @@ from PySide6.QtCore import QSize
 from livingspacetoolkit.views.roof_pitch_component import RoofPitch
 from livingspacetoolkit.views.roofing_type_component import RoofingType
 from livingspacetoolkit.views.roof_end_cuts_component import RoofEndCuts
+from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType
 
 logger = logging.getLogger(__name__)
 
@@ -41,3 +42,18 @@ class StudioRoof(QWidget):
         layout.addWidget(self.fascia)
         layout.addSpacerItem(spacer)
         self.setLayout(layout)
+
+    def default_state(self):
+        logger.debug("Setting studio roof view to default state.")
+        self.pitch.default_state(SunroomType.STUDIO)
+        self.overhang_edit.clear()
+        self.overhang_edit.setEnabled(False)
+        self.roofing_type.default_state()
+        self.thickness_combo.clear()
+        self.thickness_combo.setEnabled(False)
+        self.end_cuts.default_state()
+        self.fascia.setChecked(False)
+        self.fascia.setEnabled(False)
+
+    def populate_thickness_combo(self):
+        pass

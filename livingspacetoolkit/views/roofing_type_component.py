@@ -38,3 +38,4 @@ class RoofingType(QGroupBox):
         logger.debug("Setting roofing type to default state.")
         self.radio_eco.setChecked(False)
         self.radio_al.setChecked(False)
+        self.setEnabled(False)

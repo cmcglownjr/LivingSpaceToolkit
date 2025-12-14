@@ -48,3 +48,4 @@ class RoofEndCuts(QGroupBox):
         self.radio_endcut1.setChecked(False)
         self.radio_endcut2.setChecked(False)
         self.radio_endcut3.setChecked(False)
+        self.setEnabled(False)
