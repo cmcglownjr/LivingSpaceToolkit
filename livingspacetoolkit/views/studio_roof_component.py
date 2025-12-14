@@ -1,17 +1,18 @@
 import logging
 
+from typing import Dict
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
 from livingspacetoolkit.views.roof_pitch_component import RoofPitch
-from livingspacetoolkit.views.roofing_type_component import RoofingType
+from livingspacetoolkit.views.roofing_type_component import RoofingTypeView
 from livingspacetoolkit.views.roof_end_cuts_component import RoofEndCuts
-from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType
+from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType, RoofingType
 
 logger = logging.getLogger(__name__)
 
 
-class StudioRoof(QWidget):
+class StudioRoofView(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -20,7 +21,7 @@ class StudioRoof(QWidget):
 
         self.pitch: RoofPitch = RoofPitch("Pitch")
         self.overhang_edit: QLineEdit = QLineEdit()
-        self.roofing_type: RoofingType = RoofingType()
+        self.roofing_type: RoofingTypeView = RoofingTypeView()
         self.thickness_combo: QComboBox = QComboBox()
         self.end_cuts: RoofEndCuts = RoofEndCuts()
         self.fascia: QCheckBox = QCheckBox()
@@ -43,7 +44,7 @@ class StudioRoof(QWidget):
         layout.addSpacerItem(spacer)
         self.setLayout(layout)
 
-    def default_state(self):
+    def default_state(self) -> None:
         logger.debug("Setting studio roof view to default state.")
         self.pitch.default_state(SunroomType.STUDIO)
         self.overhang_edit.clear()
@@ -55,5 +56,9 @@ class StudioRoof(QWidget):
         self.fascia.setChecked(False)
         self.fascia.setEnabled(False)
 
-    def populate_thickness_combo(self):
-        pass
+    def populate_thickness_combo(self, roof_type: RoofingType) -> None:
+        self.thickness_combo.clear()
+        combo_item_list = self.roofing_type.set_thickness_combo_list(roof_type)
+        for item in combo_item_list:
+            self.thickness_combo.addItem(item, userData=combo_item_list[item])
+        self.thickness_combo.setCurrentIndex(0)

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheck
 from PySide6.QtCore import QSize
 
 from livingspacetoolkit.views.roof_pitch_component import RoofPitch
-from livingspacetoolkit.views.roofing_type_component import RoofingType
+from livingspacetoolkit.views.roofing_type_component import RoofingTypeView
 from livingspacetoolkit.views.roof_end_cuts_component import RoofEndCuts
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class CathedralRoof(QWidget):
         self.pitch_a: RoofPitch = RoofPitch("A Side Pitch")
         self.pitch_c: RoofPitch = RoofPitch("C Side Pitch")
         self.overhang_edit: QLineEdit = QLineEdit()
-        self.roofing_type: RoofingType = RoofingType()
+        self.roofing_type: RoofingTypeView = RoofingTypeView()
         self.thickness_combo: QComboBox = QComboBox()
         self.end_cuts: RoofEndCuts = RoofEndCuts()
         self.fascia: QCheckBox = QCheckBox()

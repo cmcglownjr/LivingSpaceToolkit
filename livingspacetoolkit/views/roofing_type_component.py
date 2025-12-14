@@ -1,12 +1,14 @@
 import logging
 
+from typing import Dict
 from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
 from livingspacetoolkit.utils.helpers import temporary_change
+from livingspacetoolkit.lib.livingspacetoolkit_enums import RoofingType
 
 logger = logging.getLogger(__name__)
 
 
-class RoofingType(QGroupBox):
+class RoofingTypeView(QGroupBox):
     def __init__(self):
         super().__init__()
 
@@ -39,3 +41,25 @@ class RoofingType(QGroupBox):
         self.radio_eco.setChecked(False)
         self.radio_al.setChecked(False)
         self.setEnabled(False)
+
+    @staticmethod
+    def set_thickness_combo_list(roof_type: RoofingType) -> Dict[str, str]:
+        combo_item_list: Dict = {}
+        match roof_type:
+            case RoofingType.ALUMINUM:
+                combo_item_list.update(
+                    {
+                        '3"': '3"',
+                        '6"': '6"'
+                    }
+                )
+            case RoofingType.ECO_GREEN:
+                combo_item_list.update(
+                    {
+                        '6"': '6"',
+                        '8"': '8.25"',
+                        '10"': '10.25"',
+                        '12"': '12.25"'
+                    }
+                )
+        return combo_item_list

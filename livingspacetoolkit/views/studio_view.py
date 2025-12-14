@@ -2,7 +2,7 @@ import logging
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy
 
-from livingspacetoolkit.views.studio_roof_component import StudioRoof
+from livingspacetoolkit.views.studio_roof_component import StudioRoofView
 from livingspacetoolkit.views.studio_wall_height_component import StudioWallHeight
 from livingspacetoolkit.views.floor_plan_component import FloorPlan
 
@@ -17,7 +17,7 @@ class Studio(QWidget):
         layout_sub: QVBoxLayout = QVBoxLayout()
         spacer: QSpacerItem = QSpacerItem(20, 40, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self.sunroom_roof: StudioRoof = StudioRoof()
+        self.sunroom_roof: StudioRoofView = StudioRoofView()
         self.sunroom_wall: StudioWallHeight = StudioWallHeight()
         self.sunroom_floor: FloorPlan = FloorPlan()
 
