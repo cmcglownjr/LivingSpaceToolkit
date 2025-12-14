@@ -3,6 +3,7 @@ import logging
 from livingspacetoolkit.views.studio_view import Studio
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
+from livingspacetoolkit.utils.helpers import set_strikethrough
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,13 @@ class StudioController:
         self.sunroom_roof.roofing_type.radio_eco.clicked.connect(
             lambda: self.handle_roofing_type_click(RoofingType.ECO_GREEN))
         self.sunroom_roof.thickness_combo.currentIndexChanged.connect(self.handle_thickness_combo_index_change)
+        self.sunroom_roof.end_cuts.radio_endcut1.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.UNCUT_TOP_BOTTOM))
+        self.sunroom_roof.end_cuts.radio_endcut2.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP_BOTTOM))
+        self.sunroom_roof.end_cuts.radio_endcut3.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP))
+        self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
 
     def handle_pitch_type_click(self, pitch_type: PitchType, sunroom: SunroomType):
         logger.debug(f"{sunroom.name} pitch radio button clicked for type {pitch_type.name}.")
@@ -34,11 +42,49 @@ class StudioController:
         self.toolkit_state.roofing_type = roof_type
         logger.info(f"Populating studio thickness combo box for {roof_type.name} roofing type.")
         self.sunroom_roof.populate_thickness_combo(roof_type)
+        self.sunroom_roof.end_cuts.set_end_cuts_by_roof_type(roof_type)
+        self.toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        self.set_fascia_checkbox()
 
     def handle_thickness_combo_index_change(self):
         thickness_index = self.sunroom_roof.thickness_combo.currentIndex()
         thickness_item = self.sunroom_roof.thickness_combo.itemData(thickness_index)
         thickness_text = self.sunroom_roof.thickness_combo.itemText(thickness_index)
         self.toolkit_state.thickness = thickness_item
+        self.set_fascia_checkbox()
         if thickness_item is not None:
             logger.info(f"Setting thickness to {thickness_text}.")
+
+    def handle_end_cuts_click(self, end_cut_type: EndCutType):
+        logger.info(f"Setting Studio end cuts to {end_cut_type.name}.")
+        self.toolkit_state.end_cuts = end_cut_type
+        self.set_fascia_checkbox()
+
+    def handle_fascia_click(self):
+        fascia_state = self.sunroom_roof.fascia.isChecked()
+        self.toolkit_state.fascia = fascia_state
+        logger.info(f"Setting fascia to {fascia_state}.")
+
+    def set_fascia_checkbox(self):
+        if self.toolkit_state.roofing_type == RoofingType.ECO_GREEN and (
+                self.toolkit_state.end_cuts == EndCutType.UNCUT_TOP_BOTTOM
+                or self.toolkit_state.end_cuts == EndCutType.PLUMB_CUT_TOP):
+            if self.toolkit_state.thickness == '6"':
+                self.sunroom_roof.fascia.setEnabled(True)
+                self.sunroom_roof.fascia.setChecked(True)
+                set_strikethrough(self.sunroom_roof.fascia, False)
+            else:
+                self.sunroom_roof.fascia.setEnabled(False)
+                self.sunroom_roof.fascia.setChecked(False)
+                set_strikethrough(self.sunroom_roof.fascia, True)
+
+        elif self.toolkit_state.roofing_type == RoofingType.ALUMINUM:
+            self.sunroom_roof.fascia.setEnabled(True)
+            self.sunroom_roof.fascia.setChecked(True)
+            set_strikethrough(self.sunroom_roof.fascia, False)
+        else:
+            self.sunroom_roof.fascia.setEnabled(False)
+            self.sunroom_roof.fascia.setChecked(False)
+            set_strikethrough(self.sunroom_roof.fascia, True)
+        fascia_state = self.sunroom_roof.fascia.isChecked()
+        logger.info(f"Setting fascia to {fascia_state}.")

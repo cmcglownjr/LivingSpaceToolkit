@@ -2,7 +2,8 @@ import logging
 
 from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
 
-from livingspacetoolkit.utils.helpers import temporary_change
+from livingspacetoolkit.lib.livingspacetoolkit_enums import RoofingType, EndCutType
+from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
 
 logger = logging.getLogger(__name__)
 
@@ -49,3 +50,22 @@ class RoofEndCuts(QGroupBox):
         self.radio_endcut2.setChecked(False)
         self.radio_endcut3.setChecked(False)
         self.setEnabled(False)
+
+    def set_end_cuts_by_roof_type(self, roof_type: RoofingType) -> None:
+        logger.debug(f"Enabling/Disabling end cuts for roofing type {roof_type.name}")
+        match roof_type:
+            case RoofingType.ECO_GREEN:
+                self.radio_endcut1.setEnabled(True)
+                set_strikethrough(self.radio_endcut1, False)
+                self.radio_endcut2.setEnabled(True)
+                set_strikethrough(self.radio_endcut2, False)
+                self.radio_endcut3.setEnabled(True)
+                set_strikethrough(self.radio_endcut3, False)
+            case RoofingType.ALUMINUM:
+                self.radio_endcut1.setEnabled(True)
+                set_strikethrough(self.radio_endcut1, False)
+                self.radio_endcut2.setEnabled(False)
+                set_strikethrough(self.radio_endcut2, True)
+                self.radio_endcut3.setEnabled(False)
+                set_strikethrough(self.radio_endcut3, True)
+        self.radio_endcut1.setChecked(True)

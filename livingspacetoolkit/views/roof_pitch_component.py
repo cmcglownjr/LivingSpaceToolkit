@@ -61,7 +61,7 @@ class RoofPitch(QGroupBox):
     def update_pitch_text(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
         match pitch_type:
             case pitch_type.ANGLE:
-                self.pitch_input_label.setText(u"deg. (\N{DEGREE SIGN})")
+                self.pitch_input_label.setText(u"deg(\N{DEGREE SIGN})")
                 logger.info(f"{sunroom.name} {self.title()} unit type set to angle.")
                 return None
             case pitch_type.RATIO:
