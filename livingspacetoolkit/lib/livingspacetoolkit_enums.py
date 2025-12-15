@@ -31,4 +31,18 @@ class SunroomType(Enum):
     STUDIO = 0
     CATHEDRAL = 1
 
-# TODO: Make enum for lengths
+class LengthType(Enum):
+    OVERHANG = 0
+    THICKNESS = 1
+    PEAK_HEIGHT = 2
+    MAX_HEIGHT = 3
+    DRIP_EDGE_HEIGHT = 4
+    A_SIDE_SOFFIT_HEIGHT = 5
+    B_SIDE_SOFFIT_HEIGHT = 6
+    C_SIDE_SOFFIT_HEIGHT = 7
+    A_WALL_HEIGHT = 8
+    B_WALL_HEIGHT = 9
+    C_WALL_HEIGHT = 10
+    A_WALL_WIDTH = 11
+    B_WALL_WIDTH  = 12
+    C_WALL_WIDTH = 13
