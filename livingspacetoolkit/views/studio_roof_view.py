@@ -3,9 +3,7 @@ import logging
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
-from livingspacetoolkit.views.roof_pitch_view import RoofPitchView
-from livingspacetoolkit.views.roofing_type_view import RoofingTypeView
-from livingspacetoolkit.views.roof_end_cuts_view import RoofEndCutsView
+from livingspacetoolkit.views import RoofPitchView, RoofingTypeView, RoofEndCutsView
 from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType, RoofingType
 from livingspacetoolkit.utils.helpers import set_strikethrough
 

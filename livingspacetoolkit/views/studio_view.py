@@ -2,9 +2,7 @@ import logging
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy
 
-from livingspacetoolkit.views.studio_roof_view import StudioRoofView
-from livingspacetoolkit.views.studio_wall_height_view import StudioWallHeightView
-from livingspacetoolkit.views.floor_plan_view import FloorPlanView
+from livingspacetoolkit.views import StudioWallHeightView, FloorPlanView, StudioRoofView
 
 logger = logging.getLogger(__name__)
 

@@ -2,8 +2,7 @@ import logging
 
 from PySide6.QtWidgets import QTabWidget
 
-from livingspacetoolkit.views.studio_view import StudioView
-from livingspacetoolkit.views.cathedral_view import CathedralView
+from livingspacetoolkit.views import StudioView, CathedralView
 
 logger = logging.getLogger(__name__)
 

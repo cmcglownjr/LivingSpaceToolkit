@@ -1,8 +1,6 @@
 import logging
 
-from livingspacetoolkit.views.tabs_view import TabsView
-from livingspacetoolkit.views.scenarios_view import ScenariosView
-from livingspacetoolkit.views.results_view import ResultsView
+from livingspacetoolkit.views import ScenariosView, ResultsView, TabsView
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 from livingspacetoolkit.controllers.studio_controller import StudioController
 from livingspacetoolkit.controllers.cathedral_controller import CathedralController
@@ -36,7 +34,7 @@ class MainWindowController:
         self.results_view.results_view.clear()
         self.scenarios_view.default_state()
         self.set_to_default_state()
-        logging.info(f'The sunroom type, {SunroomType(self.tabs_view.currentIndex()).name}, has been selected.')
+        logger.debug(f'The sunroom type, {SunroomType(self.tabs_view.currentIndex()).name}, has been selected.')
 
     def handle_scenario_selected(self) -> None:
         for button in self.scenarios_view.scenario_dict.keys():

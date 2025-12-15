@@ -1,4 +1,4 @@
-from livingspacetoolkit.logconf import log_config
+import livingspacetoolkit.logconf.log_config
 import logging
 
 from PySide6.QtWidgets import QApplication

@@ -5,9 +5,7 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QLabel, QGridLayout
 from PySide6.QtGui import QPixmap, QIcon
 
 import livingspacetoolkit.Resource.resources_rc
-from livingspacetoolkit.views.scenarios_view import ScenariosView
-from livingspacetoolkit.views.results_view import ResultsView
-from livingspacetoolkit.views.tabs_view import TabsView
+from livingspacetoolkit.views import ScenariosView, ResultsView, TabsView
 from livingspacetoolkit.controllers.main_window_controller import MainWindowController
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 

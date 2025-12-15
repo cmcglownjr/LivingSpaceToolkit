@@ -1,6 +1,6 @@
 import logging
 
-from livingspacetoolkit.views.studio_view import StudioView
+from livingspacetoolkit.views import StudioView
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
 from livingspacetoolkit.utils.helpers import set_strikethrough
@@ -32,6 +32,7 @@ class StudioController:
         self.sunroom_roof.end_cuts.radio_endcut3.clicked.connect(
             lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP))
         self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
+        self.sunroom_floor.wall_a.editingFinished.connect(self.handle_a_wall_finish_edit)
 
     def handle_pitch_type_click(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
         logger.debug(f"{sunroom.name} pitch radio button clicked for type {pitch_type.name}.")
@@ -64,6 +65,11 @@ class StudioController:
         fascia_state = self.sunroom_roof.fascia.isChecked()
         self.toolkit_state.fascia = fascia_state
         logger.info(f"Setting fascia to {fascia_state}.")
+
+    def handle_a_wall_finish_edit(self) -> None:
+        # TODO: A model should verify text
+        self.toolkit_state.floor_walls.update({"a_wall": self.sunroom_floor.wall_a.text()})
+        logger.debug(f"Studio A Wall set to: {self.sunroom_floor.wall_a.text()}.")
 
     def set_fascia_checkbox(self) -> None:
         if self.toolkit_state.roofing_type == RoofingType.ECO_GREEN and (
