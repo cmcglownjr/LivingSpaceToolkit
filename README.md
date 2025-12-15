@@ -85,9 +85,9 @@ system.
 
 ### Screenshots
 
-![Studio](images/screenshot2.jpg)
+![StudioView](images/screenshot2.jpg)
 
-![Cathedral](images/screenshot3.jpg)
+![CathedralView](images/screenshot3.jpg)
 
 ## Future Work
 

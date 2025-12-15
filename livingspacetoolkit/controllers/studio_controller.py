@@ -1,6 +1,6 @@
 import logging
 
-from livingspacetoolkit.views.studio_view import Studio
+from livingspacetoolkit.views.studio_view import StudioView
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
 from livingspacetoolkit.utils.helpers import set_strikethrough
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class StudioController:
-    def __init__(self, view: Studio, toolkit_state: ToolkitState):
+    def __init__(self, view: StudioView, toolkit_state: ToolkitState):
         self.toolkit_state = toolkit_state
         self.sunroom_roof = view.sunroom_roof
         self.sunroom_wall = view.sunroom_wall
@@ -38,7 +38,7 @@ class StudioController:
         self.sunroom_roof.pitch.update_pitch_text(pitch_type, sunroom)
 
     def handle_roofing_type_click(self, roof_type: RoofingType) -> None:
-        logger.debug(f"Studio roofing type set to {roof_type.name}.")
+        logger.debug(f"StudioView roofing type set to {roof_type.name}.")
         self.toolkit_state.roofing_type = roof_type
         logger.info(f"Populating studio thickness combo box for {roof_type.name} roofing type.")
         self.sunroom_roof.populate_thickness_combo(roof_type)
@@ -56,7 +56,7 @@ class StudioController:
             logger.info(f"Setting thickness to {thickness_text}.")
 
     def handle_end_cuts_click(self, end_cut_type: EndCutType) -> None:
-        logger.info(f"Setting Studio end cuts to {end_cut_type.name}.")
+        logger.info(f"Setting StudioView end cuts to {end_cut_type.name}.")
         self.toolkit_state.end_cuts = end_cut_type
         self.set_fascia_checkbox()
 

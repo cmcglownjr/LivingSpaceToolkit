@@ -3,26 +3,26 @@ import logging
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
-from livingspacetoolkit.views.roof_pitch_component import RoofPitch
-from livingspacetoolkit.views.roofing_type_component import RoofingTypeView
-from livingspacetoolkit.views.roof_end_cuts_component import RoofEndCuts
+from livingspacetoolkit.views.roof_pitch_view import RoofPitchView
+from livingspacetoolkit.views.roofing_type_view import RoofingTypeView
+from livingspacetoolkit.views.roof_end_cuts_view import RoofEndCutsView
 
 logger = logging.getLogger(__name__)
 
 
-class CathedralRoof(QWidget):
+class CathedralRoofView(QWidget):
     def __init__(self):
         super().__init__()
 
         layout: QVBoxLayout = QVBoxLayout()
         spacer: QSpacerItem = QSpacerItem(20, 40, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self.pitch_a: RoofPitch = RoofPitch("A Side Pitch")
-        self.pitch_c: RoofPitch = RoofPitch("C Side Pitch")
+        self.pitch_a: RoofPitchView = RoofPitchView("A Side Pitch")
+        self.pitch_c: RoofPitchView = RoofPitchView("C Side Pitch")
         self.overhang_edit: QLineEdit = QLineEdit()
         self.roofing_type: RoofingTypeView = RoofingTypeView()
         self.thickness_combo: QComboBox = QComboBox()
-        self.end_cuts: RoofEndCuts = RoofEndCuts()
+        self.end_cuts: RoofEndCutsView = RoofEndCutsView()
         self.fascia: QCheckBox = QCheckBox()
 
         overhang_label: QLabel = QLabel("Overhang")

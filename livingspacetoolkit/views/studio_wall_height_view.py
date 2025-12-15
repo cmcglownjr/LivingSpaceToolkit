@@ -9,7 +9,7 @@ from livingspacetoolkit.utils.helpers import set_strikethrough
 logger = logging.getLogger(__name__)
 
 
-class StudioWallHeight(QWidget):
+class StudioWallHeightView(QWidget):
     def __init__(self):
         super().__init__()
 

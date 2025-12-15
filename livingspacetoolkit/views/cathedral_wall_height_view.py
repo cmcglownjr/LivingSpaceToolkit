@@ -7,7 +7,7 @@ from PySide6.QtGui import QPixmap
 logger = logging.getLogger(__name__)
 
 
-class CathedralWallHeight(QWidget):
+class CathedralWallHeightView(QWidget):
     def __init__(self):
         super().__init__()
         layout_heights: QVBoxLayout = QVBoxLayout()

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QTextBr
 logger = logging.getLogger(__name__)
 
 
-class Results(QWidget):
+class ResultsView(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -24,7 +24,7 @@ class Results(QWidget):
         font.setItalic(True)
         font.setUnderline(True)
 
-        self.results_label.setText("Results:")
+        self.results_label.setText("ResultsView:")
         self.results_label.setFont(font)
         self.results_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
@@ -41,5 +41,5 @@ class Results(QWidget):
         logger.debug("Setting results to default state.")
         self.results_view.clear()
 
-    def update_text(self, text: str):
+    def update_text(self, text: str) -> None:
         self.results_view.setText(text)

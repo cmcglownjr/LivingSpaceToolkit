@@ -1,20 +1,21 @@
 
-from .cathedral_view import Cathedral
-from .cathedral_wall_height_component import CathedralWallHeight
-from .cathedral_roof_component import CathedralRoof
+from .cathedral_view import CathedralView
+from .cathedral_wall_height_view import CathedralWallHeightView
+from .cathedral_roof_view import CathedralRoofView
 
-from .studio_view import Studio
-from .studio_wall_height_component import StudioWallHeight
-from .studio_roof_component import StudioRoofView
+from .studio_view import StudioView
+from .studio_wall_height_view import StudioWallHeightView
+from .studio_roof_view import StudioRoofView
 
-from .floor_plan_component import FloorPlan
-from .results_view import Results
-from .roof_end_cuts_component import RoofEndCuts
-from .roof_pitch_component import RoofPitch
-from .roofing_type_component import RoofingTypeView
+from .floor_plan_view import FloorPlanView
+from .results_view import ResultsView
+from .roof_end_cuts_view import RoofEndCutsView
+from .roof_pitch_view import RoofPitchView
+from .roofing_type_view import RoofingTypeView
 from .scenarios_view import ScenariosView
 
 __all__ = [
-    "Cathedral", "CathedralWallHeight", "CathedralRoof", "Studio", "StudioWallHeight", "StudioRoofView", "FloorPlan",
-    "Results", "RoofEndCuts", "RoofPitch", "RoofingTypeView", "ScenariosView"
+    "CathedralView", "CathedralWallHeightView", "CathedralRoofView", "StudioView", "StudioWallHeightView", "StudioRoofView",
+    "FloorPlanView",
+    "ResultsView", "RoofEndCutsView", "RoofPitchView", "RoofingTypeView", "ScenariosView"
 ]

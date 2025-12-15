@@ -110,7 +110,7 @@
       </property>
       <widget class="QWidget" name="studio_tab">
        <attribute name="title">
-        <string>Studio</string>
+        <string>StudioView</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_21">
         <item>
@@ -784,7 +784,7 @@ and Pitch</string>
                </font>
               </property>
               <property name="text">
-               <string>Results:</string>
+               <string>ResultsView:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -833,7 +833,7 @@ and Pitch</string>
       </widget>
       <widget class="QWidget" name="cathedral_tab">
        <attribute name="title">
-        <string>Cathedral</string>
+        <string>CathedralView</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_22">
         <item>
@@ -1590,7 +1590,7 @@ C Wall</string>
                </font>
               </property>
               <property name="text">
-               <string>Results:</string>
+               <string>ResultsView:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>

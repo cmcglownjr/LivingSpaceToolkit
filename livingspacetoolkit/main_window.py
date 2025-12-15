@@ -6,11 +6,9 @@ from PySide6.QtGui import QPixmap, QIcon
 
 import livingspacetoolkit.Resource.resources_rc
 from livingspacetoolkit.views.scenarios_view import ScenariosView
-from livingspacetoolkit.views.results_view import Results
+from livingspacetoolkit.views.results_view import ResultsView
 from livingspacetoolkit.views.tabs_view import TabsView
-from livingspacetoolkit.controllers.results_controller import ResultsController
-from livingspacetoolkit.controllers.scenarios_controller import ScenarioController
-from livingspacetoolkit.controllers.tabs_controller import TabsController
+from livingspacetoolkit.controllers.main_window_controller import MainWindowController
 from livingspacetoolkit.models.toolkit_state_model import ToolkitState
 
 
@@ -35,13 +33,12 @@ class MainWindow(QMainWindow):
 
         # === Views ===
         self.scenarios_view = ScenariosView()
-        self.results_view = Results()
+        self.results_view = ResultsView()
         self.tabs_view = TabsView()
 
         # === Controllers ===
-        self.tabs_controller = TabsController(self.tabs_view, self.scenarios_view,self.results_view, self.toolkit_state)
-        self.results_controller = ResultsController(self.results_view, self.toolkit_state)
-        self.scenario_controller = ScenarioController(self.scenarios_view, self.tabs_controller, self.toolkit_state)
+        self.tabs_controller = MainWindowController(self.tabs_view, self.scenarios_view, self.results_view,
+                                                    self.toolkit_state)
 
         layout: QGridLayout = QGridLayout()
 

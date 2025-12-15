@@ -9,7 +9,7 @@ import livingspacetoolkit.Resource.resources_rc
 logger = logging.getLogger(__name__)
 
 
-class FloorPlan(QWidget):
+class FloorPlanView(QWidget):
     def __init__(self):
         super().__init__()
 

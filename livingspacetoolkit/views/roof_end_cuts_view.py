@@ -8,7 +8,7 @@ from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
 logger = logging.getLogger(__name__)
 
 
-class RoofEndCuts(QGroupBox):
+class RoofEndCutsView(QGroupBox):
     def __init__(self):
         super().__init__()
 

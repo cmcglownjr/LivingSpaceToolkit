@@ -5,8 +5,8 @@ This module holds the classes and functions for creating the Livingspace style o
 
 Classes:
     Sunroom
-    Studio
-    Cathedral
+    StudioView
+    CathedralView
 
 Functions:
     angled
@@ -139,7 +139,7 @@ def calculate_armstrong_panels(pitch, pitched_wall, unpitched_wall):
 # noinspection SpellCheckingInspection
 class Sunroom:
     """
-    This class will be the base class for the Studio and Cathedral type of sunrooms.
+    This class will be the base class for the StudioView and CathedralView type of sunrooms.
 
     ...
     Attributes
@@ -286,7 +286,7 @@ class Sunroom:
 # noinspection SpellCheckingInspection
 class Studio(Sunroom):
     """
-    Class for creating Studio style sunroom
+    Class for creating StudioView style sunroom
 
     ...
     Attributes
@@ -515,7 +515,7 @@ class Studio(Sunroom):
 # noinspection SpellCheckingInspection
 class Cathedral(Sunroom):
     """
-    Class for creating Cathedral style sunroom
+    Class for creating CathedralView style sunroom
 
     ...
     Attributes

@@ -3,9 +3,9 @@ import logging
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
-from livingspacetoolkit.views.roof_pitch_component import RoofPitch
-from livingspacetoolkit.views.roofing_type_component import RoofingTypeView
-from livingspacetoolkit.views.roof_end_cuts_component import RoofEndCuts
+from livingspacetoolkit.views.roof_pitch_view import RoofPitchView
+from livingspacetoolkit.views.roofing_type_view import RoofingTypeView
+from livingspacetoolkit.views.roof_end_cuts_view import RoofEndCutsView
 from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType, RoofingType
 from livingspacetoolkit.utils.helpers import set_strikethrough
 
@@ -19,11 +19,11 @@ class StudioRoofView(QWidget):
         layout: QVBoxLayout = QVBoxLayout()
         spacer: QSpacerItem = QSpacerItem(20, 40, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self.pitch: RoofPitch = RoofPitch("Pitch")
+        self.pitch: RoofPitchView = RoofPitchView("Pitch")
         self.overhang_edit: QLineEdit = QLineEdit()
         self.roofing_type: RoofingTypeView = RoofingTypeView()
         self.thickness_combo: QComboBox = QComboBox()
-        self.end_cuts: RoofEndCuts = RoofEndCuts()
+        self.end_cuts: RoofEndCutsView = RoofEndCutsView()
         self.fascia: QCheckBox = QCheckBox()
 
         overhang_label: QLabel = QLabel("Overhang")
@@ -45,7 +45,7 @@ class StudioRoofView(QWidget):
         self.setLayout(layout)
 
     def default_state(self) -> None:
-        logger.debug("Setting studio roof view to default state.")
+        logger.debug("Setting studio roof tabs_view to default state.")
         self.pitch.default_state(SunroomType.STUDIO)
         self.overhang_edit.clear()
         self.overhang_edit.setEnabled(False)

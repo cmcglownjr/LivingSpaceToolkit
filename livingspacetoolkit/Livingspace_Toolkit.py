@@ -49,7 +49,7 @@ class Form(QObject):
         self.studio = None
         self.cathedral = None
         self.version_label = self.window.findChild(QLabel, 'lbl_version')
-        # Studio objects
+        # StudioView objects
         self.st_scenario1_radio = self.window.findChild(QRadioButton, 'st_scenario1_radio')
         self.st_scenario2_radio = self.window.findChild(QRadioButton, 'st_scenario2_radio')
         self.st_scenario3_radio = self.window.findChild(QRadioButton, 'st_scenario3_radio')
@@ -84,7 +84,7 @@ class Form(QObject):
         self.st_awall_edit = self.window.findChild(QLineEdit, 'st_awall_editbox')
         self.st_bwall_edit = self.window.findChild(QLineEdit, 'st_bwall_editbox')
         self.st_cwall_edit = self.window.findChild(QLineEdit, 'st_cwall_editbox')
-        # Cathedral object
+        # CathedralView object
         self.ca_scenario1_radio = self.window.findChild(QRadioButton, 'ca_scenario1_radio')
         self.ca_scenario2_radio = self.window.findChild(QRadioButton, 'ca_scenario2_radio')
         self.ca_scenario3_radio = self.window.findChild(QRadioButton, 'ca_scenario3_radio')
@@ -126,7 +126,7 @@ class Form(QObject):
         self.ca_awall_edit = self.window.findChild(QLineEdit, 'ca_awall_editbox')
         self.ca_bwall_edit = self.window.findChild(QLineEdit, 'ca_bwall_editbox')
         self.ca_cwall_edit = self.window.findChild(QLineEdit, 'ca_cwall_editbox')
-        # Studio click events
+        # StudioView click events
         self.st_scenario1_radio.clicked.connect(self.st_scenario)
         self.st_scenario2_radio.clicked.connect(self.st_scenario)
         self.st_scenario3_radio.clicked.connect(self.st_scenario)
@@ -143,7 +143,7 @@ class Form(QObject):
         self.st_endcut1_radio.clicked.connect(self.st_endcuts)
         self.st_endcut2_radio.clicked.connect(self.st_endcuts)
         self.st_endcut3_radio.clicked.connect(self.st_endcuts)
-        # Cathedral click events
+        # CathedralView click events
         self.ca_scenario1_radio.clicked.connect(self.ca_scenario)
         self.ca_scenario2_radio.clicked.connect(self.ca_scenario)
         self.ca_scenario3_radio.clicked.connect(self.ca_scenario)
