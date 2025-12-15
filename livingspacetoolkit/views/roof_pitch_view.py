@@ -9,10 +9,10 @@ from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
 logger = logging.getLogger(__name__)
 
 class RoofPitchView(QGroupBox):
-    def __init__(self, title: str = ""):
+    def __init__(self, name: str = ""):
         super().__init__()
 
-        self.setTitle(title)
+        self.name = name
         self.radio_group: QButtonGroup = QButtonGroup()
 
         self.radio_ratio: QRadioButton = QRadioButton()
@@ -51,7 +51,7 @@ class RoofPitchView(QGroupBox):
 
     @temporary_change('radio_group', 'setExclusive', False, True)
     def default_state(self, sunroom: SunroomType) -> None:
-        logger.debug(f"Setting {sunroom.name} {self.title()} to default state.")
+        logger.debug(f"Setting {sunroom.name} {self.name} to default state.")
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(False)
         self.pitch_input.clear()
@@ -61,7 +61,7 @@ class RoofPitchView(QGroupBox):
 
     @temporary_change('radio_group', 'setExclusive', False, True)
     def enabled_state(self, sunroom: SunroomType) -> None:
-        logger.debug(f"Setting {sunroom.name} {self.title()} to enabled state.")
+        logger.debug(f"Setting {sunroom.name} {self.name} to enabled state.")
         self.radio_angle.setChecked(False)
         self.radio_ratio.setChecked(True)
         self.pitch_input.clear()
@@ -73,9 +73,9 @@ class RoofPitchView(QGroupBox):
         match pitch_type:
             case pitch_type.ANGLE:
                 self.pitch_input_label.setText(u"deg(\N{DEGREE SIGN})")
-                logger.info(f"{sunroom.name} {self.title()} unit type set to angle.")
+                logger.info(f"{sunroom.name} {self.name} unit type set to angle.")
                 return None
             case pitch_type.RATIO:
                 self.pitch_input_label.setText("/12 in.")
-                logger.info(f"{sunroom.name} {self.title()} unit type set to ratio.")
+                logger.info(f"{sunroom.name} {self.name} unit type set to ratio.")
                 return None

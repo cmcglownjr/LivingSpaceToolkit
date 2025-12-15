@@ -8,6 +8,12 @@ QWidget {
     color: #333333;
 }
 
+QWidget::disabled{
+  background-color: #CCCCCC;
+  selection-background-color: transparent;
+  color: {{ opacity(text, 10) }};
+}
+
 /* QLineEdit */
 QLineEdit {
     padding: 6px;

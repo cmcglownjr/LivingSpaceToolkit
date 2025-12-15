@@ -12,7 +12,6 @@ class RoofEndCutsView(QGroupBox):
     def __init__(self):
         super().__init__()
 
-        self.setTitle("End Cuts")
         self.radio_group: QButtonGroup = QButtonGroup()
 
         self.radio_endcut1: QRadioButton = QRadioButton()

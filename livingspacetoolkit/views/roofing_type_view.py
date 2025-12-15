@@ -12,7 +12,6 @@ class RoofingTypeView(QGroupBox):
     def __init__(self):
         super().__init__()
 
-        self.setTitle("Roofing Type")
         self.radio_group: QButtonGroup = QButtonGroup()
 
         self.radio_eco: QRadioButton = QRadioButton()
