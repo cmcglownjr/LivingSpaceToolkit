@@ -3,7 +3,9 @@ import logging
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
-from livingspacetoolkit.views import RoofPitchView, RoofingTypeView, RoofEndCutsView
+from .roof_end_cuts_view import RoofEndCutsView
+from .roof_pitch_view import RoofPitchView
+from .roofing_type_view import RoofingTypeView
 
 logger = logging.getLogger(__name__)
 
