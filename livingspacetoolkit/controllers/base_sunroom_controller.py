@@ -23,6 +23,7 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         pass
 
     def set_to_default(self) -> None:
+        logger.debug(f"Setting {self.toolkit_state.sunroom_type.name} roof tab to default state.")
         self.sunroom_roof.default_state()
         self.sunroom_wall.default_state()
         self.sunroom_floor.default_state()

@@ -4,6 +4,8 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtGui import QPixmap
 
+from livingspacetoolkit.utils.helpers import set_strikethrough
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,13 +29,13 @@ class CathedralWallHeightView(QWidget):
         self.soffit_height_a_edit: QLineEdit = QLineEdit()
         self.soffit_height_c_edit: QLineEdit = QLineEdit()
         self.drip_edge_height_edit: QLineEdit = QLineEdit()
-        peak_height_label: QLabel = QLabel("Peak Height")
-        max_height_label: QLabel = QLabel("Max Height")
-        a_wall_height_label: QLabel = QLabel("A Wall Height")
-        c_wall_height_label: QLabel = QLabel("C Wall Height")
-        soffit_height_a_label: QLabel = QLabel("Soffit Height A Wall")
-        soffit_height_c_label: QLabel = QLabel("Soffit Height C Wall")
-        drip_edge_height_label: QLabel = QLabel("Drip Edge Height")
+        self.peak_height_label: QLabel = QLabel("Peak Height")
+        self.max_height_label: QLabel = QLabel("Max Height")
+        self.a_wall_height_label: QLabel = QLabel("A Wall Height")
+        self.c_wall_height_label: QLabel = QLabel("C Wall Height")
+        self.soffit_height_a_label: QLabel = QLabel("Soffit Height A Wall")
+        self.soffit_height_c_label: QLabel = QLabel("Soffit Height C Wall")
+        self.drip_edge_height_label: QLabel = QLabel("Drip Edge Height")
 
         self.peak_height_edit.setPlaceholderText("0' or 0\"")
         self.peak_height_edit.setMaximumSize(QSize(150, 40))
@@ -44,19 +46,19 @@ class CathedralWallHeightView(QWidget):
         self.soffit_height_c_edit.setPlaceholderText("0' or 0\"")
         self.drip_edge_height_edit.setPlaceholderText("0' or 0\"")
 
-        layout_heights.addWidget(peak_height_label)
+        layout_heights.addWidget(self.peak_height_label)
         layout_heights.addWidget(self.peak_height_edit)
-        layout_heights.addWidget(max_height_label)
+        layout_heights.addWidget(self.max_height_label)
         layout_heights.addWidget(self.max_height_edit)
-        layout_heights.addWidget(a_wall_height_label)
+        layout_heights.addWidget(self.a_wall_height_label)
         layout_heights.addWidget(self.a_wall_height_edit)
-        layout_heights.addWidget(c_wall_height_label)
+        layout_heights.addWidget(self.c_wall_height_label)
         layout_heights.addWidget(self.c_wall_height_edit)
-        layout_heights.addWidget(soffit_height_a_label)
+        layout_heights.addWidget(self.soffit_height_a_label)
         layout_heights.addWidget(self.soffit_height_a_edit)
-        layout_heights.addWidget(soffit_height_c_label)
+        layout_heights.addWidget(self.soffit_height_c_label)
         layout_heights.addWidget(self.soffit_height_c_edit)
-        layout_heights.addWidget(drip_edge_height_label)
+        layout_heights.addWidget(self.drip_edge_height_label)
         layout_heights.addWidget(self.drip_edge_height_edit)
         layout_heights.addSpacerItem(spacer)
 
@@ -67,3 +69,26 @@ class CathedralWallHeightView(QWidget):
         layout.addLayout(layout_img)
 
         self.setLayout(layout)
+
+    def default_state(self) -> None:
+        set_strikethrough(self.peak_height_label, True)
+        self.peak_height_edit.clear()
+        self.peak_height_edit.setEnabled(False)
+        set_strikethrough(self.max_height_label, True)
+        self.max_height_edit.clear()
+        self.max_height_edit.setEnabled(False)
+        set_strikethrough(self.a_wall_height_label, True)
+        self.a_wall_height_edit.clear()
+        self.a_wall_height_edit.setEnabled(False)
+        set_strikethrough(self.c_wall_height_label, True)
+        self.c_wall_height_edit.clear()
+        self.c_wall_height_edit.setEnabled(False)
+        set_strikethrough(self.soffit_height_a_label, True)
+        self.soffit_height_a_edit.clear()
+        self.soffit_height_a_edit.setEnabled(False)
+        set_strikethrough(self.soffit_height_c_label, True)
+        self.soffit_height_c_edit.clear()
+        self.soffit_height_c_edit.setEnabled(False)
+        set_strikethrough(self.drip_edge_height_label, True)
+        self.drip_edge_height_edit.clear()
+        self.drip_edge_height_edit.setEnabled(False)

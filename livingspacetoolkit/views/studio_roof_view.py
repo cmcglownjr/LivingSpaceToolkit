@@ -45,7 +45,6 @@ class StudioRoofView(QWidget):
         self.setLayout(layout)
 
     def default_state(self) -> None:
-        logger.debug("Setting studio roof tabs_view to default state.")
         self.pitch.default_state(SunroomType.STUDIO)
         self.overhang_edit.clear()
         self.overhang_edit.setEnabled(False)

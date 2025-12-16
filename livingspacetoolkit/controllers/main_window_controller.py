@@ -49,7 +49,7 @@ class MainWindowController:
 
     def set_to_default_state(self) -> None:
         self.studio_controller.set_to_default()
-        # TODO: self.cathedral_controller.set_to_default()
+        self.cathedral_controller.set_to_default()
 
     def update_to_scenario(self) -> None:
         self.results_view.results_view.clear()
@@ -57,5 +57,4 @@ class MainWindowController:
             case SunroomType.STUDIO:
                 self.studio_controller.update_to_scenario()
             case SunroomType.CATHEDRAL:
-                # TODO: self.cathedral_controller.update_to_scenario()
-                pass
+                self.cathedral_controller.update_to_scenario()
