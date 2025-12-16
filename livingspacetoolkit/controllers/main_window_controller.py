@@ -1,7 +1,7 @@
 import logging
 
 from livingspacetoolkit.views import ScenariosView, ResultsView, TabsView
-from livingspacetoolkit.models.toolkit_state_model import ToolkitState
+from livingspacetoolkit.models.toolkit_state_model import ToolkitStateModel
 from .studio_controller import StudioController
 from .cathedral_controller import CathedralController
 from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType
@@ -14,7 +14,7 @@ class MainWindowController:
                  tabs_view: TabsView,
                  scenarios_view: ScenariosView,
                  results_view: ResultsView,
-                 toolkit_state: ToolkitState):
+                 toolkit_state: ToolkitStateModel):
         self.tabs_view = tabs_view
         self.scenarios_view = scenarios_view
         self.results_view = results_view

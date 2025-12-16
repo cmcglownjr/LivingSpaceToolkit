@@ -6,7 +6,7 @@ from PySide6.QtGui import QPixmap, QIcon
 
 from livingspacetoolkit.views import ScenariosView, ResultsView, TabsView
 from livingspacetoolkit.controllers.main_window_controller import MainWindowController
-from livingspacetoolkit.models.toolkit_state_model import ToolkitState
+from livingspacetoolkit.models.toolkit_state_model import ToolkitStateModel
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         self.logo.setPixmap(logo_image)
 
         # === Models ===
-        self.toolkit_state = ToolkitState()
+        self.toolkit_state = ToolkitStateModel()
 
         # === Views ===
         self.scenarios_view = ScenariosView()
