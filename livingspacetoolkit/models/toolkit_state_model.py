@@ -6,7 +6,7 @@ from livingspacetoolkit.lib.livingspacetoolkit_enums import Scenario, RoofingTyp
 
 
 @dataclass()
-class ToolkitState:
+class ToolkitStateModel:
     sunroom_type: SunroomType = SunroomType.STUDIO
     scenario: Scenario | None = None
     pitch: Dict[str, PitchType] | None = None # TODO: Make a class for pitch input. Will store type and value
