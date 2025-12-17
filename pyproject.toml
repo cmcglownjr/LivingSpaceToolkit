@@ -15,6 +15,7 @@ dev = [
     "pytest>=9.0.1",
     "zstandard>=0.25.0",
     "ruff>=0.14.8",
+    "pytest-qt>=4.5.0",
 ]
 
 [tool.pytest.ini_options]
