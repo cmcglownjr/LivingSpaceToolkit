@@ -3,8 +3,8 @@
 
 import pytest
 from math import atan, radians, tan
-from lib import LivingspaceToolkitClass, Units as EU
-from lib.LivingspaceToolkitClass import sixteenth, pitch_estimate
+from livingspacetoolkit.lib import LivingspaceToolkitClass, Units as EU
+from livingspacetoolkit.lib.LivingspaceToolkitClass import sixteenth, pitch_estimate
 
 
 @pytest.fixture
