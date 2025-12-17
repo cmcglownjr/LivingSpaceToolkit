@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Protocol, Any
 
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
-from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
+from livingspacetoolkit.lib.livingspacetoolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType,
+                                                             LengthType, RoofSide)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 
 logger = logging.getLogger(__name__)
@@ -14,12 +15,13 @@ class BaseSunroomProtocol(Protocol):
     sunroom_wall: Any
     sunroom_floor: Any
     toolkit_state: ToolkitStateModel
+    roof_model: RoofModel
 
 
 class BaseSunroomController(ABC, BaseSunroomProtocol):
 
     @abstractmethod
-    def update_to_scenario(self):
+    def update_to_scenario(self) -> None:
         pass
 
     def set_to_default(self) -> None:
@@ -71,9 +73,15 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         fascia_state = self.sunroom_roof.fascia.isChecked()
         logger.info(f"Setting fascia to {fascia_state}.")
 
-    def handle_pitch_type_click(self, pitch_type: PitchType, sunroom: SunroomType) -> None:
+    def handle_pitch_type_click(self, pitch_type: PitchType, sunroom: SunroomType, pitch_side: RoofSide) -> None:
         logger.debug(f"{sunroom.name} pitch radio button clicked for type {pitch_type.name}.")
-        self.sunroom_roof.pitch.update_pitch_text(pitch_type, sunroom)
+        match pitch_side:
+            case RoofSide.A_SIDE:
+                self.sunroom_roof.pitch_a.update_pitch_text(pitch_type, sunroom)
+            case RoofSide.B_SIDE:
+                self.sunroom_roof.pitch.update_pitch_text(pitch_type, sunroom)
+            case RoofSide.C_SIDE:
+                self.sunroom_roof.pitch_c.update_pitch_text(pitch_type, sunroom)
 
     def handle_roofing_type_click(self, roof_type: RoofingType) -> None:
         logger.debug(f"{self.toolkit_state.sunroom_type.name} roofing type set to {roof_type.name}.")
@@ -107,3 +115,18 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         fascia_state = self.sunroom_roof.fascia.isChecked()
         self.toolkit_state.fascia = fascia_state
         logger.info(f"Setting {self.toolkit_state.sunroom_type.name} fascia to {fascia_state}.")
+
+    def handle_wall_finish_edit(self, wall: LengthType) -> None:
+        # TODO: A model should verify text
+        wall_width = None
+        match wall:
+            case LengthType.A_WALL_WIDTH:
+                wall_width = self.sunroom_floor.wall_dict[wall].text()
+                self.toolkit_state.floor_walls.update({"a_wall": wall_width})
+            case LengthType.B_WALL_WIDTH:
+                wall_width = self.sunroom_floor.wall_dict[wall].text()
+                self.toolkit_state.floor_walls.update({"b_wall": wall_width})
+            case LengthType.C_WALL_WIDTH:
+                wall_width = self.sunroom_floor.wall_dict[wall].text()
+                self.toolkit_state.floor_walls.update({"c_wall": wall_width})
+        logger.debug(f"{self.toolkit_state.sunroom_type.name} {wall.name} set to: {wall_width}.")

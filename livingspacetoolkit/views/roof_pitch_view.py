@@ -74,8 +74,6 @@ class RoofPitchView(QGroupBox):
             case pitch_type.ANGLE:
                 self.pitch_input_label.setText(u"deg(\N{DEGREE SIGN})")
                 logger.info(f"{sunroom.name} {self.name} unit type set to angle.")
-                return None
             case pitch_type.RATIO:
                 self.pitch_input_label.setText("/12 in.")
                 logger.info(f"{sunroom.name} {self.name} unit type set to ratio.")
-                return None

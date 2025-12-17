@@ -1,8 +1,11 @@
 import logging
+from typing import Dict
 
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QVBoxLayout, QSpacerItem, QSizePolicy
 from PySide6.QtGui import QPixmap
+
+from livingspacetoolkit.lib.livingspacetoolkit_enums import LengthType
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +29,12 @@ class FloorPlanView(QWidget):
         self.wall_b.setMinimumSize(QSize(145, 35))
         self.wall_c.setPlaceholderText("0' or 0\"")
         self.wall_c.setMinimumSize(QSize(145, 35))
+
+        self.wall_dict: Dict[LengthType, QLineEdit] = {
+            LengthType.A_WALL_WIDTH: self.wall_a,
+            LengthType.B_WALL_WIDTH: self.wall_b,
+            LengthType.C_WALL_WIDTH: self.wall_c,
+        }
 
         label_a: QLabel = QLabel("A Wall")
         label_b: QLabel = QLabel("B Wall")

@@ -2,7 +2,8 @@ import logging
 
 from livingspacetoolkit.views import StudioView
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
-from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
+from livingspacetoolkit.lib.livingspacetoolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType, Scenario,
+                                                             LengthType, RoofSide)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 from .base_sunroom_controller import BaseSunroomController
 
@@ -20,9 +21,9 @@ class StudioController(BaseSunroomController):
 
         # Connect signals
         self.sunroom_roof.pitch.radio_ratio.clicked.connect(
-            lambda: self.handle_pitch_type_click(PitchType.RATIO, SunroomType.STUDIO))
+            lambda: self.handle_pitch_type_click(PitchType.RATIO, SunroomType.STUDIO, RoofSide.B_SIDE))
         self.sunroom_roof.pitch.radio_angle.clicked.connect(
-            lambda: self.handle_pitch_type_click(PitchType.ANGLE, SunroomType.STUDIO))
+            lambda: self.handle_pitch_type_click(PitchType.ANGLE, SunroomType.STUDIO, RoofSide.B_SIDE))
         self.sunroom_roof.roofing_type.radio_al.clicked.connect(
             lambda: self.handle_roofing_type_click(RoofingType.ALUMINUM))
         self.sunroom_roof.roofing_type.radio_eco.clicked.connect(
@@ -35,13 +36,9 @@ class StudioController(BaseSunroomController):
         self.sunroom_roof.end_cuts.radio_endcut3.clicked.connect(
             lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP))
         self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
-        self.sunroom_floor.wall_a.editingFinished.connect(self.handle_a_wall_finish_edit)
+        self.sunroom_floor.wall_a.editingFinished.connect(
+            lambda: self.handle_wall_finish_edit(LengthType.A_WALL_WIDTH))
 
-
-    def handle_a_wall_finish_edit(self) -> None:
-        # TODO: A model should verify text
-        self.toolkit_state.floor_walls.update({"a_wall": self.sunroom_floor.wall_a.text()})
-        logger.debug(f"Studio A Wall set to: {self.sunroom_floor.wall_a.text()}.")
 
     def update_to_scenario(self) -> None:
         self.set_to_default()

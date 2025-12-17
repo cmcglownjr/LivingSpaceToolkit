@@ -23,7 +23,7 @@ class RoofingType(Enum):
 class RoofSide(Enum):
     A_SIDE = auto()
     B_SIDE = auto()
-    C_Side = auto()
+    C_SIDE = auto()
 
 
 class EndCutType(Enum):

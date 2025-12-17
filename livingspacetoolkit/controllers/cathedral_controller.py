@@ -2,7 +2,8 @@ import logging
 
 from livingspacetoolkit.views.cathedral_view import CathedralView
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
-from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType, RoofingType, EndCutType, Scenario
+from livingspacetoolkit.lib.livingspacetoolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType, Scenario,
+                                                             RoofSide)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 from .base_sunroom_controller import BaseSunroomController
 
@@ -18,6 +19,27 @@ class CathedralController(BaseSunroomController):
         self.sunroom_wall = view.sunroom_wall
         self.sunroom_floor = view.sunroom_floor
 
+        # Connect signals
+        self.sunroom_roof.pitch_a.radio_ratio.clicked.connect(
+            lambda: self.handle_pitch_type_click(PitchType.RATIO, SunroomType.CATHEDRAL, RoofSide.A_SIDE))
+        self.sunroom_roof.pitch_a.radio_angle.clicked.connect(
+            lambda: self.handle_pitch_type_click(PitchType.ANGLE, SunroomType.CATHEDRAL, RoofSide.A_SIDE))
+        self.sunroom_roof.pitch_c.radio_ratio.clicked.connect(
+            lambda: self.handle_pitch_type_click(PitchType.RATIO, SunroomType.CATHEDRAL, RoofSide.C_SIDE))
+        self.sunroom_roof.pitch_c.radio_angle.clicked.connect(
+            lambda: self.handle_pitch_type_click(PitchType.ANGLE, SunroomType.CATHEDRAL, RoofSide.C_SIDE))
+        self.sunroom_roof.roofing_type.radio_al.clicked.connect(
+            lambda: self.handle_roofing_type_click(RoofingType.ALUMINUM))
+        self.sunroom_roof.roofing_type.radio_eco.clicked.connect(
+            lambda: self.handle_roofing_type_click(RoofingType.ECO_GREEN))
+        self.sunroom_roof.thickness_combo.currentIndexChanged.connect(self.handle_thickness_combo_index_change)
+        self.sunroom_roof.end_cuts.radio_endcut1.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.UNCUT_TOP_BOTTOM))
+        self.sunroom_roof.end_cuts.radio_endcut2.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP_BOTTOM))
+        self.sunroom_roof.end_cuts.radio_endcut3.clicked.connect(
+            lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP))
+        self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
 
     def update_to_scenario(self):
         self.set_to_default()
