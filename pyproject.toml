@@ -27,7 +27,10 @@ addopts = [
 testpaths = "tests"
 
 markers = [
-    "unit: Individual units with no dependencies besides enums"
+    "unit: Individual units with no dependencies besides enums",
+    "integration: Test involving multiple components working together",
+    "gui: Tests on UI/UX",
+    "e2e: Full system tests (scenarios)",
 ]
 
 [build-system]

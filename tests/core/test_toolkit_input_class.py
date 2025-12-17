@@ -6,6 +6,7 @@ from livingspacetoolkit.lib.toolkit_enums import LengthType, PitchType, RoofSide
 
 class TestToolkitLength:
 
+    @pytest.mark.unit
     def test_equality(self):
         length_1 = ToolkitLength(LengthType.THICKNESS)
         length_1.length = "12'"
