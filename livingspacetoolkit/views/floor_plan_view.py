@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QVBoxLayout, QSpacerItem, QSizePolicy
 from PySide6.QtGui import QPixmap
 
-from livingspacetoolkit.lib.livingspacetoolkit_enums import LengthType
+from livingspacetoolkit.lib.toolkit_enums import LengthType
 
 logger = logging.getLogger(__name__)
 

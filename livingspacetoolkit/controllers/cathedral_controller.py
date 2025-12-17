@@ -2,8 +2,8 @@ import logging
 
 from livingspacetoolkit.views.cathedral_view import CathedralView
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
-from livingspacetoolkit.lib.livingspacetoolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType, Scenario,
-                                                             RoofSide)
+from livingspacetoolkit.lib.toolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType, Scenario,
+                                                  RoofSide)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 from .base_sunroom_controller import BaseSunroomController
 

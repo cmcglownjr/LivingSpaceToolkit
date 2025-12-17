@@ -6,7 +6,7 @@ from PySide6.QtCore import QSize
 from .roof_end_cuts_view import RoofEndCutsView
 from .roof_pitch_view import RoofPitchView
 from .roofing_type_view import RoofingTypeView
-from livingspacetoolkit.lib.livingspacetoolkit_enums import SunroomType
+from livingspacetoolkit.lib.toolkit_enums import SunroomType
 from livingspacetoolkit.utils.helpers import set_strikethrough
 
 logger = logging.getLogger(__name__)

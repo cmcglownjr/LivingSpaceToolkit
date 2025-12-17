@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Dict
 
-from livingspacetoolkit.lib.livingspacetoolkit_enums import Scenario, RoofingType, PitchType, EndCutType, SunroomType
+from livingspacetoolkit.lib.toolkit_enums import Scenario, RoofingType, PitchType, EndCutType, SunroomType
 
 
 @dataclass()

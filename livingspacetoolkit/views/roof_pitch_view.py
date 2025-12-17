@@ -3,7 +3,7 @@ import logging
 from PySide6.QtWidgets import QGroupBox, QRadioButton, QHBoxLayout, QGridLayout, QLabel, QLineEdit, QButtonGroup
 from PySide6.QtCore import Qt, QSize
 
-from livingspacetoolkit.lib.livingspacetoolkit_enums import PitchType, SunroomType
+from livingspacetoolkit.lib.toolkit_enums import PitchType, SunroomType
 from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
 
 logger = logging.getLogger(__name__)

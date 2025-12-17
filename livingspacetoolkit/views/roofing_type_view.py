@@ -3,7 +3,7 @@ import logging
 from typing import Dict
 from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
 from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
-from livingspacetoolkit.lib.livingspacetoolkit_enums import RoofingType
+from livingspacetoolkit.lib.toolkit_enums import RoofingType
 
 logger = logging.getLogger(__name__)
 

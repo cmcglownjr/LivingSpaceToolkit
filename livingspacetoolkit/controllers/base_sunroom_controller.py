@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Protocol, Any
 
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
-from livingspacetoolkit.lib.livingspacetoolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType,
-                                                             LengthType, RoofSide)
+from livingspacetoolkit.lib.toolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType,
+                                                  LengthType, RoofSide)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 
 logger = logging.getLogger(__name__)
