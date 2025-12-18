@@ -2,7 +2,7 @@ import logging
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QTextBrowser, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QSpacerItem, QSizePolicy, QTextEdit
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,9 @@ class ResultsView(QWidget):
 
         self.calculate_button: QPushButton = QPushButton("Calculate")
         self.results_label: QLabel = QLabel()
-        self.results_view: QTextBrowser = QTextBrowser()
+        self.results_view: QTextEdit = QTextEdit()
+        self.results_view.setReadOnly(True)
+        self.results_view.setPlaceholderText("Waiting on selection...")
         font: QFont = QFont("Noto Sans", 12)
         font.setBold(True)
         font.setItalic(True)

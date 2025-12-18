@@ -45,7 +45,7 @@ class MainWindowController:
 
     def handle_results_button_click(self) -> None:
         # TODO: Button press actually does calculations using calculations model
-        self.results_view.update_text("Button Pressed")
+        self.results_view.update_text("Button Pressed.\nNew line added.")
 
     def set_to_default_state(self) -> None:
         self.studio_controller.set_to_default()
