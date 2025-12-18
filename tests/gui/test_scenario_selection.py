@@ -34,6 +34,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -63,6 +66,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -92,6 +98,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -121,6 +130,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -150,6 +162,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -179,6 +194,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -208,6 +226,9 @@ class TestStudioScenarioSelection:
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.studio_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
 
 class TestCathedralScenarioSelection:
@@ -246,6 +267,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -281,6 +305,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -315,6 +342,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -349,6 +379,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -383,6 +416,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -417,6 +453,9 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -451,3 +490,6 @@ class TestCathedralScenarioSelection:
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_b.isEnabled() == True
         assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_c.isEnabled() == True
+        # Check results UI Changes
+        assert main_window.results_view.calculate_button.isEnabled() == True
+        assert main_window.results_view.results_view.toPlainText() == ''

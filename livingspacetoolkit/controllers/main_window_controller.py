@@ -42,6 +42,7 @@ class MainWindowController:
                 self.toolkit_state.scenario = self.scenarios_view.scenario_dict[button]
                 logger.info(f"{self.scenarios_view.scenario_dict[button].name} has been selected as the scenario.")
         self.update_to_scenario()
+        self.results_view.calculate_button.setEnabled(True)
 
     def handle_results_button_click(self) -> None:
         # TODO: Button press actually does calculations using calculations model
@@ -50,6 +51,7 @@ class MainWindowController:
     def set_to_default_state(self) -> None:
         self.studio_controller.set_to_default()
         self.cathedral_controller.set_to_default()
+        self.results_view.default_state()
 
     def update_to_scenario(self) -> None:
         self.results_view.results_view.clear()
