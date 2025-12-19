@@ -41,21 +41,21 @@ class ToolkitPitch:
         # TODO: self._angle needs to be an EngineeringUnit class object.
         self._pitch_type = pitch_type
         self._roof_side = roof_side
-        self._angle: float = 0.0
+        self._pitch_value: float = 0.0
 
     def __repr__(self) -> str:
-        return f"ToolkitPitch({self.pitch_type}, {self.roof_side}).angle({self.angle})"
+        return f"ToolkitPitch({self.pitch_type}, {self.roof_side}).pitch_value({self.pitch_value})"
 
     @property
-    def angle(self) -> float:
-        return self._angle
+    def pitch_value(self) -> float:
+        return self._pitch_value
 
-    @angle.setter
-    def angle(self, value) -> None:
+    @pitch_value.setter
+    def pitch_value(self, value) -> None:
         # TODO: Need to verify and convert input.
         if not value:
-            raise ValueError("Angle cannot be empty")
-        self._angle = value
+            raise ValueError("Angle/Ratio cannot be empty")
+        self._pitch_value = value
 
     @property
     def pitch_type(self) -> PitchType:
