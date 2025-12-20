@@ -39,14 +39,24 @@ class ToolkitLength:
                 |
                 (?P<i_int>\d+)                       
             )
-            \s*
-            (?:"|in\.?|inches|inch)
+            \s?
+            (?:"|in\.?|inches|inch)?
         )?
 
         \s*$
         """,
         re.IGNORECASE | re.VERBOSE
     )
+    BARE_NUMBER_REGEX = re.compile(
+    r"""
+    ^\s*
+    (?P<value>\d+(?:\.\d+)?)     # Integer or decimal
+    \s*
+    (?:"|in\.?|inches)?          # Optional inches unit
+    \s*$
+    """,
+    re.IGNORECASE | re.VERBOSE
+)
 
     def __init__(self, length_type: LengthType):
         self._length = 0
@@ -104,6 +114,11 @@ class ToolkitLength:
 
 
     def _parse_imperial_to_inches(self, text: str) -> float:
+        # ---- Case 1: Bare number → inches ----
+        m = self.BARE_NUMBER_REGEX.match(text)
+        if m:
+            return float(m.group("value"))
+        # ---- Case 2: Imperial measurement ----
         match = self.IMPERIAL_REGEX.match(text)
         if not match:
             raise ValueError(f"Invalid imperial format: {text}")

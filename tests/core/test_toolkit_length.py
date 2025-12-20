@@ -99,9 +99,14 @@ class TestToolkitLength:
     @pytest.mark.unit
     @pytest.mark.parametrize("actual, expected",
                              [
+                                 ('15', 15),
                                  ('15"', 15),
                                  ('15in.', 15),
                                  ('15 inches', 15),
+                                 ('15.75', 15.75),
+                                 ('15.75"', 15.75),
+                                 ('15.75in.', 15.75),
+                                 ('15.75 inches', 15.75),
                              ])
     def test_inches(self, actual, expected):
         # Arrange
