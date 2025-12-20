@@ -5,7 +5,6 @@ from typing import Protocol, Any
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
 from livingspacetoolkit.lib.toolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType,
                                                   LengthType, RoofSide)
-from livingspacetoolkit.lib import ToolkitLength, ToolkitPitch
 from livingspacetoolkit.utils.helpers import set_strikethrough
 
 logger = logging.getLogger(name="livingspacetoolkit")
