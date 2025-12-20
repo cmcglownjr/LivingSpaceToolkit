@@ -1,7 +1,7 @@
 import pytest
 
-from livingspacetoolkit.lib import ToolkitLength, ToolkitPitch
-from livingspacetoolkit.lib.toolkit_enums import LengthType, PitchType, RoofSide
+from livingspacetoolkit.lib import ToolkitLength
+from livingspacetoolkit.lib.toolkit_enums import LengthType
 
 
 class TestToolkitLength:
