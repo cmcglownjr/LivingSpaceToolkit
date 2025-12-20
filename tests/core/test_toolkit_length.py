@@ -35,3 +35,128 @@ class TestToolkitLength:
         length_2.length = class_input[0][0]
 
         assert length_1 == class_input[1]
+
+    @pytest.mark.unit
+    def test_less_than(self):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = "1ft"
+
+        length_2 = ToolkitLength(LengthType.THICKNESS)
+        length_2.length = "2ft"
+
+        assert length_1 < length_2
+
+    @pytest.mark.unit
+    def test_greater_than(self):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = "1ft"
+
+        length_2 = ToolkitLength(LengthType.THICKNESS)
+        length_2.length = "2ft"
+
+        assert length_2 > length_1
+
+    @pytest.mark.unit
+    def test_add(self):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = "1ft"
+
+        length_2 = ToolkitLength(LengthType.THICKNESS)
+        length_2.length = "2ft"
+
+        assert length_1 + length_2 == 36
+
+    @pytest.mark.unit
+    def test_subtract(self):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = "1ft"
+
+        length_2 = ToolkitLength(LengthType.THICKNESS)
+        length_2.length = "2ft"
+
+        assert length_2 - length_1 == 12
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ("10'", 120),
+                                 ("10ft", 120),
+                                 ("10feet", 120),
+                                 ("10 ft", 120),
+                                 ("10 feet", 120),
+                             ])
+    def test_feet(self, actual, expected):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = actual
+
+        assert length_1.length == expected
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ('15"', 15),
+                                 ('15in.', 15),
+                                 ('15 inches', 15),
+                             ])
+    def test_inches(self, actual, expected):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = actual
+
+        assert length_1.length == expected
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ('1/2"', 0.5),
+                                 ('1/2in', 0.5),
+                                 ('1/2inch', 0.5),
+                                 ('1/2 in.', 0.5),
+                                 ('1/2 inch', 0.5),
+                                 ('1 1/2 inch', 1.5)
+                             ])
+    def test_fract_in(self, actual, expected):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = actual
+
+        assert length_1.length == expected
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ("1/2'", 6),
+                                 ('1/2ft.', 6),
+                                 ('1/2feet', 6),
+                                 ('1/2 ft.', 6),
+                                 ('1/2 feet', 6),
+                                 ('1 1/2 feet', 18)
+                             ])
+    def test_fract_ft(self, actual, expected):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = actual
+
+        assert length_1.length == expected
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ("1' - 1\"", 13),
+                                 ('1ft - 1in.', 13),
+                                 ('1 1/2ft - 1 1/2in', 19.5),
+                                 ('1/2ft - 1 1/2in', 7.5),
+                                 ('1ft - 1/2in', 12.5),
+                                 ('1 ft 1 in', 13)
+                             ])
+    def test_combo(self, actual, expected):
+        # Arrange
+        length_1 = ToolkitLength(LengthType.THICKNESS)
+        length_1.length = actual
+
+        assert length_1.length == expected

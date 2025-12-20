@@ -26,9 +26,9 @@ class RoofModel:
                 combo_item_dict.update(
                     {
                         '6"': '6"',
-                        '8"': '8.25"',
-                        '10"': '10.25"',
-                        '12"': '12.25"'
-                    }
+                        '8"': '8 1/4"',
+                        '10"': '10 1/4"',
+                        '12"': '12 1/4"'
+                    } # Need to use fractions to get regex to work.
                 )
         return combo_item_dict

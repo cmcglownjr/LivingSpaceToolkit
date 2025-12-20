@@ -35,7 +35,7 @@ class TestStudioThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '8.25"'
+        expected.length = '8 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 8"
         main_window.tabs_view.studio_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.studio_view.sunroom_roof.thickness_combo.setCurrentIndex(1)
@@ -56,7 +56,7 @@ class TestStudioThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '10.25"'
+        expected.length = '10 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 10"
         main_window.tabs_view.studio_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.studio_view.sunroom_roof.thickness_combo.setCurrentIndex(2)
@@ -77,7 +77,7 @@ class TestStudioThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '12.25"'
+        expected.length = '12 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 12"
         main_window.tabs_view.studio_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.studio_view.sunroom_roof.thickness_combo.setCurrentIndex(3)
@@ -164,7 +164,7 @@ class TestCathedralThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '8.25"'
+        expected.length = '8 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 8"
         main_window.tabs_view.cathedral_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.cathedral_view.sunroom_roof.thickness_combo.setCurrentIndex(1)
@@ -185,7 +185,7 @@ class TestCathedralThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '10.25"'
+        expected.length = '10 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 10"
         main_window.tabs_view.cathedral_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.cathedral_view.sunroom_roof.thickness_combo.setCurrentIndex(2)
@@ -206,7 +206,7 @@ class TestCathedralThickness:
         main_window.scenarios_view.radio1.click()
         # Expected length
         expected = ToolkitLength(LengthType.THICKNESS)
-        expected.length = '12.25"'
+        expected.length = '12 1/4"'
         # Act: Set Roof Type to EcoGreen and Thickness to 12"
         main_window.tabs_view.cathedral_view.sunroom_roof.roofing_type.radio_eco.click()
         main_window.tabs_view.cathedral_view.sunroom_roof.thickness_combo.setCurrentIndex(3)
