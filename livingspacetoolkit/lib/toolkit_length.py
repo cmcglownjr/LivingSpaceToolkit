@@ -60,7 +60,7 @@ class ToolkitLength:
     NEGATIVE_MEASUREMENT_REGEX = re.compile(r"^\s*-\s*\d")
 
     def __init__(self, length_type: LengthType):
-        self._length = 0
+        self._length: float = 0
         self._length_type = length_type
 
     def __repr__(self) -> str:

@@ -1,4 +1,6 @@
 import logging
+import re
+from math import atan, radians
 
 from .toolkit_enums import PitchType, RoofSide
 
@@ -6,8 +8,37 @@ logger = logging.getLogger(name="livingspacetoolkit")
 
 
 class ToolkitPitch:
+    ANGLE_REGEX = re.compile(
+        r"""
+        ^\s*
+        (?P<value>\d+(?:\.\d+)?)   # Integer or decimal number
+        \s*
+        (?:deg)?                   # Optional 'deg'
+        \s*$
+        """,
+        re.IGNORECASE | re.VERBOSE
+    )
+
+    NUMBER_REGEX = re.compile(
+        r"""
+        ^\s*
+        (?:
+            # Mixed number: 1 1/2
+            (?P<whole>\d+)\s+(?P<num>\d+)\s*/\s*(?P<den>\d+)
+            |
+            # Fraction only: 1/2
+            (?P<fnum>\d+)\s*/\s*(?P<fden>\d+)
+            |
+            # Decimal or integer
+            (?P<dec>\d+(?:\.\d+)?)
+        )
+        \s*$
+        """,
+        re.VERBOSE
+    )
+
+    NEGATIVE_INPUT_REGEX = re.compile(r"^\s*-\s*\d")
     def __init__(self, pitch_type: PitchType, roof_side: RoofSide):
-        # TODO: self._angle needs to be an EngineeringUnit class object.
         self._pitch_type = pitch_type
         self._roof_side = roof_side
         self._pitch_value: float = 0.0
@@ -55,10 +86,21 @@ class ToolkitPitch:
 
     @pitch_value.setter
     def pitch_value(self, value) -> None:
-        # TODO: Need to verify and convert input.
         if not value:
             raise ValueError("Angle/Ratio cannot be empty")
-        self._pitch_value = value
+        if self._is_negative_input(value):
+            raise ValueError(f"Input cannot be negative: {value}")
+        match self.pitch_type:
+            case PitchType.ANGLE:
+                angle = self.parse_angle(value)
+                if angle >= 60:
+                    raise ValueError(f"Angle is too high: {angle}")
+                self._pitch_value = radians(angle)
+            case PitchType.RATIO:
+                ratio = self.parse_number(value)
+                if ratio >= 21:
+                    raise ValueError(f"Ratio is too high: {ratio}")
+                self._pitch_value = atan(ratio/12)
 
     @property
     def pitch_type(self) -> PitchType:
@@ -71,3 +113,25 @@ class ToolkitPitch:
     @property
     def roof_side(self) -> RoofSide:
         return self._roof_side
+
+    def parse_angle(self, text: str) -> float:
+        m = self.ANGLE_REGEX.match(text)
+        if not m:
+            raise ValueError(f"Invalid angle format: {text}")
+        return float(m.group("value"))
+
+    def parse_number(self, text: str) -> float:
+        m = self.NUMBER_REGEX.match(text)
+        if not m:
+            raise ValueError(f"Invalid number format: {text}")
+
+        if m.group("dec"):
+            return float(m.group("dec"))
+
+        if m.group("whole"):
+            return int(m.group("whole")) + int(m.group("num")) / int(m.group("den"))
+
+        return int(m.group("fnum")) / int(m.group("fden"))
+
+    def _is_negative_input(self, text: str) -> bool:
+        return bool(self.NEGATIVE_INPUT_REGEX.match(text))
