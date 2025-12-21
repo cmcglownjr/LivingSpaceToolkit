@@ -72,7 +72,7 @@ class TestToolkitPitch:
         pitch_2 = ToolkitPitch(PitchType.ANGLE, RoofSide.A_SIDE)
         pitch_2.pitch_value = '10 deg'
 
-        assert pitch_1 + pitch_2 == radians(15 + 10)
+        assert (pitch_1 + pitch_2) == (radians(15) + radians(10))
 
     @pytest.mark.unit
     def test_subtract(self):
@@ -83,7 +83,7 @@ class TestToolkitPitch:
         pitch_2 = ToolkitPitch(PitchType.ANGLE, RoofSide.A_SIDE)
         pitch_2.pitch_value = '10 deg'
 
-        assert pitch_1 + pitch_2 == radians(15 - 10)
+        assert (pitch_1 - pitch_2) == (radians(15) - radians(10))
 
     @pytest.mark.unit
     @pytest.mark.parametrize("actual, expected",
@@ -101,13 +101,20 @@ class TestToolkitPitch:
         assert pitch.pitch_value == radians(expected)
 
     @pytest.mark.unit
-    def test_ratio_input(self):
+    @pytest.mark.parametrize("actual, expected",
+                             [
+                                 ('5', 5),
+                                 ('5.5', 5.5),
+                                 ('5 1/2', 5.5),
+                                 ('1/2', 0.5)
+                             ])
+    def test_ratio_input(self, actual, expected):
         # Arrange
         pitch = ToolkitPitch(PitchType.RATIO, RoofSide.A_SIDE)
         # Act
-        pitch.pitch_value = '5'
+        pitch.pitch_value = actual
         # Assert
-        assert pitch.pitch_value == atan(5/12)
+        assert pitch.pitch_value == atan(expected/12)
 
     @pytest.mark.unit
     @pytest.mark.parametrize("variable",
@@ -126,3 +133,32 @@ class TestToolkitPitch:
         pitch = ToolkitPitch(PitchType.RATIO, RoofSide.A_SIDE)
         with pytest.raises(ValueError):
             pitch.pitch_value = '-5'
+
+    @pytest.mark.unit
+    def test_max_allowed_angle(self):
+        pitch = ToolkitPitch(PitchType.ANGLE, RoofSide.A_SIDE)
+        with pytest.raises(ValueError):
+            pitch.pitch_value = '60'
+
+    @pytest.mark.unit
+    def test_max_allowed_ratio(self):
+        pitch = ToolkitPitch(PitchType.RATIO, RoofSide.A_SIDE)
+        with pytest.raises(ValueError):
+            pitch.pitch_value = '21'
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("variable",
+                             [
+                                 'abc',
+                                 '30d'
+                             ])
+    def test_invalid_angle(self, variable):
+        pitch = ToolkitPitch(PitchType.ANGLE, RoofSide.A_SIDE)
+        with pytest.raises(ValueError):
+            pitch.pitch_value = variable
+
+    @pytest.mark.unit
+    def test_invalid_ratio(self):
+        pitch = ToolkitPitch(PitchType.RATIO, RoofSide.A_SIDE)
+        with pytest.raises(ValueError):
+            pitch.pitch_value = 'abc'

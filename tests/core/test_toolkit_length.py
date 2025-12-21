@@ -67,7 +67,7 @@ class TestToolkitLength:
         length_2 = ToolkitLength(LengthType.THICKNESS)
         length_2.length = "2ft"
 
-        assert length_1 + length_2 == 36
+        assert (length_1 + length_2) == 36
 
     @pytest.mark.unit
     def test_subtract(self):
@@ -78,7 +78,7 @@ class TestToolkitLength:
         length_2 = ToolkitLength(LengthType.THICKNESS)
         length_2.length = "2ft"
 
-        assert length_2 - length_1 == 12
+        assert (length_2 - length_1) == 12
 
     @pytest.mark.unit
     @pytest.mark.parametrize("actual, expected",
