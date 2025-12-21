@@ -34,7 +34,7 @@ class TestToolkitLength:
         length_2 = ToolkitLength(class_input[0][1])
         length_2.length = class_input[0][0]
 
-        assert length_1 == class_input[1]
+        assert (length_1 == length_2) == class_input[1]
 
     @pytest.mark.unit
     def test_less_than(self):
