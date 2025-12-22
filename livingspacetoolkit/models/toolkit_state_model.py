@@ -43,13 +43,13 @@ class ToolkitStateModel:
         self.scenario = None
         for roof_side in self.pitch:
             self.pitch[roof_side].pitch_type = PitchType.RATIO
-            self.pitch[roof_side].pitch_value = 0
-        self.overhang.length = 0
+            self.pitch[roof_side].pitch_value = '0'
+        self.overhang.length = '0'
         self.roofing_type = None
-        self.thickness.length = 0
+        self.thickness.length = '0'
         self.end_cuts = None
         self.fascia = False
         for length_type in self.wall_heights:
-            self.wall_heights[length_type].length = 0
+            self.wall_heights[length_type].length = '0'
         for length_type in self.floor_walls:
-            self.floor_walls[length_type].length = 0
+            self.floor_walls[length_type].length = '0'
