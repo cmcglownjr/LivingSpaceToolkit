@@ -17,7 +17,7 @@ class TestStudioOverhang:
             qtbot.keyClick(main_window.tabs_view.studio_view.sunroom_roof.overhang_edit, Qt.Key.Key_Return)
 
         # Assert changes
-        assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.text() == '10 in.'
+        assert main_window.tabs_view.studio_view.sunroom_roof.overhang_edit.text() == '10 in.'
         assert main_window.toolkit_state.overhang.length == 10.0
 
     @pytest.mark.gui
@@ -35,7 +35,7 @@ class TestStudioOverhang:
         # Assert changes
         assert mock_warning["title"] == "WARNING"
         assert mock_warning["text"] == 'Invalid imperial format: abc'
-        assert main_window.tabs_view.studio_view.sunroom_floor.wall_a.text() == ''
+        assert main_window.tabs_view.studio_view.sunroom_roof.overhang_edit.text() == ''
         assert main_window.toolkit_state.overhang.length == 0.0
 
 
@@ -54,7 +54,7 @@ class TestCathedralOverhang:
             qtbot.keyClick(main_window.tabs_view.cathedral_view.sunroom_roof.overhang_edit, Qt.Key.Key_Return)
 
         # Assert changes
-        assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.text() == '10 in.'
+        assert main_window.tabs_view.cathedral_view.sunroom_roof.overhang_edit.text() == '10 in.'
         assert main_window.toolkit_state.overhang.length == 10.0
 
     @pytest.mark.gui
@@ -72,5 +72,5 @@ class TestCathedralOverhang:
         # Assert changes
         assert mock_warning["title"] == "WARNING"
         assert mock_warning["text"] == 'Invalid imperial format: abc'
-        assert main_window.tabs_view.cathedral_view.sunroom_floor.wall_a.text() == ''
+        assert main_window.tabs_view.cathedral_view.sunroom_roof.overhang_edit.text() == ''
         assert main_window.toolkit_state.overhang.length == 0.0

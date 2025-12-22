@@ -135,8 +135,18 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         pitch_edit = self.sunroom_roof.pitch_dict[roof_side].text()
         try:
             self.toolkit_state.pitch[roof_side].pitch_value = pitch_edit
-            logger.info(f"{self.toolkit_state.sunroom_type.name} {roof_side.name} pitch input saved as {pitch_edit}")
+            logger.info(f"{self.toolkit_state.sunroom_type.name} {roof_side.name} pitch input saved as: {pitch_edit}.")
         except ValueError as err:
             self.view.show_warning(str(err))
             logger.warning(f"Invalid input: {pitch_edit}")
             self.sunroom_roof.pitch_dict[roof_side].clear()
+
+    def handle_overhang_finish_edit(self) -> None:
+        overhang = self.sunroom_roof.overhang_edit.text()
+        try:
+            self.toolkit_state.overhang.length = overhang
+            logger.info(f"{self.toolkit_state.sunroom_type.name} overhang set to: {overhang}.")
+        except ValueError as err:
+            self.view.show_warning(str(err))
+            logger.warning(f"Invalid overhang input: {overhang}")
+            self.sunroom_roof.overhang_edit.clear()

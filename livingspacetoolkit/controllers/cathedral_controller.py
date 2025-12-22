@@ -34,6 +34,7 @@ class CathedralController(BaseSunroomController):
             lambda: self.handle_pitch_type_click(PitchType.ANGLE, SunroomType.CATHEDRAL, RoofSide.C_SIDE))
         self.sunroom_roof.pitch_c.pitch_input.editingFinished.connect(
             lambda: self.handle_pitch_finish_edit(RoofSide.C_SIDE))
+        self.sunroom_roof.overhang_edit.editingFinished.connect(self.handle_overhang_finish_edit)
         self.sunroom_roof.roofing_type.radio_al.clicked.connect(
             lambda: self.handle_roofing_type_click(RoofingType.ALUMINUM))
         self.sunroom_roof.roofing_type.radio_eco.clicked.connect(
