@@ -29,8 +29,9 @@ class StudioController(BaseSunroomController):
         self.sunroom_roof.roofing_type.radio_al.clicked.connect(
             lambda: self.handle_roofing_type_click(RoofingType.ALUMINUM))
         self.sunroom_roof.pitch.pitch_input.editingFinished.connect(
-            lambda: self.handle_pitch_finish_edit(RoofSide.B_SIDE))
-        self.sunroom_roof.overhang_edit.editingFinished.connect(self.handle_overhang_finish_edit)
+            lambda: self.handle_line_edit_finish_edit(RoofSide.B_SIDE))
+        self.sunroom_roof.overhang_edit.editingFinished.connect(
+            lambda: self.handle_line_edit_finish_edit(LengthType.OVERHANG))
         self.sunroom_roof.roofing_type.radio_eco.clicked.connect(
             lambda: self.handle_roofing_type_click(RoofingType.ECO_GREEN))
         self.sunroom_roof.thickness_combo.currentIndexChanged.connect(self.handle_thickness_combo_index_change)
@@ -43,11 +44,11 @@ class StudioController(BaseSunroomController):
         self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
         # Floor view signals
         self.sunroom_floor.wall_a.editingFinished.connect(
-            lambda: self.handle_floor_wall_finish_edit(LengthType.A_WALL_WIDTH))
+            lambda: self.handle_line_edit_finish_edit(LengthType.A_WALL_WIDTH))
         self.sunroom_floor.wall_b.editingFinished.connect(
-            lambda: self.handle_floor_wall_finish_edit(LengthType.B_WALL_WIDTH))
+            lambda: self.handle_line_edit_finish_edit(LengthType.B_WALL_WIDTH))
         self.sunroom_floor.wall_c.editingFinished.connect(
-            lambda: self.handle_floor_wall_finish_edit(LengthType.C_WALL_WIDTH))
+            lambda: self.handle_line_edit_finish_edit(LengthType.C_WALL_WIDTH))
 
 
     def update_to_scenario(self) -> None:

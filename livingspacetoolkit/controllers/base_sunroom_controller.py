@@ -121,32 +121,44 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         self.toolkit_state.fascia = fascia_state
         logger.info(f"Setting {self.toolkit_state.sunroom_type.name} fascia to {fascia_state}.")
 
-    def handle_floor_wall_finish_edit(self, wall: LengthType) -> None:
-        wall_width = self.sunroom_floor.wall_dict[wall].text()
-        try:
-            self.toolkit_state.floor_walls[wall].length = wall_width
-            logger.info(f"{self.toolkit_state.sunroom_type.name} {wall.name} set to: {wall_width}.")
-        except ValueError as err:
-            self.view.show_warning(str(err))
-            logger.warning(f"Invalid input: {wall_width}")
-            self.sunroom_floor.wall_dict[wall].clear()
-
-    def handle_pitch_finish_edit(self, roof_side: RoofSide) -> None:
-        pitch_edit = self.sunroom_roof.pitch_dict[roof_side].text()
-        try:
-            self.toolkit_state.pitch[roof_side].pitch_value = pitch_edit
-            logger.info(f"{self.toolkit_state.sunroom_type.name} {roof_side.name} pitch input saved as: {pitch_edit}.")
-        except ValueError as err:
-            self.view.show_warning(str(err))
-            logger.warning(f"Invalid input: {pitch_edit}")
-            self.sunroom_roof.pitch_dict[roof_side].clear()
-
-    def handle_overhang_finish_edit(self) -> None:
-        overhang = self.sunroom_roof.overhang_edit.text()
-        try:
-            self.toolkit_state.overhang.length = overhang
-            logger.info(f"{self.toolkit_state.sunroom_type.name} overhang set to: {overhang}.")
-        except ValueError as err:
-            self.view.show_warning(str(err))
-            logger.warning(f"Invalid overhang input: {overhang}")
-            self.sunroom_roof.overhang_edit.clear()
+    def handle_line_edit_finish_edit(self, enum: LengthType | RoofSide) -> None:
+        match enum:
+            case RoofSide.A_SIDE | RoofSide.B_SIDE | RoofSide.C_SIDE:
+                widget_text = self.sunroom_roof.pitch_dict[enum].text()
+                try:
+                    self.toolkit_state.pitch[enum].pitch_value = widget_text
+                    logger.info(
+                        f"{self.toolkit_state.sunroom_type.name} {enum.name} pitch input saved as: {widget_text}.")
+                except ValueError as err:
+                    self.view.show_warning(str(err))
+                    logger.warning(f"Invalid input: {widget_text}")
+                    self.sunroom_roof.pitch_dict[enum].clear()
+            case LengthType.A_WALL_WIDTH | LengthType.B_WALL_WIDTH | LengthType.C_WALL_WIDTH:
+                widget_text = self.sunroom_floor.wall_dict[enum].text()
+                try:
+                    self.toolkit_state.floor_walls[enum].length = widget_text
+                    logger.info(f"{self.toolkit_state.sunroom_type.name} {enum.name} set to: {widget_text}.")
+                except ValueError as err:
+                    self.view.show_warning(str(err))
+                    logger.warning(f"Invalid input: {widget_text}")
+                    self.sunroom_floor.wall_dict[enum].clear()
+            case LengthType.OVERHANG:
+                widget_text = self.sunroom_roof.overhang_edit.text()
+                try:
+                    self.toolkit_state.overhang.length = widget_text
+                    logger.info(f"{self.toolkit_state.sunroom_type.name} overhang set to: {widget_text}.")
+                except ValueError as err:
+                    self.view.show_warning(str(err))
+                    logger.warning(f"Invalid overhang input: {widget_text}")
+                    self.sunroom_roof.overhang_edit.clear()
+            case LengthType.THICKNESS:
+                pass
+            case _:
+                widget_text = self.sunroom_wall.wall_height_dict[enum].text()
+                try:
+                    self.toolkit_state.wall_heights[enum].length = widget_text
+                    logger.info(f"{self.toolkit_state.sunroom_type.name} {enum.name} set to: {widget_text}.")
+                except ValueError as err:
+                    self.view.show_warning(err)
+                    logger.warning(f"Invalid {enum.name} input: {widget_text}")
+                    self.sunroom_wall.wall_height_dict[enum].clear()
