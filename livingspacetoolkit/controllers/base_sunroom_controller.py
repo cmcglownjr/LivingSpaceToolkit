@@ -57,19 +57,23 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
             if self.toolkit_state.thickness.length == 6:
                 self.sunroom_roof.fascia.setEnabled(True)
                 self.sunroom_roof.fascia.setChecked(True)
+                self.toolkit_state.fascia = True
                 set_strikethrough(self.sunroom_roof.fascia, False)
             else:
                 self.sunroom_roof.fascia.setEnabled(False)
                 self.sunroom_roof.fascia.setChecked(False)
+                self.toolkit_state.fascia = False
                 set_strikethrough(self.sunroom_roof.fascia, True)
 
         elif self.toolkit_state.roofing_type == RoofingType.ALUMINUM:
             self.sunroom_roof.fascia.setEnabled(True)
             self.sunroom_roof.fascia.setChecked(True)
+            self.toolkit_state.fascia = True
             set_strikethrough(self.sunroom_roof.fascia, False)
         else:
             self.sunroom_roof.fascia.setEnabled(False)
             self.sunroom_roof.fascia.setChecked(False)
+            self.toolkit_state.fascia = False
             set_strikethrough(self.sunroom_roof.fascia, True)
         fascia_state = self.sunroom_roof.fascia.isChecked()
         logger.info(f"Setting fascia to {fascia_state}.")
@@ -131,7 +135,7 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
                         f"{self.toolkit_state.sunroom_type.name} {enum.name} pitch input saved as: {widget_text}.")
                 except ValueError as err:
                     self.view.show_warning(str(err))
-                    logger.warning(f"Invalid input: {widget_text}")
+                    logger.warning(f"Invalid {enum.name} pitch input: {widget_text}")
                     self.sunroom_roof.pitch_dict[enum].clear()
             case LengthType.A_WALL_WIDTH | LengthType.B_WALL_WIDTH | LengthType.C_WALL_WIDTH:
                 widget_text = self.sunroom_floor.wall_dict[enum].text()
@@ -140,7 +144,7 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
                     logger.info(f"{self.toolkit_state.sunroom_type.name} {enum.name} set to: {widget_text}.")
                 except ValueError as err:
                     self.view.show_warning(str(err))
-                    logger.warning(f"Invalid input: {widget_text}")
+                    logger.warning(f"Invalid {enum.name} input: {widget_text}")
                     self.sunroom_floor.wall_dict[enum].clear()
             case LengthType.OVERHANG:
                 widget_text = self.sunroom_roof.overhang_edit.text()
@@ -149,7 +153,7 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
                     logger.info(f"{self.toolkit_state.sunroom_type.name} overhang set to: {widget_text}.")
                 except ValueError as err:
                     self.view.show_warning(str(err))
-                    logger.warning(f"Invalid overhang input: {widget_text}")
+                    logger.warning(f"Invalid {enum.name} input: {widget_text}")
                     self.sunroom_roof.overhang_edit.clear()
             case LengthType.THICKNESS:
                 pass
