@@ -44,6 +44,7 @@ class CathedralController(BaseSunroomController):
 
     def update_to_scenario(self):
         self.set_to_default()
+        self.toolkit_state.default_state()
         self.sunroom_roof.enable_except_pitch()
         self.sunroom_floor.enable_floor_input()
         match self.toolkit_state.scenario:
