@@ -3,7 +3,7 @@ import logging
 from livingspacetoolkit.views import CathedralView
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
 from livingspacetoolkit.lib.toolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType, Scenario,
-                                                  RoofSide)
+                                                  RoofSide, LengthType)
 from livingspacetoolkit.utils.helpers import set_strikethrough
 from .base_sunroom_controller import BaseSunroomController
 
@@ -41,6 +41,12 @@ class CathedralController(BaseSunroomController):
         self.sunroom_roof.end_cuts.radio_endcut3.clicked.connect(
             lambda: self.handle_end_cuts_click(EndCutType.PLUMB_CUT_TOP))
         self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
+        self.sunroom_floor.wall_a.editingFinished.connect(
+            lambda: self.handle_floor_wall_finish_edit(LengthType.A_WALL_WIDTH))
+        self.sunroom_floor.wall_b.editingFinished.connect(
+            lambda: self.handle_floor_wall_finish_edit(LengthType.B_WALL_WIDTH))
+        self.sunroom_floor.wall_c.editingFinished.connect(
+            lambda: self.handle_floor_wall_finish_edit(LengthType.C_WALL_WIDTH))
 
     def update_to_scenario(self):
         self.set_to_default()

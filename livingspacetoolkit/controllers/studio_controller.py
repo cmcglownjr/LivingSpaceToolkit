@@ -39,6 +39,10 @@ class StudioController(BaseSunroomController):
         self.sunroom_roof.fascia.clicked.connect(self.handle_fascia_click)
         self.sunroom_floor.wall_a.editingFinished.connect(
             lambda: self.handle_floor_wall_finish_edit(LengthType.A_WALL_WIDTH))
+        self.sunroom_floor.wall_b.editingFinished.connect(
+            lambda: self.handle_floor_wall_finish_edit(LengthType.B_WALL_WIDTH))
+        self.sunroom_floor.wall_c.editingFinished.connect(
+            lambda: self.handle_floor_wall_finish_edit(LengthType.C_WALL_WIDTH))
 
 
     def update_to_scenario(self) -> None:

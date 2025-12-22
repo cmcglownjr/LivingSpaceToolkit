@@ -12,7 +12,7 @@ orders for Livingspace sunrooms.
 The requirements.txt file lists the required packages needed to run the gui application. There are also four custom
 modules included.
 
-### Prerequisits
+### Requirements
 
 The program needs the following packages: 
 
