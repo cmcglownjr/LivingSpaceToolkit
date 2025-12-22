@@ -28,9 +28,9 @@ class CathedralRoofView(QWidget):
         self.end_cuts: RoofEndCutsView = RoofEndCutsView()
         self.fascia: QCheckBox = QCheckBox()
 
-        self.pitch_dict: Dict[RoofSide, RoofPitchView] = {
-            RoofSide.A_SIDE: self.pitch_a,
-            RoofSide.C_SIDE: self.pitch_c
+        self.pitch_dict: Dict[RoofSide, QLineEdit] = {
+            RoofSide.A_SIDE: self.pitch_a.pitch_input,
+            RoofSide.C_SIDE: self.pitch_c.pitch_input
         }
 
         self.overhang_edit.setPlaceholderText("0' or 0\"")

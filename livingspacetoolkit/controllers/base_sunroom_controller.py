@@ -130,3 +130,13 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
             self.view.show_warning(str(err))
             logger.warning(f"Invalid input: {wall_width}")
             self.sunroom_floor.wall_dict[wall].clear()
+
+    def handle_pitch_finish_edit(self, roof_side: RoofSide) -> None:
+        pitch_edit = self.sunroom_roof.pitch_dict[roof_side].text()
+        try:
+            self.toolkit_state.pitch[roof_side].pitch_value = pitch_edit
+            logger.info(f"{self.toolkit_state.sunroom_type.name} {roof_side.name} pitch input saved as {pitch_edit}")
+        except ValueError as err:
+            self.view.show_warning(str(err))
+            logger.warning(f"Invalid input: {pitch_edit}")
+            self.sunroom_roof.pitch_dict[roof_side].clear()

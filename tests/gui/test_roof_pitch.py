@@ -74,7 +74,7 @@ class TestStudioRoofPitch:
             qtbot.keyClick(main_window.tabs_view.studio_view.sunroom_roof.pitch.pitch_input, Qt.Key.Key_Return)
         # Assert changes
         assert mock_warning["title"] == "WARNING"
-        assert mock_warning["text"] == 'Invalid angle format: abc'
+        assert mock_warning["text"] == 'Invalid number format: abc'
         assert main_window.tabs_view.studio_view.sunroom_roof.pitch.pitch_input.text() == ''
         assert main_window.toolkit_state.pitch[RoofSide.B_SIDE].pitch_value == 0.0
 
@@ -221,7 +221,7 @@ class TestCathedralRoofPitch:
             qtbot.keyClick(main_window.tabs_view.cathedral_view.sunroom_roof.pitch_a.pitch_input, Qt.Key.Key_Return)
         # Assert changes
         assert mock_warning["title"] == "WARNING"
-        assert mock_warning["text"] == 'Invalid angle format: abc'
+        assert mock_warning["text"] == 'Invalid number format: abc'
         assert main_window.tabs_view.cathedral_view.sunroom_roof.pitch_a.pitch_input.text() == ''
         assert main_window.toolkit_state.pitch[RoofSide.A_SIDE].pitch_value == 0.0
 
@@ -238,7 +238,7 @@ class TestCathedralRoofPitch:
             qtbot.keyClick(main_window.tabs_view.cathedral_view.sunroom_roof.pitch_c.pitch_input, Qt.Key.Key_Return)
         # Assert changes
         assert mock_warning["title"] == "WARNING"
-        assert mock_warning["text"] == 'Invalid angle format: abc'
+        assert mock_warning["text"] == 'Invalid number format: abc'
         assert main_window.tabs_view.cathedral_view.sunroom_roof.pitch_c.pitch_input.text() == ''
         assert main_window.toolkit_state.pitch[RoofSide.C_SIDE].pitch_value == 0.0
 

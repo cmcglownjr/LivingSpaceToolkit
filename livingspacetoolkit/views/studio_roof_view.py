@@ -27,8 +27,8 @@ class StudioRoofView(QWidget):
         self.end_cuts: RoofEndCutsView = RoofEndCutsView()
         self.fascia: QCheckBox = QCheckBox()
 
-        self.pitch_dict: Dict[RoofSide, RoofPitchView] = {
-            RoofSide.B_SIDE: self.pitch
+        self.pitch_dict: Dict[RoofSide, QLineEdit] = {
+            RoofSide.B_SIDE: self.pitch.pitch_input
         }
 
         self.overhang_edit.setPlaceholderText("0' or 0\"")
