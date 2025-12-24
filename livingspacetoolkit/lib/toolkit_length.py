@@ -108,7 +108,12 @@ class ToolkitLength:
             raise ValueError("Length cannot be empty")
         if self._is_negative_measurement(value):
             raise ValueError(f"Length cannot be negative: {value}")
-        self._length = self._parse_imperial_to_inches(value)
+        if self.length_type == LengthType.OVERHANG and (self._parse_imperial_to_inches(value) > 16.0):
+            # Business logic. Overhang max length is 16 inches
+            logger.warning("Setting overhang to 16in. as it exceeds max tolerance.")
+            self._length = 16
+        else:
+            self._length = self._parse_imperial_to_inches(value)
         self.modified = True
 
     @property
