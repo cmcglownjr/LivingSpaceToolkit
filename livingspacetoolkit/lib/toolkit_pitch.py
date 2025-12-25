@@ -86,7 +86,7 @@ class ToolkitPitch:
         return self._pitch_value
 
     @pitch_value.setter
-    def pitch_value(self, value: str) -> None:
+    def pitch_value(self, value: str|float|int) -> None:
         if not value:
             raise ValueError("Angle/Ratio cannot be empty")
         if self._is_negative_input(value):
@@ -97,13 +97,12 @@ class ToolkitPitch:
                 if angle >= 60:
                     raise ValueError(f"Angle is too high: {angle}")
                 self._pitch_value = radians(angle)
-                self.modified = True
             case PitchType.RATIO:
                 ratio = self.parse_number(value)
                 if ratio >= 21:
                     raise ValueError(f"Ratio is too high: {ratio}")
                 self._pitch_value = atan(ratio/12)
-                self.modified = True
+        self.modified = True
 
     @property
     def pitch_type(self) -> PitchType:
@@ -125,13 +124,17 @@ class ToolkitPitch:
     def modified(self, value: bool) -> None:
         self._modified = value
 
-    def parse_angle(self, text: str) -> float:
+    def parse_angle(self, text: str|float|int) -> float:
+        if isinstance(text, float|int):
+            text = str(text)
         m = self.ANGLE_REGEX.match(text)
         if not m:
             raise ValueError(f"Invalid angle format: {text}")
         return float(m.group("value"))
 
-    def parse_number(self, text: str) -> float:
+    def parse_number(self, text: str|float|int) -> float:
+        if isinstance(text, float|int):
+            text = str(text)
         m = self.NUMBER_REGEX.match(text)
         if not m:
             raise ValueError(f"Invalid number format: {text}")
@@ -144,5 +147,7 @@ class ToolkitPitch:
 
         return int(m.group("fnum")) / int(m.group("fden"))
 
-    def _is_negative_input(self, text: str) -> bool:
+    def _is_negative_input(self, text: str|float|int) -> bool:
+        if isinstance(text, float|int):
+            text = str(text)
         return bool(self.NEGATIVE_INPUT_REGEX.match(text))

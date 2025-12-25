@@ -103,7 +103,7 @@ class ToolkitLength:
         return self._length
 
     @length.setter
-    def length(self, value: str) -> None:
+    def length(self, value: str|float|int) -> None:
         if not value:
             raise ValueError("Length cannot be empty")
         if self._is_negative_measurement(value):
@@ -159,10 +159,14 @@ class ToolkitLength:
 
         return feet * 12 + inches
 
-    def _is_negative_measurement(self, text: str) -> bool:
-        return bool(self.NEGATIVE_MEASUREMENT_REGEX.match(text))
+    def _is_negative_measurement(self, value: str|float|int) -> bool:
+        if isinstance(value, float|int):
+            value = str(value) # Just turn it into a string and keep it simple.
+        return bool(self.NEGATIVE_MEASUREMENT_REGEX.match(value))
 
-    def _check_business_logic(self, value) -> float:
+    def _check_business_logic(self, value: str|float|int) -> float:
+        if isinstance(value, float|int):
+            value = str(value)
         length = self._parse_imperial_to_inches(value)
         if self.length_type == LengthType.OVERHANG and (length > 16.0):
             # Business logic. Overhang max length is 16 inches
