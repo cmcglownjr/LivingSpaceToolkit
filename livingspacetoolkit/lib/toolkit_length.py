@@ -104,7 +104,7 @@ class ToolkitLength:
 
     @length.setter
     def length(self, value: str|float|int) -> None:
-        if not value:
+        if isinstance(value, str) and not value:
             raise ValueError("Length cannot be empty")
         if self._is_negative_measurement(value):
             raise ValueError(f"Length cannot be negative: {value}")
