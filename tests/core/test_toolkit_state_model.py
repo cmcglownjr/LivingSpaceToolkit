@@ -54,6 +54,7 @@ class TestToolkitStateModel:
 
 
 class TestStudioToolkitStateModel:
+    @pytest.mark.unit
     def test_wall_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -72,6 +73,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_wall_height_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -90,6 +92,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_max_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -108,6 +111,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_soffit_height_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -126,6 +130,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_soffit_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -144,6 +149,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_drip_edge_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -162,6 +168,7 @@ class TestStudioToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_drip_edge_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -182,6 +189,7 @@ class TestStudioToolkitStateModel:
 
 
 class TestCathedralToolkitStateModel:
+    @pytest.mark.unit
     def test_wall_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -202,6 +210,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_wall_height_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -221,6 +230,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_max_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -240,6 +250,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_soffit_height_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -259,6 +270,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_soffit_height_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -279,6 +291,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_drip_edge_peak_height_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
@@ -297,6 +310,7 @@ class TestCathedralToolkitStateModel:
         with does_not_raise():
             assert toolkit.check_calculation_ready() is None
 
+    @pytest.mark.unit
     def test_drip_edge_pitch_check_calculation_ready(self):
         # Arrange
         toolkit = ToolkitStateModel()
