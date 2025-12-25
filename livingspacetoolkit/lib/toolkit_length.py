@@ -108,13 +108,7 @@ class ToolkitLength:
             raise ValueError("Length cannot be empty")
         if self._is_negative_measurement(value):
             raise ValueError(f"Length cannot be negative: {value}")
-        length = self._parse_imperial_to_inches(value)
-        if self.length_type == LengthType.OVERHANG and (length > 16.0):
-            # Business logic. Overhang max length is 16 inches
-            logger.warning("Setting overhang to 16in. as it exceeds max tolerance.")
-            self._length = 16
-        else:
-            self._length = length
+        self._length = self._check_business_logic(value)
         self.modified = True
 
     @property
@@ -167,3 +161,20 @@ class ToolkitLength:
 
     def _is_negative_measurement(self, text: str) -> bool:
         return bool(self.NEGATIVE_MEASUREMENT_REGEX.match(text))
+
+    def _check_business_logic(self, value) -> float:
+        length = self._parse_imperial_to_inches(value)
+        if self.length_type == LengthType.OVERHANG and (length > 16.0):
+            # Business logic. Overhang max length is 16 inches
+            logger.warning("Setting overhang to 16in. as it exceeds max tolerance.")
+            return  16
+        elif self.length_type == LengthType.HANG_RAIL and length > 216:
+            # Business logic. Hang rails and Fascia cannot exceed 216". Raise a ValueError, divide them in half,
+            # try again
+            logger.warning(f"The hang rails are too long: {length}")
+            raise ValueError("Hang rails are too long. Divide them in half")
+        elif self.length_type == LengthType.FASCIA and length > 216:
+            logger.warning(f"The fascia is too long: {length}")
+            raise ValueError("Fascia is too long. Divide them in half")
+        else:
+            return length
