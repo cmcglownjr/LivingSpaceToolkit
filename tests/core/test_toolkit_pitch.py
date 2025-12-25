@@ -91,7 +91,8 @@ class TestToolkitPitch:
                              [
                                  ('30 deg', 30),
                                  ('30deg', 30),
-                                 ('30', 30)
+                                 ('30', 30),
+                                 (15, 15)
                              ])
     def test_angle_input(self, actual, expected):
         # Arrange
@@ -107,7 +108,8 @@ class TestToolkitPitch:
                                  ('5', 5),
                                  ('5.5', 5.5),
                                  ('5 1/2', 5.5),
-                                 ('1/2', 0.5)
+                                 ('1/2', 0.5),
+                                 (1/2, 0.5)
                              ])
     def test_ratio_input(self, actual, expected):
         # Arrange
@@ -122,7 +124,8 @@ class TestToolkitPitch:
                              [
                                  '-30deg',
                                  '-30 deg',
-                                 '-30'
+                                 '-30',
+                                 -30
                              ])
     def test_negative_angle(self, variable):
         pitch = ToolkitPitch(PitchType.ANGLE, RoofSide.A_SIDE)

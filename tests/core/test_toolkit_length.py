@@ -110,6 +110,7 @@ class TestToolkitLength:
     @pytest.mark.parametrize("actual, expected",
                              [
                                  ('15', 15),
+                                 (15, 15),
                                  ('15"', 15),
                                  ('15in.', 15),
                                  ('15 inches', 15),
@@ -129,6 +130,7 @@ class TestToolkitLength:
     @pytest.mark.parametrize("actual, expected",
                              [
                                  ('1/2"', 0.5),
+                                 (1/2, 0.5),
                                  ('1/2in', 0.5),
                                  ('1/2inch', 0.5),
                                  ('1/2 in.', 0.5),
@@ -190,6 +192,7 @@ class TestToolkitLength:
                                  '-10in',
                                  '-10 in',
                                  '-10"',
+                                 -10,
                                  '-10 1/2in',
                                  '-10 1/2 in',
                                  '-10 1/2"',
