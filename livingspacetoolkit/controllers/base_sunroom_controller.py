@@ -104,16 +104,17 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
         self.set_fascia_checkbox()
 
     def handle_thickness_combo_index_change(self) -> None:
-        thickness_index = self.sunroom_roof.thickness_combo.currentIndex()
-        thickness_item = self.sunroom_roof.thickness_combo.itemData(thickness_index)
-        thickness_text = self.sunroom_roof.thickness_combo.itemText(thickness_index)
-        try:
-            self.toolkit_state.thickness.length = thickness_item
-        except ValueError:
-            logger.warning('Roofing Type changed')
-        self.set_fascia_checkbox()
-        if thickness_item is not None:
-            logger.info(f"Setting {self.toolkit_state.sunroom_type.name} thickness to {thickness_text}.")
+        if self.sunroom_roof.thickness_combo.currentIndex() != -1: # Index of -1 happens when combo box is cleared
+            thickness_index = self.sunroom_roof.thickness_combo.currentIndex()
+            thickness_item = self.sunroom_roof.thickness_combo.itemData(thickness_index)
+            thickness_text = self.sunroom_roof.thickness_combo.itemText(thickness_index)
+            try:
+                self.toolkit_state.thickness.length = thickness_item
+            except ValueError:
+                logger.warning('Roofing Type changed')
+            self.set_fascia_checkbox()
+            if thickness_item is not None:
+                logger.info(f"Setting {self.toolkit_state.sunroom_type.name} thickness to {thickness_text}.")
 
     def handle_end_cuts_click(self, end_cut_type: EndCutType) -> None:
         logger.info(f"Setting {self.toolkit_state.sunroom_type.name} end cuts to {end_cut_type.name}.")

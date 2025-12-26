@@ -1,6 +1,6 @@
 import logging
 
-from PySide6.QtWidgets import QTabWidget
+from PySide6.QtWidgets import QTabWidget, QMessageBox
 
 from .studio_view import StudioView
 from .cathedral_view import CathedralView
@@ -18,3 +18,6 @@ class TabsView(QTabWidget):
         self.addTab(self.studio_view, "Studio")
         self.addTab(self.cathedral_view, "Cathedral")
         self.setMinimumSize(600, 400)
+
+    def show_warning(self, message: str) -> None:
+        QMessageBox.warning(self, "WARNING", message, QMessageBox.StandardButton.Ok)

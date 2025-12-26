@@ -38,9 +38,12 @@ class ToolkitStateModel:
         LengthType.C_WALL_WIDTH: ToolkitLength(LengthType.C_WALL_WIDTH),
     })
 
-    def default_state(self) -> None:
-        self.sunroom_type = SunroomType.STUDIO
-        self.scenario = None
+    def default_state(self, sunroom: SunroomType|None = None, scenario: Scenario|None = None) -> None:
+        if sunroom is None:
+            self.sunroom_type = SunroomType.STUDIO
+        else:
+            self.sunroom_type = sunroom
+        self.scenario = scenario
         for roof_side in self.pitch:
             self.pitch[roof_side].pitch_type = PitchType.RATIO
             self.pitch[roof_side].pitch_value = 0

@@ -47,6 +47,12 @@ class MainWindowController:
 
     def handle_results_button_click(self) -> None:
         # TODO: Button press actually does calculations using calculations model
+        try:
+            logger.debug("Checking if all fields are filled for selected scenario.")
+            self.toolkit_state.check_calculation_ready()
+        except TypeError as err:
+            self.tabs_view.show_warning(str(err))
+            logger.warning(err)
         self.results_view.update_text("Button Pressed.\nNew line added.")
 
     def set_to_default_state(self) -> None:
