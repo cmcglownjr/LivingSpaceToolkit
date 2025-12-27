@@ -180,5 +180,9 @@ class ToolkitLength:
         elif self.length_type == LengthType.FASCIA and length > 216:
             logger.warning(f"The fascia is too long: {length}")
             raise ValueError("Fascia is too long. Divide them in half")
+        elif self.length_type == LengthType.PANEL and length > 288:
+            # Business logic. The maximum panel length is 288 in.
+            logger.warning(f"The panel length has exceeded the max allowable: {length}")
+            raise ValueError("The panel length has exceeded the max allowable.")
         else:
             return length
