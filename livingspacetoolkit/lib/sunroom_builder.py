@@ -16,50 +16,6 @@ class SunroomBuilder:
         self.sunroom_model = sunroom_model
         self.scenario = ScenarioSelector(self.toolkit_state_model).identify_scenario()
 
-    def angled(self, pitch) -> float:
-        """
-        Calculates the angled thickness given pitch and the panel thickness. Pitch has to be in radians.
-        :param pitch: float
-        :return: float
-        """
-        angle = None
-        try:
-            angle = self.toolkit_state_model.thickness.length * (sin(pi / 2) / sin(pi / 2 - pitch))
-        except ZeroDivisionError as err:
-            logger.exception(err)
-        return angle
-
-    def calculate_drip_edge(self, soffit, pitch):
-        """
-        Returns the drip edge height given the soffit and angled thickness. Returns in units of inches.
-
-        :param soffit: float: Soffit height in inches
-        :param pitch: float: Pitch in radians
-        :return:
-        """
-        angled_thickness = self.angled(pitch=pitch)
-        if self.toolkit_state_model.end_cuts == EndCutType.PLUMB_CUT_TOP_BOTTOM:
-            drip_edge = soffit + angled_thickness
-        else:
-            drip_edge = soffit + self.toolkit_state_model.thickness.length * cos(pitch)
-        return drip_edge
-
-    def estimate_drip_from_peak(self, estimate_pitch, pitched_wall_length):
-        """
-        This method is used to help estimate the pitch. Since I forgot how to do numerical methods this will have to do. All
-        lengths must be in inches, the estimated pitch in radians, and this assumes you are cycling through a list of
-        pitches.
-        :param estimate_pitch: float: The estimated pitch of the room in radians
-        :param pitched_wall_length: float: The length of the pitched-side wall in inches
-        :return: float: Returns the drip edge height in inches
-        """
-        wall_height = (self.toolkit_state_model.wall_heights[LengthType.PEAK_HEIGHT].length
-                       - pitched_wall_length * tan(estimate_pitch))
-        soffit = wall_height - self.toolkit_state_model.overhang.length * tan(estimate_pitch)
-
-        drip_edge = self.calculate_drip_edge(soffit, estimate_pitch)
-        return drip_edge
-
     @staticmethod
     def calculate_armstrong_panels(pitch, pitched_wall, unpitched_wall):
         """
