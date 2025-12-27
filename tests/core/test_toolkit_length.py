@@ -15,7 +15,7 @@ class TestToolkitLength:
 
     @staticmethod
     def length_input_id(param: list):
-        return f"length: {param[0][0]}, length_type: {param[0][1].name}"
+        return f"length: {param[0][0]}, length_type: {param[0][1].name}, sunroom side: {param[0][2].name}"
 
     @pytest.mark.unit
     def test_getter_setter(self):
