@@ -10,7 +10,7 @@ from livingspacetoolkit.lib.toolkit_length import LengthType
 
 class TestStudioScenarios:
 
-    @pytest.fixture
+    @pytest.fixture(scope="module")
     def studio_test_data(self) -> Dict[str, float]:
         pitch = atan(10/12)
         overhang = 10
