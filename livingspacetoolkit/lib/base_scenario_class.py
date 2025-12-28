@@ -94,6 +94,9 @@ class UnknownScenario(BaseScenarioClass):
     def scenario_condition(scenario: Scenario) -> bool:
         return False
 
+    def calculate_sunroom_properties(self) -> None:
+        raise NotImplementedError
+
 
 class ScenarioSelector:
     def __init__(self, toolkit_state_model: ToolkitStateModel) -> None:
