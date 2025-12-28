@@ -161,6 +161,9 @@ class BaseSunroomController(ABC, BaseSunroomProtocol):
             case _:
                 widget_text = self.sunroom_wall.wall_height_dict[(sunroom_side, length_type)].text()
                 try:
+                    if sunroom_side == SunroomSide.A_SIDE and length_type == LengthType.DRIP_EDGE_HEIGHT:
+                        # There's only 1 input for cathedral drip edge but two sides so add the other side here for now
+                        self.toolkit_state.wall_heights[(SunroomSide.C_SIDE, length_type)].length = widget_text
                     self.toolkit_state.wall_heights[(sunroom_side, length_type)].length = widget_text
                     if sunroom_side is None:
                         logger.info(f"{self.toolkit_state.sunroom_type.name} {length_type.name} "

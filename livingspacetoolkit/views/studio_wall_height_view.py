@@ -47,7 +47,7 @@ class StudioWallHeightView(QWidget):
             (None, LengthType.MAX_HEIGHT): self.max_height_edit,
             (SunroomSide.B_SIDE, LengthType.WALL_HEIGHT): self.b_wall_height_edit,
             (SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT): self.soffit_height_edit,
-            (None, LengthType.DRIP_EDGE_HEIGHT): self.drip_edge_height_edit
+            (SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT): self.drip_edge_height_edit
         }
 
         layout_heights.addWidget(self.peak_height_label)

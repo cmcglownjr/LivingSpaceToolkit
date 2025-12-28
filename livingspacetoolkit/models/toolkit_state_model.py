@@ -24,7 +24,12 @@ class ToolkitStateModel:
     wall_heights: Dict[tuple[SunroomSide | None, LengthType], ToolkitLength] = field(default_factory=lambda:{
         (None,LengthType.PEAK_HEIGHT): ToolkitLength(LengthType.PEAK_HEIGHT),
         (None,LengthType.MAX_HEIGHT): ToolkitLength(LengthType.MAX_HEIGHT),
-        (None, LengthType.DRIP_EDGE_HEIGHT): ToolkitLength(LengthType.DRIP_EDGE_HEIGHT),
+        (SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT): ToolkitLength(LengthType.DRIP_EDGE_HEIGHT,
+                                                                         SunroomSide.A_SIDE),
+        (SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT): ToolkitLength(LengthType.DRIP_EDGE_HEIGHT,
+                                                                         SunroomSide.B_SIDE),
+        (SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT): ToolkitLength(LengthType.DRIP_EDGE_HEIGHT,
+                                                                         SunroomSide.C_SIDE),
         (SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT): ToolkitLength(LengthType.SOFFIT_HEIGHT, SunroomSide.A_SIDE),
         (SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT): ToolkitLength(LengthType.SOFFIT_HEIGHT, SunroomSide.B_SIDE),
         (SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT): ToolkitLength(LengthType.SOFFIT_HEIGHT, SunroomSide.C_SIDE),
@@ -125,15 +130,22 @@ class ToolkitStateModel:
                         wall_height_list.append((SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT))
             case Scenario.DRIP_EDGE_PEAK_HEIGHT:
                 wall_height_list.append((None, LengthType.PEAK_HEIGHT))
-                wall_height_list.append((None, LengthType.DRIP_EDGE_HEIGHT))
+                match self.sunroom_type:
+                    case SunroomType.STUDIO:
+                        wall_height_list.append((SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT))
+                    case SunroomType.CATHEDRAL:
+                        wall_height_list.append((SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT))
+                        wall_height_list.append((SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT))
             case Scenario.DRIP_EDGE_PITCH:
                 match self.sunroom_type:
                     case SunroomType.STUDIO:
                         pitch_list.append(SunroomSide.B_SIDE)
+                        wall_height_list.append((SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT))
                     case SunroomType.CATHEDRAL:
                         pitch_list.append(SunroomSide.A_SIDE)
                         pitch_list.append(SunroomSide.C_SIDE)
-                wall_height_list.append((None, LengthType.DRIP_EDGE_HEIGHT))
+                        wall_height_list.append((SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT))
+                        wall_height_list.append((SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT))
         if len(pitch_list) > 0:
             for sunroom_side in pitch_list:
                 if not self.pitch[sunroom_side].modified:

@@ -46,7 +46,8 @@ class CathedralWallHeightView(QWidget):
             (SunroomSide.C_SIDE, LengthType.WALL_HEIGHT): self.c_wall_height_edit,
             (SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT): self.soffit_height_a_edit,
             (SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT): self.soffit_height_c_edit,
-            (None, LengthType.DRIP_EDGE_HEIGHT): self.drip_edge_height_edit
+            (SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT): self.drip_edge_height_edit # There's only one drip edge
+            # so use A_SIDE
         }
 
         self.peak_height_edit.setPlaceholderText("0' or 0\"")

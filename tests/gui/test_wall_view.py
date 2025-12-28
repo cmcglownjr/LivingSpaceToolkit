@@ -157,7 +157,7 @@ class TestStudioWallHeights:
 
         # Assert changes
         assert main_window.tabs_view.studio_view.sunroom_wall.drip_edge_height_edit.text() == '10 ft.'
-        assert main_window.toolkit_state.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length == 120.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 120.0
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -175,7 +175,7 @@ class TestStudioWallHeights:
         assert mock_warning["title"] == "WARNING"
         assert mock_warning["text"] == 'Invalid imperial format: abc'
         assert main_window.tabs_view.studio_view.sunroom_wall.drip_edge_height_edit.text() == ''
-        assert main_window.toolkit_state.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length == 0.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 0.0
 
 
 class TestCathedralWallHeights:
@@ -398,7 +398,8 @@ class TestCathedralWallHeights:
 
         # Assert changes
         assert main_window.tabs_view.cathedral_view.sunroom_wall.drip_edge_height_edit.text() == '10 ft.'
-        assert main_window.toolkit_state.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length == 120.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 120.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 120.0
 
     @pytest.mark.gui
     @pytest.mark.integration
@@ -416,4 +417,5 @@ class TestCathedralWallHeights:
         assert mock_warning["title"] == "WARNING"
         assert mock_warning["text"] == 'Invalid imperial format: abc'
         assert main_window.tabs_view.cathedral_view.sunroom_wall.drip_edge_height_edit.text() == ''
-        assert main_window.toolkit_state.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length == 0.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 0.0
+        assert main_window.toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == 0.0

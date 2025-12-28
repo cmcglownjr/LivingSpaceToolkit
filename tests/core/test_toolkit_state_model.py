@@ -22,7 +22,9 @@ class TestToolkitStateModel:
         toolkit_2.roofing_type = RoofingType.ECO_GREEN
         toolkit_2.thickness.length = '3'
         toolkit_2.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit_2.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit_2.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit_2.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit_2.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit_2.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit_2.floor_walls[SunroomSide.B_SIDE].length = "10'"
         toolkit_2.floor_walls[SunroomSide.C_SIDE].length = "8'"
@@ -44,7 +46,9 @@ class TestToolkitStateModel:
         toolkit.roofing_type = RoofingType.ECO_GREEN
         toolkit.thickness.length = '3'
         toolkit.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "10'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
@@ -159,7 +163,7 @@ class TestStudioToolkitStateModel:
         toolkit.roofing_type = RoofingType.ECO_GREEN
         toolkit.thickness.length = '3'
         toolkit.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit.wall_heights[(None, LengthType.PEAK_HEIGHT)].length = "13'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit.floor_walls[SunroomSide.B_SIDE].length = "10'"
@@ -179,7 +183,7 @@ class TestStudioToolkitStateModel:
         toolkit.roofing_type = RoofingType.ECO_GREEN
         toolkit.thickness.length = '3'
         toolkit.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit.floor_walls[SunroomSide.B_SIDE].length = "10'"
         toolkit.floor_walls[SunroomSide.C_SIDE].length = "8'"
@@ -301,7 +305,8 @@ class TestCathedralToolkitStateModel:
         toolkit.roofing_type = RoofingType.ECO_GREEN
         toolkit.thickness.length = '3'
         toolkit.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit.wall_heights[(None, LengthType.PEAK_HEIGHT)].length = "13'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit.floor_walls[SunroomSide.B_SIDE].length = "10'"
@@ -322,7 +327,8 @@ class TestCathedralToolkitStateModel:
         toolkit.roofing_type = RoofingType.ECO_GREEN
         toolkit.thickness.length = '3'
         toolkit.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
-        toolkit.wall_heights[(None, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
+        toolkit.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length = "10'"
         toolkit.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit.floor_walls[SunroomSide.B_SIDE].length = "10'"
         toolkit.floor_walls[SunroomSide.C_SIDE].length = "8'"

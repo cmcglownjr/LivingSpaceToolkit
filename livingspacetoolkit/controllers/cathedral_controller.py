@@ -69,7 +69,7 @@ class CathedralController(BaseSunroomController):
         self.sunroom_wall.soffit_height_c_edit.editingFinished.connect(
             lambda: self.handle_line_edit_finish_edit(SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT))
         self.sunroom_wall.drip_edge_height_edit.editingFinished.connect(
-            lambda: self.handle_line_edit_finish_edit(None, LengthType.DRIP_EDGE_HEIGHT))
+            lambda: self.handle_line_edit_finish_edit(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT))
 
     def update_to_scenario(self):
         self.set_to_default()
