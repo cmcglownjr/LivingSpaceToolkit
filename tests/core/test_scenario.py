@@ -4,6 +4,7 @@ from typing import Dict
 
 from livingspacetoolkit.lib import *
 from livingspacetoolkit.models import ToolkitStateModel
+from livingspacetoolkit.utils.helpers import to_sixteenth
 from livingspacetoolkit.lib.toolkit_enums import Scenario, SunroomSide, RoofingType, SunroomType, EndCutType
 from livingspacetoolkit.lib.toolkit_length import LengthType
 
@@ -105,24 +106,171 @@ class TestStudioScenarios:
             'floor_walls']
 
     @pytest.mark.integration
-    def test_max_height_pitch(self):
-        pass
+    def test_max_height_pitch(self, studio_test_data):
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.STUDIO
+        toolkit_state.scenario = Scenario.MAX_HEIGHT_PITCH
+        toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
+        toolkit_state.overhang.length = studio_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = studio_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length = studio_test_data['max_height']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = studio_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "MaxHeightPitch"
+        assert toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length == studio_test_data['peak_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'b_wall_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length == studio_test_data[
+            'soffit_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == studio_test_data[
+            'drip_edge']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
 
     @pytest.mark.integration
-    def test_soffit_height_peak_height(self):
-        pass
+    def test_soffit_height_peak_height(self, studio_test_data):
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.STUDIO
+        toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PEAK_HEIGHT
+        toolkit_state.overhang.length = studio_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = studio_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length = studio_test_data[
+            'soffit_height']
+        toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length = studio_test_data['peak_height']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = studio_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "SoffitHeightPeakHeight"
+        assert toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value == studio_test_data['pitch']
+        assert toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length == studio_test_data['max_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'b_wall_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == studio_test_data[
+            'drip_edge']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
 
     @pytest.mark.integration
-    def test_soffit_height_pitch(self):
-        pass
+    def test_soffit_height_pitch(self, studio_test_data):
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.STUDIO
+        toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PITCH
+        toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
+        toolkit_state.overhang.length = studio_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = studio_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length = studio_test_data[
+            'soffit_height']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = studio_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "SoffitHeightPitch"
+        assert toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length == studio_test_data['peak_height']
+        assert toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length == studio_test_data['max_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'b_wall_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == studio_test_data[
+            'drip_edge']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
 
     @pytest.mark.integration
-    def test_drip_edge_peak_height(self):
-        pass
+    def test_drip_edge_peak_height(self, studio_test_data):
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.STUDIO
+        toolkit_state.scenario = Scenario.DRIP_EDGE_PEAK_HEIGHT
+        toolkit_state.overhang.length = studio_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = studio_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length = studio_test_data[
+            'drip_edge']
+        toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length = studio_test_data['peak_height']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = studio_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "DripEdgePeakHeight"
+        assert toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value == studio_test_data['pitch']
+        assert toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length == studio_test_data['max_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'b_wall_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length == studio_test_data[
+            'soffit_height']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
 
     @pytest.mark.integration
-    def test_drip_edge_pitch(self):
-        pass
+    def test_drip_edge_pitch(self, studio_test_data):
+        # This test is special because the drip edge is calculated using a janky numerical method. Estimates need to be
+        # close instead of exact.
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.STUDIO
+        toolkit_state.scenario = Scenario.DRIP_EDGE_PITCH
+        toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
+        toolkit_state.overhang.length = studio_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = studio_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.SOFFIT_HEIGHT)].length = studio_test_data[
+            'drip_edge']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = studio_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = studio_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "DripEdgePitch"
+        assert toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length == studio_test_data['peak_height']
+        assert toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length == studio_test_data['max_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'b_wall_height']
+        assert toolkit_state.wall_heights[(SunroomSide.B_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == studio_test_data[
+            'soffit_height']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == studio_test_data[
+            'floor_walls']
 
 class TestCathedralScenarios:
 
