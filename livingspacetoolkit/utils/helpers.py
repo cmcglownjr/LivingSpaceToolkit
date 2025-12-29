@@ -33,7 +33,15 @@ def temporary_change(
     return decorator
 
 
-def set_strikethrough(widget: QWidget, enabled: bool):
+def set_strikethrough(widget: QWidget, enabled: bool) -> None:
     font = widget.font()
     font.setStrikeOut(enabled)
     widget.setFont(font)
+
+def to_sixteenth(number: float) -> float:
+    """
+    Rounds number to nearest 16th.
+    :param number: float
+    :return: float
+    """
+    return round(number * 16) / 16
