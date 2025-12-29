@@ -204,8 +204,44 @@ class TestCathedralScenarios:
             'floor_walls']
 
     @pytest.mark.integration
-    def test_wall_height_peak_height(self):
-        pass
+    def test_wall_height_peak_height(self, cathedral_test_data):
+        # Arrange
+        toolkit_state = ToolkitStateModel()
+        toolkit_state.sunroom_type = SunroomType.CATHEDRAL
+        toolkit_state.scenario = Scenario.WALL_HEIGHT_PEAK_HEIGHT
+        toolkit_state.overhang.length = cathedral_test_data['overhang']
+        toolkit_state.roofing_type = RoofingType.ECO_GREEN
+        toolkit_state.thickness.length = cathedral_test_data["thickness"]
+        toolkit_state.end_cuts = EndCutType.UNCUT_TOP_BOTTOM
+        toolkit_state.fascia = True
+        toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length = cathedral_test_data['peak_height']
+        toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length = cathedral_test_data[
+            'a_wall_height']
+        toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length = cathedral_test_data[
+            'c_wall_height']
+        toolkit_state.floor_walls[SunroomSide.A_SIDE].length = cathedral_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.B_SIDE].length = cathedral_test_data['floor_walls']
+        toolkit_state.floor_walls[SunroomSide.C_SIDE].length = cathedral_test_data['floor_walls']
+        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        # Act
+        scenario.calculate_sunroom_properties()
+        # Assert
+        assert scenario.__class__.__name__ == "WallHeightPeakHeight"
+        assert toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value == cathedral_test_data['a_pitch']
+        assert toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value == cathedral_test_data['c_pitch']
+        assert toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length == cathedral_test_data['max_height']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT)].length == cathedral_test_data[
+            'a_soffit_height']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT)].length == cathedral_test_data[
+            'c_soffit_height']
+        assert (toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length ==
+                cathedral_test_data['a_drip_edge'])
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length == \
+               cathedral_test_data['c_drip_edge']
+        assert toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length == cathedral_test_data[
+            'floor_walls']
+        assert toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length == cathedral_test_data[
+            'floor_walls']
 
     @pytest.mark.integration
     def test_max_height_pitch(self):
