@@ -3,14 +3,16 @@ from math import floor as m_floor
 from math import ceil as m_ceil
 
 from livingspacetoolkit.logconf.log_config import logger
+from models import SunroomModel
 from .base_scenario_class import BaseScenarioClass
 from .toolkit_enums import Scenario, LengthType, SunroomSide, SunroomType
 from livingspacetoolkit.models import ToolkitStateModel
 
 
 class DripEdgePeakHeight(BaseScenarioClass):
-    def __init__(self, toolkit_state_model: ToolkitStateModel) -> None:
+    def __init__(self, toolkit_state_model: ToolkitStateModel, sunroom_model: SunroomModel) -> None:
         self.toolkit_state_model = toolkit_state_model
+        self.sunroom_model = sunroom_model
 
 
     @staticmethod

@@ -2,7 +2,7 @@ import pytest
 from math import tan
 
 from livingspacetoolkit.lib import *
-from livingspacetoolkit.models import ToolkitStateModel
+from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 from livingspacetoolkit.utils.helpers import to_nice_number
 from livingspacetoolkit.lib.toolkit_enums import Scenario, SunroomSide, RoofingType, SunroomType, EndCutType
 from livingspacetoolkit.lib.toolkit_length import LengthType
@@ -23,10 +23,11 @@ class TestScenarioSelection:
     def test_scenario_selection(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = actual
         # Act
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Assert
         assert scenario.__class__.__name__ == expected
 
@@ -46,6 +47,7 @@ class TestStudioScenarios:
     def test_wall_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.WALL_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
@@ -58,7 +60,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -88,6 +90,7 @@ class TestStudioScenarios:
     def test_wall_height_peak_height(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.WALL_HEIGHT_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -100,7 +103,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -130,6 +133,7 @@ class TestStudioScenarios:
     def test_max_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.MAX_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
@@ -142,7 +146,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -172,6 +176,7 @@ class TestStudioScenarios:
     def test_soffit_height_peak_height(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -184,7 +189,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -214,6 +219,7 @@ class TestStudioScenarios:
     def test_soffit_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
@@ -226,7 +232,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -257,6 +263,7 @@ class TestStudioScenarios:
         # Arrange
         # expected = [soffit, max_height, wall_heights (a,b,c)]
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.DRIP_EDGE_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -269,7 +276,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -301,6 +308,7 @@ class TestStudioScenarios:
         # close instead of exact.
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.STUDIO
         toolkit_state.scenario = Scenario.DRIP_EDGE_PITCH
         toolkit_state.pitch[SunroomSide.B_SIDE].pitch_value = '10'
@@ -313,7 +321,7 @@ class TestStudioScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -350,6 +358,7 @@ class TestCathedralScenarios:
     def test_wall_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.WALL_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value = '10'
@@ -364,7 +373,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -398,6 +407,7 @@ class TestCathedralScenarios:
     def test_wall_height_peak_height(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.WALL_HEIGHT_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -411,7 +421,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -445,6 +455,7 @@ class TestCathedralScenarios:
     def test_max_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.MAX_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value = '10'
@@ -458,7 +469,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -492,6 +503,7 @@ class TestCathedralScenarios:
     def test_soffit_height_peak_height(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -505,7 +517,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -539,6 +551,7 @@ class TestCathedralScenarios:
     def test_soffit_height_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.SOFFIT_HEIGHT_PITCH
         toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value = '10'
@@ -553,7 +566,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -588,6 +601,7 @@ class TestCathedralScenarios:
         # Arrange
         # expected = [soffit (a,c), max_height, wall_heights (a,c)]
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.DRIP_EDGE_PEAK_HEIGHT
         toolkit_state.overhang.length = 10
@@ -600,7 +614,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
@@ -634,6 +648,7 @@ class TestCathedralScenarios:
     def test_drip_edge_pitch(self, actual, expected):
         # Arrange
         toolkit_state = ToolkitStateModel()
+        sunroom_model = SunroomModel()
         toolkit_state.sunroom_type = SunroomType.CATHEDRAL
         toolkit_state.scenario = Scenario.DRIP_EDGE_PITCH
         toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value = '10'
@@ -647,7 +662,7 @@ class TestCathedralScenarios:
         toolkit_state.floor_walls[SunroomSide.A_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.B_SIDE].length = 120
         toolkit_state.floor_walls[SunroomSide.C_SIDE].length = 120
-        scenario = ScenarioSelector(toolkit_state).identify_scenario()
+        scenario = ScenarioSelector(toolkit_state).identify_scenario(sunroom_model)
         # Act
         scenario.calculate_sunroom_properties()
         # Assert

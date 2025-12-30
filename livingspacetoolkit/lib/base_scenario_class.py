@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from livingspacetoolkit.logconf.log_config import logger
 from .toolkit_enums import Scenario, EndCutType
-from livingspacetoolkit.models import ToolkitStateModel
+from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 
 
 
@@ -11,8 +11,9 @@ class BaseScenarioClass(ABC):
     post_width = 3.25  # Business logic. The width of the center post. Used in cathedral calculations.
 
     @abstractmethod
-    def __init__(self, toolkit_state_model: ToolkitStateModel) -> None:
+    def __init__(self, toolkit_state_model: ToolkitStateModel, sunroom_model: SunroomModel) -> None:
         self.toolkit_state_model = toolkit_state_model
+        self.sunroom_model = sunroom_model
 
     @staticmethod
     @abstractmethod
@@ -102,11 +103,11 @@ class ScenarioSelector:
     def __init__(self, toolkit_state_model: ToolkitStateModel) -> None:
         self.toolkit_state_model = toolkit_state_model
 
-    def identify_scenario(self):
+    def identify_scenario(self, sunroom_model: SunroomModel):
         for scenario_cls in BaseScenarioClass.__subclasses__():
             try:
                 if scenario_cls.scenario_condition(self.toolkit_state_model.scenario):
-                    return scenario_cls(self.toolkit_state_model)
+                    return scenario_cls(self.toolkit_state_model, sunroom_model)
             except KeyError:
                 pass
         return UnknownScenario

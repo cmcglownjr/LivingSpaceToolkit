@@ -28,8 +28,6 @@ class TestToolkitStateModel:
         toolkit_2.floor_walls[SunroomSide.A_SIDE].length = "8'"
         toolkit_2.floor_walls[SunroomSide.B_SIDE].length = "10'"
         toolkit_2.floor_walls[SunroomSide.C_SIDE].length = "8'"
-        toolkit_2.cathedral_gable[SunroomSide.A_SIDE].length = "8'"
-        toolkit_2.cathedral_gable[SunroomSide.C_SIDE].length = "8'"
         # Assert
         assert toolkit_1 != toolkit_2
         toolkit_2.default_state()

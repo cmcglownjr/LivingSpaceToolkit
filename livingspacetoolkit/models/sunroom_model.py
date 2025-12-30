@@ -50,6 +50,10 @@ class SunroomModel:
         SunroomSide.B_SIDE: {'value': ToolkitLength(LengthType.HANG_RAIL), "max_length": False},
         SunroomSide.C_SIDE: {'value': ToolkitLength(LengthType.HANG_RAIL), "max_length": False}
     })
+    cathedral_gable: Dict[SunroomSide, ToolkitLength] = field(default_factory=lambda: {
+        SunroomSide.A_SIDE: ToolkitLength(LengthType.WALL_WIDTH, SunroomSide.A_SIDE),
+        SunroomSide.C_SIDE: ToolkitLength(LengthType.WALL_WIDTH, SunroomSide.C_SIDE),
+    })  # Used for roof panel calculations for cathedral.
     fascia: Dict[SunroomSide, Dict[str, ToolkitLength | bool]] = field(default_factory=lambda:{
         SunroomSide.A_SIDE: {'value': ToolkitLength(LengthType.FASCIA), "max_length": False},
         SunroomSide.B_SIDE: {'value': ToolkitLength(LengthType.FASCIA), "max_length": False},
