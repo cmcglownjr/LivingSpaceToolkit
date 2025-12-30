@@ -85,6 +85,7 @@ class ToolkitPitch:
 
     @pitch_value.setter
     def pitch_value(self, value: str|float|int) -> None:
+        # TODO: This currently accepts inches and degrees from user input but should add option for radians from calculations
         if isinstance(value, str) and not value:
             raise ValueError("Angle/Ratio cannot be empty")
         if self._is_negative_input(value):
