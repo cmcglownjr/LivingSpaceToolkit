@@ -345,7 +345,7 @@ class TestStudioScenarios:
 
 # Note the parametrized tests changes the End Cuts type because the function, calculate_drip_edge in base_scenario_class
 # calculates the drip edge differently for EndCutType.PLUMB_CUT_TOP_BOTTOM. This also means that scenario
-# DRIP_EDGE_PEAK_HEIGHT will calculate soffit, max_height, wall_heights differently.These are tests to match the output
+# DRIP_EDGE_PEAK_HEIGHT will calculate soffit, max_height, wall_heights differently. These are tests to match the output
 # of the previous version of this software.
 class TestCathedralScenarios:
 
@@ -477,12 +477,12 @@ class TestCathedralScenarios:
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
-        pitch_a_raw = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
-        pitch_c_raw = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
-        pitch_a_side = 12 * tan(pitch_a_raw)
-        pitch_c_side = 12 * tan(pitch_c_raw)
+        pitch_a_rad = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
+        pitch_c_rad = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
+        pitch_a_side = 12 * tan(pitch_a_rad)
+        pitch_c_side = 12 * tan(pitch_c_rad)
         peak = toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length
-        actual_peak = scenario.calculate_triangle_height(pitch_a_raw, pitch_c_raw, 120)
+        actual_peak = scenario.calculate_triangle_height(pitch_a_rad, pitch_c_rad, 120)
         max_height = toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length
         soffit_a_side = toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT)].length
         soffit_c_side = toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.SOFFIT_HEIGHT)].length
@@ -583,10 +583,10 @@ class TestCathedralScenarios:
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
-        pitch_a_raw = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
-        pitch_c_raw = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
-        pitch_a_side = 12 * tan(pitch_a_raw)
-        pitch_c_side = 12 * tan(pitch_c_raw)
+        pitch_a_rad = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
+        pitch_c_rad = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
+        pitch_a_side = 12 * tan(pitch_a_rad)
+        pitch_c_side = 12 * tan(pitch_c_rad)
         peak = toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length
         max_height = toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length
         soffit_a_side = toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT)].length
@@ -595,12 +595,12 @@ class TestCathedralScenarios:
         drip_edge_c_side = toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length
         a_wall_height = toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length
         c_wall_height = toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length
-        actual_peak = (scenario.calculate_triangle_height(pitch_a_raw, pitch_c_raw, 120) +
+        actual_peak = (scenario.calculate_triangle_height(pitch_a_rad, pitch_c_rad, 120) +
                        max(a_wall_height, c_wall_height))
         assert (sunroom_model.cathedral_gable[SunroomSide.A_SIDE].length == (
-                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_a_raw))
+                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_a_rad))
         assert (sunroom_model.cathedral_gable[SunroomSide.C_SIDE].length == (
-                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_c_raw))
+                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_c_rad))
         assert to_nice_number(pitch_a_side, 2) == 10
         assert to_nice_number(pitch_c_side, 2) == 10
         assert to_nice_number(peak, 16) == 169
@@ -691,10 +691,10 @@ class TestCathedralScenarios:
         # Act
         scenario.calculate_sunroom_properties()
         # Assert
-        pitch_a_raw = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
-        pitch_c_raw = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
-        pitch_a_side = 12 * tan(pitch_a_raw)
-        pitch_c_side = 12 * tan(pitch_c_raw)
+        pitch_a_rad = toolkit_state.pitch[SunroomSide.A_SIDE].pitch_value
+        pitch_c_rad = toolkit_state.pitch[SunroomSide.C_SIDE].pitch_value
+        pitch_a_side = 12 * tan(pitch_a_rad)
+        pitch_c_side = 12 * tan(pitch_c_rad)
         peak = toolkit_state.wall_heights[(None, LengthType.PEAK_HEIGHT)].length
         max_height = toolkit_state.wall_heights[(None, LengthType.MAX_HEIGHT)].length
         soffit_a_side = toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.SOFFIT_HEIGHT)].length
@@ -703,12 +703,12 @@ class TestCathedralScenarios:
         drip_edge_c_side = toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.DRIP_EDGE_HEIGHT)].length
         a_wall_height = toolkit_state.wall_heights[(SunroomSide.A_SIDE, LengthType.WALL_HEIGHT)].length
         c_wall_height = toolkit_state.wall_heights[(SunroomSide.C_SIDE, LengthType.WALL_HEIGHT)].length
-        actual_peak = (scenario.calculate_triangle_height(pitch_a_raw, pitch_c_raw, 120) +
+        actual_peak = (scenario.calculate_triangle_height(pitch_a_rad, pitch_c_rad, 120) +
                        max(a_wall_height, c_wall_height))
         assert (sunroom_model.cathedral_gable[SunroomSide.A_SIDE].length == (
-                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_a_raw))
+                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_a_rad))
         assert (sunroom_model.cathedral_gable[SunroomSide.C_SIDE].length == (
-                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_c_raw))
+                    actual_peak - max(a_wall_height, c_wall_height)) / tan(pitch_c_rad))
         assert to_nice_number(pitch_a_side, 2) == 10
         assert to_nice_number(pitch_c_side, 2) == 10
         assert to_nice_number(peak, 16) == 165.1875

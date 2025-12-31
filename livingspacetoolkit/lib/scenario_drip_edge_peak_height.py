@@ -1,6 +1,4 @@
-from math import sin, cos, tan, atan, atan2, pi
-from math import floor as m_floor
-from math import ceil as m_ceil
+from math import tan, atan2
 
 from livingspacetoolkit.logconf.log_config import logger
 from models import SunroomModel
