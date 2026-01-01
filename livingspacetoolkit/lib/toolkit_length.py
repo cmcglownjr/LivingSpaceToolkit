@@ -178,11 +178,7 @@ class ToolkitLength:
         if isinstance(value, float|int):
             value = str(value)
         length = self._parse_imperial_to_inches(value)
-        if self.length_type == LengthType.OVERHANG and (length > 16.0):
-            # Business logic. Overhang max length is 16 inches
-            logger.warning("Setting overhang to 16in. as it exceeds max tolerance.")
-            return  16
-        elif self.length_type == LengthType.HANG_RAIL and length > 216:
+        if self.length_type == LengthType.HANG_RAIL and length > 216:
             # Business logic. Hang rails and Fascia cannot exceed 216". Raise a ValueError, divide them in half,
             # try again
             logger.warning(f"The hang rails are too long: {length}")
