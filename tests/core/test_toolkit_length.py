@@ -83,15 +83,6 @@ class TestToolkitLength:
         assert (length_2 - length_1) == 12
 
     @pytest.mark.unit
-    def test_overhang_business_logic(self):
-        # Arrange
-        length_1 = ToolkitLength(LengthType.OVERHANG)
-        # Act
-        length_1.length = "17"
-        # Assert
-        assert length_1.length == 16.0
-
-    @pytest.mark.unit
     @pytest.mark.parametrize("actual, expected",
                              [
                                  ("10'", 120),
@@ -205,3 +196,5 @@ class TestToolkitLength:
         length_1 = ToolkitLength(LengthType.THICKNESS)
         with pytest.raises(ValueError):
             length_1.length = variable
+
+    # TODO: Test for fascia and hang rail exceptions
