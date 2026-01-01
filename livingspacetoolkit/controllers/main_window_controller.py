@@ -1,4 +1,4 @@
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.views import ScenariosView, ResultsView, TabsView
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 from livingspacetoolkit.models.results_model import generate_results

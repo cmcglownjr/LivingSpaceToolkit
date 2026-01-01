@@ -2,7 +2,7 @@ from math import sin, cos
 from math import floor as math_floor
 from math import ceil as math_ceil
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from .toolkit_enums import EndCutType, LengthType, SunroomSide, SunroomType
 from .toolkit_length import ToolkitLength
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel

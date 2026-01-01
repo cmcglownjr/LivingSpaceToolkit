@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QSpacerItem, QSizePolicy, QTextEdit
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 
 
 class ResultsView(QWidget):

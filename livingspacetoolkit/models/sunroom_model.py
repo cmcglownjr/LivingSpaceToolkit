@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.lib.toolkit_enums import LengthType, SunroomSide
 from livingspacetoolkit.lib import ToolkitLength
 

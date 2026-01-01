@@ -1,7 +1,7 @@
 import re
 
 from .toolkit_enums import LengthType, SunroomSide
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 
 
 class ToolkitLength:

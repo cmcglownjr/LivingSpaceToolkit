@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QTabWidget, QMessageBox
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from .studio_view import StudioView
 from .cathedral_view import CathedralView
 

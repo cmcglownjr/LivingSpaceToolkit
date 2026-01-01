@@ -1,7 +1,7 @@
 from math import sin, cos, tan, pi
 from abc import ABC, abstractmethod
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from .toolkit_enums import Scenario, EndCutType
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 

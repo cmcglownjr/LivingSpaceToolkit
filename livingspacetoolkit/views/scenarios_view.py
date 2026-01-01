@@ -3,7 +3,7 @@ from typing import Dict
 from PySide6.QtWidgets import QRadioButton, QHBoxLayout, QGroupBox, QButtonGroup
 from PySide6.QtCore import Qt
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.lib.toolkit_enums import Scenario
 from livingspacetoolkit.utils.helpers import temporary_change
 

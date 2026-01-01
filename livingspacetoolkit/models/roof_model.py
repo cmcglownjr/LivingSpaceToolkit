@@ -1,6 +1,6 @@
 from typing import Dict
 from livingspacetoolkit.models.toolkit_state_model import ToolkitStateModel
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.lib.toolkit_enums import RoofingType
 
 

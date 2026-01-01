@@ -1,5 +1,5 @@
 from math import tan
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.lib.toolkit_enums import SunroomType, Scenario, SunroomSide, LengthType
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 from livingspacetoolkit.utils.helpers import to_nice_number

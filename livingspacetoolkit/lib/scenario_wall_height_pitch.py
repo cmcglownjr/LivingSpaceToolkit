@@ -2,7 +2,7 @@ from math import tan
 
 from .base_scenario_class import BaseScenarioClass
 from .toolkit_enums import Scenario, LengthType, SunroomSide, SunroomType
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 
 

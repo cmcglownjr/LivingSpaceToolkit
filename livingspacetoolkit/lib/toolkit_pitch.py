@@ -2,7 +2,7 @@ import re
 from math import atan, radians
 
 from .toolkit_enums import PitchType, SunroomSide
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 
 
 class ToolkitPitch:

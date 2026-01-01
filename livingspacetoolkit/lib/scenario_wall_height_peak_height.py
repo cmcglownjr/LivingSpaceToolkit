@@ -1,6 +1,6 @@
 from math import tan, atan, atan2
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from .base_scenario_class import BaseScenarioClass
 from .toolkit_enums import Scenario, LengthType, SunroomSide, SunroomType
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel

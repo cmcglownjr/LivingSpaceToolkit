@@ -1,80 +1,104 @@
-import os
-import platform
-import subprocess
 from PySide6.QtWidgets import QApplication
 
-def is_dark_mode():
-    system = platform.system()
+light_theme = """
+* {
+    font-family: "Segoe UI", "Noto Sans", "Ubuntu", sans-serif;
+    font-size: 12pt;
+}
 
-    # ----------------------
-    # Linux KDE Plasma
-    # ----------------------
-    if system == "Linux":
-        try:
-            kde = subprocess.check_output(
-                ["kreadconfig5", "--group", "KDE", "--key", "ColorScheme"],
-                universal_newlines=True
-            ).strip().lower()
+QWidget {
+    background-color: #fafafa;
+    color: #333333;
+}
 
-            if "dark" in kde:
-                return True
-        except Exception:
-            pass
+QWidget::disabled{
+  background-color: #CCCCCC;
+  selection-background-color: transparent;
+  color: {{ opacity(text, 10) }};
+}
 
-        # GNOME detection
-        try:
-            gsettings = subprocess.check_output(
-                ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
-                universal_newlines=True
-            ).strip()
+/* QLineEdit */
+QLineEdit {
+    padding: 6px;
+    border: 1px solid #c6c6c6;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #333333;
+}
 
-            if "dark" in gsettings.lower():
-                return True
-        except Exception:
-            pass
+QLineEdit:focus {
+    border: 1px solid #4a90e2;
+}
 
-        return False
+QLineEdit::placeholder {
+    color: #888888;
+}
 
-    # ----------------------
-    # Windows 10/11
-    # ----------------------
-    if system == "Windows":
-        try:
-            import winreg
-            key = winreg.OpenKey(
-                winreg.HKEY_CURRENT_USER,
-                r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-            )
-            value, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
-            return value == 0
-        except Exception:
-            return False
+/* QPushButton */
+QPushButton {
+    padding: 6px 12px;
+    border: 1px solid #b5b5b5;
+    border-radius: 6px;
+    background-color: #e6e6e6;
+    color: #333333;
+}
 
-    # ----------------------
-    # macOS
-    # ----------------------
-    if system == "Darwin":
-        try:
-            result = subprocess.check_output(
-                ["defaults", "read", "-g", "AppleInterfaceStyle"],
-                stderr=subprocess.STDOUT
-            ).decode().strip()
+QPushButton:hover {
+    background-color: #f0f0f0;
+}
 
-            if result.lower() == "dark":
-                return True
-        except Exception:
-            pass
+QPushButton:pressed {
+    background-color: #d0d0d0;
+}
 
-    return False
+/* QComboBox */
+QComboBox {
+    padding: 6px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #333333;
+}
 
+QComboBox::drop-down {
+    width: 28px;
+    border-left: 1px solid #cccccc;
+}
+
+/* Tabs */
+QTabWidget::pane {
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+QTabBar::tab {
+    padding: 8px 16px;
+    background: #eeeeee;
+    border: 1px solid #cccccc;
+    border-bottom: none;
+}
+
+QTabBar::tab:selected {
+    background: #ffffff;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #f0f0f0;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical {
+    background: #c6c6c6;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #b0b0b0;
+}"""
 
 def apply_theme(app: QApplication):
     """Loads light or dark QSS depending on OS settings."""
-    # TODO: Set first option to theme_dark.qss. Figure out how to properly switch between themes.
-    theme_file = "Resource/theme_dark.qss" if is_dark_mode() else "Resource/theme_light.qss"
-
-    if os.path.exists(theme_file):
-        with open(theme_file, "r") as f:
-            app.setStyleSheet(f.read())
-    else:
-        print(f"Theme file not found: {theme_file}")
+    # TODO: Create a dark theme. Figure out how to properly switch between themes.
+    app.setStyleSheet(light_theme)

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Protocol, Any
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from livingspacetoolkit.models import ToolkitStateModel, RoofModel
 from livingspacetoolkit.lib.toolkit_enums import (PitchType, SunroomType, RoofingType, EndCutType,
                                                   LengthType, SunroomSide)

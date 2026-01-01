@@ -3,7 +3,7 @@ from typing import Dict
 from PySide6.QtWidgets import QWidget, QLineEdit, QComboBox, QVBoxLayout, QCheckBox, QSpacerItem, QSizePolicy, QLabel
 from PySide6.QtCore import QSize
 
-from livingspacetoolkit.logconf.log_config import logger
+from livingspacetoolkit.config.log_config import logger
 from .roof_end_cuts_view import RoofEndCutsView
 from .roof_pitch_view import RoofPitchView
 from .roofing_type_view import RoofingTypeView
