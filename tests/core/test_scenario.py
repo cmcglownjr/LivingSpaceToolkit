@@ -1,5 +1,5 @@
 import pytest
-from math import tan, sin, pi
+from math import tan
 
 from livingspacetoolkit.lib import *
 from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
