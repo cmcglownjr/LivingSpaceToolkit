@@ -80,7 +80,7 @@ class ToolkitStateModel:
             raise TypeError(f"Please input a value for the {self.thickness.length_type.name}.")
         for sunroom_side in self.floor_walls:
             if not self.floor_walls[sunroom_side].modified:
-                raise TypeError(f"Please input a value for the {sunroom_side.name}.")
+                raise TypeError(f"Please input a value for the {sunroom_side.name} WALL_HEIGHT.")
         pitch_list: List[SunroomSide] = []
         wall_height_list: List[tuple[SunroomSide|None, LengthType]] = []
         match self.scenario:
@@ -153,4 +153,7 @@ class ToolkitStateModel:
         if len(wall_height_list) > 0:
             for sunroom_side in wall_height_list:
                 if not self.wall_heights[sunroom_side].modified:
-                    raise TypeError(f"Please input a value for the {sunroom_side[0].name} {sunroom_side[1].name}.")
+                    if sunroom_side[0] is None:
+                        raise TypeError(f"Please input a value for the {sunroom_side[1].name}.")
+                    else:
+                        raise TypeError(f"Please input a value for the {sunroom_side[0].name} {sunroom_side[1].name}.")
