@@ -197,4 +197,20 @@ class TestToolkitLength:
         with pytest.raises(ValueError):
             length_1.length = variable
 
-    # TODO: Test for fascia and hang rail exceptions
+    @pytest.mark.unit
+    def test_hang_rails_exception(self):
+        length = ToolkitLength(LengthType.HANG_RAIL)
+        with pytest.raises(ValueError):
+            length.length = 217
+
+    @pytest.mark.unit
+    def test_fascia_exception(self):
+        length = ToolkitLength(LengthType.FASCIA)
+        with pytest.raises(ValueError):
+            length.length = 217
+
+    @pytest.mark.unit
+    def test_panel_length_exception(self):
+        length = ToolkitLength(LengthType.PANEL)
+        with pytest.raises(ValueError):
+            length.length = 289
