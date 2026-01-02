@@ -1,10 +1,9 @@
 from math import tan, atan2
 
 from livingspacetoolkit.config.log_config import logger
-from models import SunroomModel
 from .base_scenario_class import BaseScenarioClass
 from .toolkit_enums import Scenario, LengthType, SunroomSide, SunroomType
-from livingspacetoolkit.models import ToolkitStateModel
+from livingspacetoolkit.models import ToolkitStateModel, SunroomModel
 
 
 class DripEdgePeakHeight(BaseScenarioClass):
