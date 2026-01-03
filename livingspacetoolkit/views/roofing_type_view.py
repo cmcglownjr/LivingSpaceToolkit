@@ -1,0 +1,48 @@
+from PySide6.QtWidgets import QGroupBox, QRadioButton, QVBoxLayout, QButtonGroup
+from livingspacetoolkit.config.log_config import logger
+from livingspacetoolkit.utils.helpers import temporary_change, set_strikethrough
+
+
+class RoofingTypeView(QGroupBox):
+    def __init__(self):
+        super().__init__()
+
+        self.radio_group: QButtonGroup = QButtonGroup()
+
+        self.radio_eco: QRadioButton = QRadioButton()
+        self.radio_eco.setObjectName("radio_eco")
+        self.radio_eco.setChecked(False)
+        self.radio_eco.setEnabled(True)
+        self.radio_eco.setText("EcoGreen")
+        self.radio_group.addButton(self.radio_eco)
+
+        self.radio_al: QRadioButton = QRadioButton()
+        self.radio_al.setObjectName("radio_al")
+        self.radio_al.setChecked(False)
+        self.radio_al.setEnabled(True)
+        self.radio_al.setText("Aluminum")
+        self.radio_group.addButton(self.radio_al)
+
+        layout: QVBoxLayout = QVBoxLayout()
+        layout.addWidget(self.radio_eco)
+        layout.addWidget(self.radio_al)
+
+        self.setLayout(layout)
+
+    @temporary_change('radio_group', 'setExclusive', False, True)
+    def default_state(self) -> None:
+        logger.debug("Setting roofing type to default state.")
+        self.radio_eco.setChecked(False)
+        set_strikethrough(self.radio_eco, True)
+        self.radio_al.setChecked(False)
+        set_strikethrough(self.radio_al, True)
+        self.setEnabled(False)
+
+    @temporary_change('radio_group', 'setExclusive', False, True)
+    def enabled_state(self) -> None:
+        logger.debug("Setting roofing type to enabled state.")
+        self.radio_eco.setChecked(False)
+        set_strikethrough(self.radio_eco, False)
+        self.radio_al.setChecked(False)
+        set_strikethrough(self.radio_al, False)
+        self.setEnabled(True)

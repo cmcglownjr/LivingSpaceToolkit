@@ -6,6 +6,7 @@ bin/
 pyu-data/
 .venv/
 output/
+Logs/
 *.log
 *.iss
 client_config.py
