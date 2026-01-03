@@ -1,0 +1,90 @@
+* {
+    font-family: "Segoe UI", "Noto Sans", "Ubuntu", sans-serif;
+    font-size: 12pt;
+}
+
+QWidget {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+/* QLineEdit */
+QLineEdit {
+    padding: 6px;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #ffffff;
+}
+
+QLineEdit:focus {
+    border: 1px solid #569cd6;
+}
+
+QLineEdit::placeholder {
+    color: #888888;
+}
+
+/* QPushButton */
+QPushButton {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #3c3c3c;
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+}
+
+QPushButton:hover {
+    background-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #333333;
+}
+
+/* QComboBox */
+QComboBox {
+    padding: 6px;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #ffffff;
+}
+
+QComboBox::drop-down {
+    width: 28px;
+    border-left: 1px solid #3c3c3c;
+}
+
+/* Tabs */
+QTabWidget::pane {
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    background: #2a2a2a;
+}
+
+QTabBar::tab {
+    padding: 8px 16px;
+    background: #333333;
+    border: 1px solid #3c3c3c;
+    border-bottom: none;
+}
+
+QTabBar::tab:selected {
+    background: #2a2a2a;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #2a2a2a;
+    width: 10px;
+}
+
+QScrollBar::handle:vertical {
+    background: #555555;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #666666;
+}
